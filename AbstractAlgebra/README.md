@@ -1,4 +1,4 @@
-# ALL YOU NEED IS IN the directory: /resources.  
+# go to the directory: /resources.  
 
 
 # Harvard University  
