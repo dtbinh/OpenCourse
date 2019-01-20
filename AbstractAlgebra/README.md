@@ -1,3 +1,6 @@
+# ALL YOU NEED IS IN /resources  
+
+
 # Harvard University  
 Benedict Gross  
 https://web.archive.org/web/20091114060618/http://www.extension.harvard.edu/openlearning/math222  
