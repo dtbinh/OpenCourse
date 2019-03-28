@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>l_1 Trend Filtering</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>l_1 Trend Filtering</h1>
+<div id="subtitle">S.-J. Kim, K. Koh, S. Boyd, and D. Gorinevsky</div>
+</div>
+<p><i>SIAM Review</i>, problems and techniques section,
+51(2):339&ndash;360, May 2009.</p>
+<ul>
+<li><p><a href="pdf/l1_trend_filter.pdf">l1_trend_filter.pdf</a></p>
+</li>
+<li><p><a href="../l1_tf/">l1_tf software package</a></p>
+</li>
+<li><p><a href="https://github.com/hadley/l1tf">R package wrapper by Hadley Wickham</a></p>
+</li>
+</ul>
+<p>The problem of estimating underlying
+trends in time series data arises in a variety of disciplines.
+In this paper we propose a variation on
+Hodrick-Prescott (H-P) filtering,
+a widely used method for trend estimation.
+The proposed l1 trend filtering method} substitutes a sum
+of absolute values (<i>i.e.</i>, an l1-norm)
+for the sum of squares used in H-P filtering
+to penalize variations in the estimated trend.
+The l1 trend filtering method produces trend estimates that
+are piecewise linear, and therefore is well
+suited to analyzing time series with an underlying
+piecewise linear trend.
+The kinks, knots, or changes in slope of the estimated trend
+can be interpreted as abrupt changes or events
+in the underlying dynamics of the time series.
+Using specialized interior-point methods,
+l1 trend filtering can be carried out with not much more effort
+than H-P filtering; in particular, the number
+of arithmetic operations required
+grows linearly with the number of data points.
+We describe the method and some of its basic properties,
+and give some illustrative examples.
+We show how the method is related to
+l1 regularization based methods in sparse signal recovery
+and feature selection, and list some extensions of the basic method.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:28 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

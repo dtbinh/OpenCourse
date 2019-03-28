@@ -1,0 +1,326 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>polyhedra_intersection_example</title>
+      <meta name="generator" content="MATLAB 7.7">
+      <meta name="date" content="2011-02-16">
+      <meta name="m-file" content="polyhedra_intersection_example"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#2">Generate problem data</a></li>
+               <li><a href="#3">Solve problem</a></li>
+               <li><a href="#4">Reporting</a></li>
+               <li><a href="#5">Compare to alternating projections</a></li>
+            </ul>
+         </div><pre class="codeinput"><span class="comment">% Find point in intersection of two polyhedra, given by</span>
+<span class="comment">% { x | A1 x &lt;= b1 } and { x | A2 x &lt;= b2 }.</span>
+</pre><h2>Generate problem data<a name="2"></a></h2><pre class="codeinput">randn(<span class="string">'state'</span>, 0);
+rand(<span class="string">'state'</span>, 0);
+
+n = 5;      <span class="comment">% dimension of variable</span>
+m1 = 10;    <span class="comment">% number of faces for polyhedra 1</span>
+m2 = 12;    <span class="comment">% number of faces for polyhedra 2</span>
+
+c1 = 10*randn(n,1);        <span class="comment">% center of polyhedra 1</span>
+c2 = -10*randn(n,1);       <span class="comment">% center of polyhedra 2</span>
+
+<span class="comment">% consider the following picture:</span>
+<span class="comment">%</span>
+<span class="comment">%       a1</span>
+<span class="comment">% c ---------&gt; x</span>
+<span class="comment">%</span>
+<span class="comment">% from the center "c", we travel along vector "a1" (not necessarily a unit</span>
+<span class="comment">% vector) until we reach x. at "x", a1'x = b. a point y is to the left of x</span>
+<span class="comment">% if a1'y &lt;= b.</span>
+<span class="comment">%</span>
+
+<span class="comment">% pick m1 random directions with different magnitudes</span>
+A1 = diag(1 + rand(m1,1))*randn(m1,n);
+<span class="comment">% the value of b is found by traveling from the center along the normal</span>
+<span class="comment">% vectors in A1 and taking its inner product with A1.</span>
+b1 = diag(A1*(c1*ones(1,m1) + A1'));
+
+<span class="comment">% pick m2 random directions with different magnitudes</span>
+A2 = diag(1 + rand(m2,1))*randn(m2,n);
+<span class="comment">% the value of b is found by traveling from the center along the normal</span>
+<span class="comment">% vectors in A1 and taking its inner product with A1.</span>
+b2 = diag(A2*(c2*ones(1,m2) + A2'));
+
+<span class="comment">% find the distance between the two polyhedra--make sure they overlap by</span>
+<span class="comment">% checking if the distance is 0</span>
+cvx_begin <span class="string">quiet</span>
+    variables <span class="string">x(n)</span> <span class="string">y(n)</span>
+    minimize <span class="string">sum_square(x - y)</span>
+    subject <span class="string">to</span>
+        A1*x &lt;= b1
+        A2*y &lt;= b2
+cvx_end
+
+<span class="comment">% if the distance is not 0, expand A1 and A2 by a little more than half the</span>
+<span class="comment">% distance</span>
+<span class="keyword">if</span> norm(x-y) &gt; 1e-4,
+    A1 = (1 + 0.5*norm(x-y))*A1;
+    A2 = (1 + 0.5*norm(x-y))*A2;
+    <span class="comment">% recompute b's as appropriate</span>
+    b1 = diag(A1*(c1*ones(1,m1) + A1'));
+    b2 = diag(A2*(c2*ones(1,m2) + A2'));
+<span class="keyword">end</span>
+</pre><h2>Solve problem<a name="3"></a></h2><pre class="codeinput">[x history] = polyhedra_intersection(A1, b1, A2, b2, 1.0, 1.0);
+</pre><pre class="codeoutput">iter	    r norm	   eps pri	    s norm	  eps dual	 objective
+  1	    6.8713	    0.1385	   13.8243	    0.0689	      0.00
+  2	    4.6972	    0.1809	    3.3124	    0.0374	      0.00
+  3	    0.9614	    0.1692	    1.6155	    0.0354	      0.00
+  4	    0.4124	    0.1753	    1.3753	    0.0313	      0.00
+  5	    0.8436	    0.1839	    0.9909	    0.0229	      0.00
+  6	    1.0713	    0.1884	    0.5223	    0.0122	      0.00
+  7	    1.0909	    0.1888	    0.0446	    0.0012	      0.00
+  8	    0.1018	    0.1888	    0.0001	    0.0002	      0.00
+Elapsed time is 2.392706 seconds.
+</pre><h2>Reporting<a name="4"></a></h2><pre class="codeinput">K = length(history.objval);
+
+h = figure;
+plot(1:K, history.objval, <span class="string">'k'</span>, <span class="string">'MarkerSize'</span>, 10, <span class="string">'LineWidth'</span>, 2);
+ylabel(<span class="string">'f(x^k) + g(z^k)'</span>); xlabel(<span class="string">'iter (k)'</span>);
+
+g = figure;
+subplot(2,1,1);
+semilogy(1:K, max(1e-8, history.r_norm), <span class="string">'k'</span>, <span class="keyword">...</span>
+    1:K, history.eps_pri, <span class="string">'k--'</span>,  <span class="string">'LineWidth'</span>, 2);
+ylabel(<span class="string">'||r||_2'</span>);
+
+subplot(2,1,2);
+semilogy(1:K, max(1e-8, history.s_norm), <span class="string">'k'</span>, <span class="keyword">...</span>
+    1:K, history.eps_dual, <span class="string">'k--'</span>, <span class="string">'LineWidth'</span>, 2);
+ylabel(<span class="string">'||s||_2'</span>); xlabel(<span class="string">'iter (k)'</span>);
+</pre><img vspace="5" hspace="5" src="polyhedra_intersection_example_01.png" alt=""> <img vspace="5" hspace="5" src="polyhedra_intersection_example_02.png" alt=""> <h2>Compare to alternating projections<a name="5"></a></h2><pre class="codeinput"><span class="comment">% MAX_ITER = 10;</span>
+<span class="comment">% x = zeros(n,1);</span>
+<span class="comment">% z = zeros(n,1);</span>
+<span class="comment">% for k = 1:MAX_ITER</span>
+<span class="comment">%</span>
+<span class="comment">%     % x-update</span>
+<span class="comment">%     % use cvx to find point in first polyhedra</span>
+<span class="comment">%     cvx_begin quiet</span>
+<span class="comment">%         variable x(n)</span>
+<span class="comment">%         minimize (sum_square(x - z))</span>
+<span class="comment">%         subject to</span>
+<span class="comment">%             A1*x &lt;= b1</span>
+<span class="comment">%     cvx_end</span>
+<span class="comment">%</span>
+<span class="comment">%     % z-update with relaxation</span>
+<span class="comment">%     zold = z;</span>
+<span class="comment">%     % use cvx to find point in second polyhedra</span>
+<span class="comment">%     cvx_begin quiet</span>
+<span class="comment">%         variable z(n)</span>
+<span class="comment">%         minimize (sum_square(x - z))</span>
+<span class="comment">%         subject to</span>
+<span class="comment">%             A2*z &lt;= b2</span>
+<span class="comment">%     cvx_end</span>
+<span class="comment">%</span>
+<span class="comment">%     history1.r_norm(k)  = norm(x - z);</span>
+<span class="comment">%     history1.s_norm(k)  = norm((z - zold));</span>
+<span class="comment">%</span>
+<span class="comment">% end</span>
+<span class="comment">%</span>
+<span class="comment">% g = figure</span>
+<span class="comment">% subplot(2,1,1);</span>
+<span class="comment">% semilogy(1:MAX_ITER, max(1e-8, history1.r_norm), 'k', 1:K, max(1e-8, history.r_norm), 'r');</span>
+<span class="comment">% ylabel('||r||_2');</span>
+<span class="comment">%</span>
+<span class="comment">% subplot(2,1,2);</span>
+<span class="comment">% semilogy(1:MAX_ITER, max(1e-8, history1.s_norm), 'k', 1:K, max(1e-8, history.s_norm), 'r');</span>
+<span class="comment">% ylabel('||s||_2'); xlabel('iter (k)');</span>
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.7<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+% Find point in intersection of two polyhedra, given by
+% { x | A1 x <= b1 } and { x | A2 x <= b2 }.
+
+%% Generate problem data
+
+randn('state', 0);
+rand('state', 0);
+
+n = 5;      % dimension of variable
+m1 = 10;    % number of faces for polyhedra 1
+m2 = 12;    % number of faces for polyhedra 2
+
+c1 = 10*randn(n,1);        % center of polyhedra 1
+c2 = -10*randn(n,1);       % center of polyhedra 2
+
+% consider the following picture:
+%
+%       a1
+% c REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-> x
+%
+% from the center "c", we travel along vector "a1" (not necessarily a unit
+% vector) until we reach x. at "x", a1'x = b. a point y is to the left of x
+% if a1'y <= b.
+%
+
+% pick m1 random directions with different magnitudes
+A1 = diag(1 + rand(m1,1))*randn(m1,n);
+% the value of b is found by traveling from the center along the normal
+% vectors in A1 and taking its inner product with A1.
+b1 = diag(A1*(c1*ones(1,m1) + A1'));
+
+% pick m2 random directions with different magnitudes
+A2 = diag(1 + rand(m2,1))*randn(m2,n);
+% the value of b is found by traveling from the center along the normal
+% vectors in A1 and taking its inner product with A1.
+b2 = diag(A2*(c2*ones(1,m2) + A2'));
+
+% find the distance between the two polyhedraREPLACE_WITH_DASH_DASHmake sure they overlap by
+% checking if the distance is 0
+cvx_begin quiet
+    variables x(n) y(n)
+    minimize sum_square(x - y)
+    subject to
+        A1*x <= b1
+        A2*y <= b2
+cvx_end
+
+% if the distance is not 0, expand A1 and A2 by a little more than half the
+% distance
+if norm(x-y) > 1e-4,
+    A1 = (1 + 0.5*norm(x-y))*A1;
+    A2 = (1 + 0.5*norm(x-y))*A2;
+    % recompute b's as appropriate
+    b1 = diag(A1*(c1*ones(1,m1) + A1'));
+    b2 = diag(A2*(c2*ones(1,m2) + A2'));
+end
+
+%% Solve problem
+
+[x history] = polyhedra_intersection(A1, b1, A2, b2, 1.0, 1.0);
+
+%% Reporting
+K = length(history.objval);                                                                                                        
+
+h = figure;
+plot(1:K, history.objval, 'k', 'MarkerSize', 10, 'LineWidth', 2); 
+ylabel('f(x^k) + g(z^k)'); xlabel('iter (k)');
+
+g = figure;
+subplot(2,1,1);                                                                                                                    
+semilogy(1:K, max(1e-8, history.r_norm), 'k', ...
+    1:K, history.eps_pri, 'kREPLACE_WITH_DASH_DASH',  'LineWidth', 2); 
+ylabel('||r||_2'); 
+
+subplot(2,1,2);                                                                                                                    
+semilogy(1:K, max(1e-8, history.s_norm), 'k', ...
+    1:K, history.eps_dual, 'kREPLACE_WITH_DASH_DASH', 'LineWidth', 2);   
+ylabel('||s||_2'); xlabel('iter (k)'); 
+
+%% Compare to alternating projections
+
+% MAX_ITER = 10;
+% x = zeros(n,1);
+% z = zeros(n,1);
+% for k = 1:MAX_ITER
+% 
+%     % x-update
+%     % use cvx to find point in first polyhedra
+%     cvx_begin quiet
+%         variable x(n)
+%         minimize (sum_square(x - z))
+%         subject to
+%             A1*x <= b1
+%     cvx_end
+% 
+%     % z-update with relaxation
+%     zold = z;
+%     % use cvx to find point in second polyhedra
+%     cvx_begin quiet
+%         variable z(n)
+%         minimize (sum_square(x - z))
+%         subject to
+%             A2*z <= b2
+%     cvx_end
+%     
+%     history1.r_norm(k)  = norm(x - z);
+%     history1.s_norm(k)  = norm((z - zold));
+%     
+% end
+% 
+% g = figure
+% subplot(2,1,1);                                                                                                                    
+% semilogy(1:MAX_ITER, max(1e-8, history1.r_norm), 'k', 1:K, max(1e-8, history.r_norm), 'r'); 
+% ylabel('||r||_2'); 
+% 
+% subplot(2,1,2);                                                                                                                    
+% semilogy(1:MAX_ITER, max(1e-8, history1.s_norm), 'k', 1:K, max(1e-8, history.s_norm), 'r');   
+% ylabel('||s||_2'); xlabel('iter (k)'); 
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

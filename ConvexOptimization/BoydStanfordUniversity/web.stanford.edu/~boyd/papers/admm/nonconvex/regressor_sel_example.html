@@ -1,0 +1,252 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>regressor_sel_example</title>
+      <meta name="generator" content="MATLAB 7.7">
+      <meta name="date" content="2011-02-16">
+      <meta name="m-file" content="regressor_sel_example"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#2">Generate problem data</a></li>
+               <li><a href="#3">Solve problem</a></li>
+               <li><a href="#4">Reporting</a></li>
+               <li><a href="#5">Compare to l1 regularization</a></li>
+            </ul>
+         </div><pre class="codeinput"><span class="comment">% Cardinality constrained least-squares example (nonconvex)</span>
+</pre><h2>Generate problem data<a name="2"></a></h2><pre class="codeinput">randn(<span class="string">'seed'</span>, 0);
+rand(<span class="string">'seed'</span>,0);
+
+m = 1500;       <span class="comment">% number of examples</span>
+n = 5000;       <span class="comment">% number of features</span>
+p = 100/n;      <span class="comment">% sparsity density</span>
+
+<span class="comment">% generate sparse solution vector</span>
+x = sprandn(n,1,p);
+
+<span class="comment">% generate random data matrix</span>
+A = randn(m,n);
+
+<span class="comment">% normalize columns of A</span>
+A = A*spdiags(1./sqrt(sum(A.^2))', 0, n, n);
+
+<span class="comment">% generate measurement b with noise</span>
+b = A*x + sqrt(0.001)*randn(m,1);
+
+xtrue = x;   <span class="comment">% save solution</span>
+</pre><h2>Solve problem<a name="3"></a></h2><pre class="codeinput">[x history] = regressor_sel(A, b, p*n, 1.0);
+</pre><pre class="codeoutput">iter	    r norm	   eps pri	    s norm	  eps dual	 objective
+  1	    3.1818	    0.0465	    2.3330	    0.0389	      5.38
+  2	    1.1927	    0.0585	    2.6814	    0.0487	      7.92
+  3	    1.1216	    0.0790	    2.2545	    0.0485	      6.72
+  4	    1.2543	    0.0934	    1.7125	    0.0446	      4.94
+  5	    1.3137	    0.1020	    1.4387	    0.0400	      3.57
+  6	    1.2244	    0.1070	    1.1351	    0.0349	      2.49
+  7	    1.0563	    0.1093	    0.8049	    0.0304	      1.77
+  8	    0.8269	    0.1095	    0.4945	    0.0276	      1.40
+  9	    0.5639	    0.1085	    0.2625	    0.0265	      1.29
+ 10	    0.3841	    0.1069	    0.2960	    0.0263	      1.28
+ 11	    0.3259	    0.1054	    0.3102	    0.0264	      1.28
+ 12	    0.2956	    0.1041	    0.2813	    0.0263	      1.26
+ 13	    0.3156	    0.1032	    0.2956	    0.0263	      1.25
+ 14	    0.2677	    0.1027	    0.1912	    0.0263	      1.23
+ 15	    0.2134	    0.1025	    0.1609	    0.0263	      1.24
+ 16	    0.1605	    0.1025	    0.0817	    0.0264	      1.24
+ 17	    0.1059	    0.1025	    0.0578	    0.0266	      1.25
+ 18	    0.1503	    0.1025	    0.1397	    0.0267	      1.26
+ 19	    0.1164	    0.1026	    0.0708	    0.0268	      1.27
+ 20	    0.0712	    0.1026	    0.0459	    0.0269	      1.28
+ 21	    0.0557	    0.1026	    0.0319	    0.0270	      1.29
+ 22	    0.0425	    0.1026	    0.0253	    0.0271	      1.30
+Elapsed time is 2.188126 seconds.
+</pre><h2>Reporting<a name="4"></a></h2><pre class="codeinput">K = length(history.objval);
+
+h = figure;
+plot(1:K, history.objval, <span class="string">'k'</span>, <span class="string">'MarkerSize'</span>, 10, <span class="string">'LineWidth'</span>, 2);
+ylabel(<span class="string">'f(x^k) + g(z^k)'</span>); xlabel(<span class="string">'iter (k)'</span>);
+
+g = figure;
+subplot(2,1,1);
+semilogy(1:K, max(1e-8, history.r_norm), <span class="string">'k'</span>, <span class="keyword">...</span>
+    1:K, history.eps_pri, <span class="string">'k--'</span>,  <span class="string">'LineWidth'</span>, 2);
+ylabel(<span class="string">'||r||_2'</span>);
+
+subplot(2,1,2);
+semilogy(1:K, max(1e-8, history.s_norm), <span class="string">'k'</span>, <span class="keyword">...</span>
+    1:K, history.eps_dual, <span class="string">'k--'</span>, <span class="string">'LineWidth'</span>, 2);
+ylabel(<span class="string">'||s||_2'</span>); xlabel(<span class="string">'iter (k)'</span>);
+</pre><img vspace="5" hspace="5" src="regressor_sel_example_01.png" alt=""> <img vspace="5" hspace="5" src="regressor_sel_example_02.png" alt=""> <h2>Compare to l1 regularization<a name="5"></a></h2><pre class="codeinput"><span class="comment">% err1 = [];</span>
+<span class="comment">% card1 = [];</span>
+<span class="comment">% for K = 1:5:2*p*n</span>
+<span class="comment">%     [x history] = regressor_sel(A, b, K, rho);</span>
+<span class="comment">%     err1 = [err1 norm(A*x - b)];</span>
+<span class="comment">%     card1 = [card1 K];</span>
+<span class="comment">% end</span>
+<span class="comment">%</span>
+<span class="comment">% % lambda max</span>
+<span class="comment">% lambda_max = norm( A'*b, 'inf' );</span>
+<span class="comment">%</span>
+<span class="comment">% err2 = [];</span>
+<span class="comment">% card2 = [];</span>
+<span class="comment">% for lambda = (1:-.01:.02)*lambda_max</span>
+<span class="comment">%     [x history] = lasso(A, b, lambda, rho, 1);</span>
+<span class="comment">%     err2 = [err2 norm(A*x - b)];</span>
+<span class="comment">%     card2 = [card2 sum(x~=0)];</span>
+<span class="comment">% end</span>
+<span class="comment">%</span>
+<span class="comment">% p = figure</span>
+<span class="comment">% stairs(card1, err1, 'k', 'LineWidth', 2);</span>
+<span class="comment">% hold on;</span>
+<span class="comment">% stairs(card2, err2, 'k--', 'LineWidth', 2);</span>
+<span class="comment">% ylabel('||Ax-b||'); xlabel('card(x)');</span>
+<span class="comment">% legend('regressor selection', 'l1 regularization');</span>
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.7<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+% Cardinality constrained least-squares example (nonconvex)
+
+%% Generate problem data
+
+randn('seed', 0);
+rand('seed',0);
+
+m = 1500;       % number of examples
+n = 5000;       % number of features
+p = 100/n;      % sparsity density  
+
+% generate sparse solution vector
+x = sprandn(n,1,p);
+
+% generate random data matrix
+A = randn(m,n);
+
+% normalize columns of A
+A = A*spdiags(1./sqrt(sum(A.^2))', 0, n, n);
+
+% generate measurement b with noise
+b = A*x + sqrt(0.001)*randn(m,1);
+
+xtrue = x;   % save solution
+
+%% Solve problem
+
+[x history] = regressor_sel(A, b, p*n, 1.0);
+
+%% Reporting
+K = length(history.objval);                                                                                                        
+
+h = figure;
+plot(1:K, history.objval, 'k', 'MarkerSize', 10, 'LineWidth', 2); 
+ylabel('f(x^k) + g(z^k)'); xlabel('iter (k)');
+
+g = figure;
+subplot(2,1,1);                                                                                                                    
+semilogy(1:K, max(1e-8, history.r_norm), 'k', ...
+    1:K, history.eps_pri, 'kREPLACE_WITH_DASH_DASH',  'LineWidth', 2); 
+ylabel('||r||_2'); 
+
+subplot(2,1,2);                                                                                                                    
+semilogy(1:K, max(1e-8, history.s_norm), 'k', ...
+    1:K, history.eps_dual, 'kREPLACE_WITH_DASH_DASH', 'LineWidth', 2);   
+ylabel('||s||_2'); xlabel('iter (k)'); 
+
+%% Compare to l1 regularization
+
+% err1 = [];
+% card1 = [];
+% for K = 1:5:2*p*n
+%     [x history] = regressor_sel(A, b, K, rho);
+%     err1 = [err1 norm(A*x - b)];
+%     card1 = [card1 K];
+% end
+% 
+% % lambda max
+% lambda_max = norm( A'*b, 'inf' );
+% 
+% err2 = [];
+% card2 = [];
+% for lambda = (1:-.01:.02)*lambda_max
+%     [x history] = lasso(A, b, lambda, rho, 1);
+%     err2 = [err2 norm(A*x - b)];
+%     card2 = [card2 sum(x~=0)];
+% end
+% 
+% p = figure
+% stairs(card1, err1, 'k', 'LineWidth', 2); 
+% hold on;
+% stairs(card2, err2, 'kREPLACE_WITH_DASH_DASH', 'LineWidth', 2);
+% ylabel('||Ax-b||'); xlabel('card(x)');
+% legend('regressor selection', 'l1 regularization');
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

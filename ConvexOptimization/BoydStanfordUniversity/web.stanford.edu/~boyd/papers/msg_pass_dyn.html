@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Dynamic Network Energy Management via Proximal Message Passing</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Dynamic Network Energy Management via Proximal Message Passing</h1>
+<div id="subtitle">M. Kraning, E. Chu, J. Lavaei, and S. Boyd</div>
+</div>
+<p><i>Foundations and Trends in Optimization</i>, 1(2):70-122, January 2014.
+Original version posted 4/1/12.</p>
+<ul>
+<li><p><a href="pdf/msg_pass_dyn.pdf">Final FnT article</a>
+</p>
+</li>
+<li><p><a href="pdf/msg_pass_dyn_talk.pdf">Talk Slides</a></p>
+</li>
+<li><p><a href="pdf/msg_pass_dyn_cistalk.pdf">Short talk slides with no equations (!)</a></p>
+</li>
+</ul>
+<p>We consider a network of devices, such as generators, fixed loads, deferrable
+loads, and storage devices, each with its own dynamic constraints and
+objective, connected by AC and DC lines. The problem is to minimize the total
+network objective subject to the device and line constraints, over a given time
+horizon. This is a large optimization problem, with variables for consumption
+or generation for each device, power flow for each line, and voltage phase
+angles at AC buses, in each time period.   In this paper we develop a
+decentralized method for solving this problem called <i>proximal message
+passing</i>. The method is iterative: At each step, each device exchanges simple
+messages with its neighbors in the network and then solves its own optimization
+problem, minimizing its own objective function, augmented by a term determined
+by the messages it has received. We show that this message passing method
+converges to a solution when the device objective and constraints are convex.
+The method is completely decentralized, and needs no global coordination other
+than synchronizing iterations; the problems to be solved by each device can
+typically be solved extremely efficiently and in parallel. The method is fast
+enough that even a serial implementation can solve substantial problems in
+reasonable time frames. We report results for several numerical experiments,
+demonstrating the method's speed and scaling, including the solution of a
+problem instance with over 30 million variables in 5 minutes for a
+serial implementation; with decentralized computing, the solve time would be
+less than one second.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:29 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <script src="/js/jquery-1.11.1.min.js"></script>
+    <!-- bootstrap -->
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="/css/su-identity.css" />
+    <!--[if lt IE 9]>
+    <script src="/js/html5.js"></script>
+    <![endif]-->
+    <!--[if IE 8]>
+    <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+    <![endif]-->
+    <!--[if IE 7]>
+    <link rel="stylesheet" type="text/css" href="/css/ie7.css" />
+    <![endif]-->
+    <script src="/js/login.js"></script>
+    <!-- login CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/login.css" />
+    <script type="text/javascript">
+    <!--
+    function sf() { document.login.username.focus(); }
+    // -->
+    </script>
+    <title>Stanford Login</title>
+    <script type="text/javascript">
+    <!--
+    "use strict";
+
+function createCookie(cookieName, value, seconds) {
+  var date    = new Date(Date.now() + (seconds * 1000)),
+      expires = date.toGMTString(),
+      path    = '/idp',
+      cookie  = cookieName + '=' + value
+              + ';expires=' + expires
+              + (path.length > 0 ? '; path=' + path : '');
+
+  document.cookie = cookie
+  console.log('Created cookie: ' + cookie);
+}
+
+function eraseCookie(name) {
+  console.log('Erasing cookie ' + name);
+  createCookie(name, '', -31536000);
+}
+
+function readCookie(name) {
+  var cookies = document.cookie.split(';');
+  for (var i = 0; i < cookies.length; i++) {
+    var cookieParts = cookies[i].split('=');
+    if (cookieParts[0].replace(/ +/g,'') === name) {
+      return cookieParts[1];
+    }
+  }
+  return null;
+}
+
+function load(id, cookieName, reverse) {
+  var checkbox = document.getElementById(id);
+
+  reverse = (reverse === undefined) ? false : reverse;
+  
+  if (checkbox != null) {
+    cookieName = cookieName || checkbox.name;
+    var status = readCookie(cookieName);
+    checkbox.checked = (status === (reverse ? 'false' : 'true'));
+  }
+}
+
+function check(checkbox, cookieName, reverse) {
+  cookieName = cookieName || checkbox.name;
+  reverse = (reverse === undefined) ? false : reverse;
+  
+  if (checkbox.checked) {
+    createCookie(cookieName, (reverse ? 'false' : 'true'), 31536000);
+  } else {
+    eraseCookie(cookieName);
+  }
+}
+
+function loadRemember(rememberId, cookieName) {
+  var checkbox = document.getElementById(rememberId);
+
+  if (checkbox != null) {
+    var status = readCookie(cookieName);
+    checkbox.checked = (status !== '1' && status !== 'true');
+  }
+}
+
+function checkRemember(checkbox, cookieName) {
+  if (checkbox.checked) {
+    console.log('Erasing cookie ' + cookieName);
+    eraseCookie(cookieName);
+  } else {
+    console.log('Creating cookie ' + cookieName + '; 1; ' + 31536000);
+  }
+}
+    // -->
+    </script>
+  </head>
+  <body onload="load('x509'); sf();">
+    <div id="su-wrap">
+      <!-- #su-wrap start -->
+      <div id="su-content">
+        <!-- #su-content start -->
+        <!-- Brandbar snippet start -->
+        <div id="brandbar">
+          <div class="container">
+            <a href="http://www.stanford.edu"> <img src="/images/brandbar-stanford-logo@2x.png" alt="Stanford University" width="153" height="22"> </a>
+          </div>
+          <!-- .container end -->
+        </div>
+        <!-- #brandbar end -->
+        <!-- Brandbar snippet end -->
+
+        <div id="header">
+          <div class="container">
+	    <div id="logo">
+              <img src="/idp/images/login-header@2x.png" alt="Stanford Login" width="222" height="37">
+              <h1 class="pagetitle">Stanford Login</h1>
+	    </div>
+          </div>
+          <!-- /.container -->
+        </div>
+
+        <div id="content">
+          <div class="container">
+
+            <div class="row">
+              <div class="col-md-6">
+
+                <div class="form-container login login-box">
+                  <form action="/idp/profile/SAML2/Redirect/SSO?execution=e5s1" method="post" autocomplete="OFF" name="login" id="login">
+<!--
+                                        -->
+                    
+                    
+
+                    <div class="form-input">
+                      <label for="username">SUNet ID</label>
+                      <input id="username" name="username" type="text" size="12" maxlength="8"
+                        placeholder=""
+                        value="">
+                    </div>
+                    <div class="form-input">
+                      <label for="password">Password</label>
+                      <input id="password" name="password" type="password" size="20" value="" placeholder="" />
+                    </div>
+
+		    <!--
+                    <div class="form-check">
+                      <input type="checkbox" name="donotcache" value="0" id="donotcache">
+                      <label for="donotcache">Don't Remember Me</label><a href="https://uit.stanford.edu/service/webauth/help" target="_blank" class="help-icon"><img src="/images/help14.png" alt="what is this?" title="When checked, WebLogin will NOT store single sign-on on this browser"></a>
+                    </div>
+		    -->
+
+                    <input name="_eventId_proceed" value="Login" type="submit" class="submit-button">
+
+                  </form>
+
+                </div>
+
+              </div>
+
+
+              <div class="col-md-6 security-info">
+                <p><strong>Important Security Information:</strong>
+                   Logging in lets you access other protected Stanford websites with this browser, not just the website you requested.                </p>
+                <div class="help">
+                </div>
+                <div class="settings">
+                  <p><a href="#" class="more-link"><span class="fa fa-chevron-circle-right"></span> <span>LOGIN HELP</span></a></p>
+                  <!-- <p><a href="/idp/profile/user/prefs" class="more-link"><i class="fa fa-chevron-circle-right"></i> <span>Advanced settings</span></a></p> -->
+                  <p><a href="https://accounts.stanford.edu/" class="more-link"><span class="fa fa-chevron-circle-right"></span> <span>Forgot your password?</span></a></p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <p class="fineprint">Use of this system is subject to Stanford University's rules and regulations. See the <a href="https://adminguide.stanford.edu/chapter-6" target="_blank" title="Stanford University Administrative Guide">Stanford Administrative Guide</a> for more information.</p>
+              </div>
+            </div>
+          </div>
+          <!-- .container end -->
+        </div>
+        <!-- .content end -->
+
+      </div>
+      <!-- #su-content end -->
+    </div>
+    <!-- #su-wrap end -->
+
+    <!-- Global footer snippet start -->
+    <div id="global-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-6 col-sm-2" id="bottom-logo"> <a href="http://www.stanford.edu"> <img width="105" height="49" alt="Stanford University" src="/images/footer-stanford-logo@2x.png"> </a> </div>
+          <!-- #bottom-logo end -->
+          <div class="col-xs-6 col-sm-10" id="bottom-text">
+            <ul class="list-inline">
+              <li class="home"><a href="http://www.stanford.edu">SU Home</a></li>
+              <li class="maps alt"><a data-ua-label="global-footer" data-ua-action="visit.stanford.edu/plan/maps" class="su-link" href="http://visit.stanford.edu/plan/maps.html">Maps &amp; Directions</a></li>
+              <li class="search-stanford"><a href="http://stanford.edu/search/">Search Stanford</a></li>
+              <li class="terms alt"><a href="http://www.stanford.edu/site/terms.html">Terms of Use</a></li>
+              <li class="emergency-info"><a data-ua-label="global-footer" class="su-link" href="http://emergency.stanford.edu/">Emergency Info</a></li>
+            </ul>
+          </div>
+          <!-- .bottom-text end -->
+          <p class="copyright vcard col-sm-10 col-sm-offset-2 col-xs-12">&copy; <span class="fn org">Stanford University</span>.&nbsp; <span class="adr"> <span class="locality">Stanford</span>, <span class="region">California</span> <span class="postal-code">94305</span></span>. <span id="termsofuse"><a data-ua-label="global-footer" data-ua-action="copyright-complaints" class="su-link" href="http://www.stanford.edu/group/security/dmca.html">Copyright Complaints</a>&nbsp;&nbsp;&nbsp;<a data-ua-label="global-footer" data-ua-action="trademark-notice" class="su-link" href="https://adminguide.stanford.edu/chapter-1/subchapter-5/policy-1-5-4">Trademark Notice</a></span></p>
+        </div>
+        <!-- .row end -->
+      </div>
+      <!-- .container end -->
+    </div>
+
+    <!-- global-footer end -->
+    <!-- Global footer snippet end -->
+    <script src="//rum-static.pingdom.net/pa-5bedd10fdb2aac001600008c.js" async></script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+ <head>
+  <title>Index of /~vandenbe/software/conic_dcmp</title>
+ </head>
+ <body>
+<h1>Index of /~vandenbe/software/conic_dcmp</h1>
+<table><tr><th><img src="/icons/blank.gif" alt="[ICO]"></th><th><a href="?C=N;O=A">Name</a></th><th><a href="?C=M;O=A">Last modified</a></th><th><a href="?C=S;O=A">Size</a></th><th><a href="?C=D;O=D">Description</a></th></tr><tr><th colspan="5"><hr></th></tr>
+<tr><td valign="top"><img src="/icons/back.gif" alt="[DIR]"></td><td><a href="/~vandenbe/software/">Parent Directory</a></td><td>&nbsp;</td><td align="right">  - </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="_README">_README</a></td><td align="right">16-Jan-2014 11:33  </td><td align="right">2.2K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="blockarrow_problem.py">blockarrow_problem.py</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right">3.4K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="convert.py">convert.py</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right">5.6K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="example_blockarrow.py">example_blockarrow.py</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right">4.8K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="example_snl.py">example_snl.py</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right">3.9K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/p.gif" alt="[   ]"></td><td><a href="generate_single_prox.py">generate_single_prox.py</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right">835 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="matfile.py">matfile.py</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right">8.3K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="misc.py">misc.py</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right">4.9K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="prox_speed.m">prox_speed.m</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right">2.3K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/p.gif" alt="[   ]"></td><td><a href="prox_speed.py">prox_speed.py</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right">1.2K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="proxlib.py">proxlib.py</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right"> 38K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/p.gif" alt="[   ]"></td><td><a href="snl_problem.py">snl_problem.py</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right">5.7K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="solve_single_prox_via_cvx.m">solve_single_prox_via_cvx.m</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right">657 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="solve_single_prox_via_ipm.m">solve_single_prox_via_ipm.m</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right">5.7K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="spingarn.py">spingarn.py</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right"> 12K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/p.gif" alt="[   ]"></td><td><a href="symbolic.py">symbolic.py</a></td><td align="right">16-Jan-2014 10:35  </td><td align="right"> 24K</td><td>&nbsp;</td></tr>
+<tr><th colspan="5"><hr></th></tr>
+</table>
+</body></html>

@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+ <head>
+  <title>Index of /~vandenbe/133A/data-files</title>
+ </head>
+ <body>
+<h1>Index of /~vandenbe/133A/data-files</h1>
+<table><tr><th><img src="/icons/blank.gif" alt="[ICO]"></th><th><a href="?C=N;O=D">Name</a></th><th><a href="?C=M;O=A">Last modified</a></th><th><a href="?C=S;O=A">Size</a></th><th><a href="?C=D;O=A">Description</a></th></tr><tr><th colspan="5"><hr></th></tr>
+<tr><td valign="top"><img src="/icons/back.gif" alt="[DIR]"></td><td><a href="/~vandenbe/133A/">Parent Directory</a></td><td>&nbsp;</td><td align="right">  - </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="circlefit.jl">circlefit.jl</a></td><td align="right">29-Oct-2018 15:38  </td><td align="right">1.7K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="circlefit.m">circlefit.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right">1.7K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="deblur.mat">deblur.mat</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right">7.6M</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/compressed.gif" alt="[   ]"></td><td><a href="deblur_B.txt.gz">deblur_B.txt.gz</a></td><td align="right">12-Nov-2018 12:09  </td><td align="right"> 39K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/compressed.gif" alt="[   ]"></td><td><a href="deblur_Y.txt.gz">deblur_Y.txt.gz</a></td><td align="right">12-Nov-2018 12:09  </td><td align="right">5.5M</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="decoding.m">decoding.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right">302 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="e911.m">e911.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right">262 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="expdesign.m">expdesign.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right">1.3K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="illumdata.m">illumdata.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right">736 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="inductordata.m">inductordata.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right">2.7K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="logistic_fit.m">logistic_fit.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right">1.7K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="logistic_gn.m">logistic_gn.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right">1.7K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="lsdenoising.m">lsdenoising.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right"> 25K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="mnist.mat">mnist.mat</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right">4.7M</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="mnist_train.mat">mnist_train.mat</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right"> 25M</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="mooreslaw.m">mooreslaw.m</a></td><td align="right">29-Oct-2018 15:14  </td><td align="right">181 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="multiaccess.m">multiaccess.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right"> 12K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="networkloc.m">networkloc.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right"> 13K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="orthregdata.m">orthregdata.m</a></td><td align="right">09-Oct-2018 08:38  </td><td align="right">3.3K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="polyfit.m">polyfit.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right">953 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="robappr.jl">robappr.jl</a></td><td align="right">20-Nov-2018 13:17  </td><td align="right">2.1K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="robappr.m">robappr.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right">2.2K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="splinefit.m">splinefit.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right">3.3K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="systemid.m">systemid.m</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right">4.0K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="tdmatrix.txt">tdmatrix.txt</a></td><td align="right">01-Oct-2018 15:20  </td><td align="right"> 27M</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="tomography.mat">tomography.mat</a></td><td align="right">08-Jul-2016 12:32  </td><td align="right"> 91K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="wikipedia.jl">wikipedia.jl</a></td><td align="right">01-Oct-2018 15:20  </td><td align="right"> 76K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="wikipedia_m.mat">wikipedia_m.mat</a></td><td align="right">01-Oct-2018 15:19  </td><td align="right">788K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="wikipedia_o.mat">wikipedia_o.mat</a></td><td align="right">01-Oct-2018 15:19  </td><td align="right">7.0M</td><td>&nbsp;</td></tr>
+<tr><th colspan="5"><hr></th></tr>
+</table>
+</body></html>

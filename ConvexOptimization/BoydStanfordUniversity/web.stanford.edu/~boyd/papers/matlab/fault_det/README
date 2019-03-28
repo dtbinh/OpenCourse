@@ -1,0 +1,19 @@
+Matlab scripts to generate figures in paper:
+"Relaxed Maximum a Posteriori Fault Identification"
+by A. Zymnis, S. Boyd, and D. Gorinevsky
+
+Description:
+
+armap.m:                Main matlab script. 
+                        Solves the approximate RMAP problem.
+
+Auxilliary scripts:
+
+example1_sdp.m:         Generates figure 1 of paper 
+monte_carlo_kappas.m:   Generates figure 2 of paper 
+monte_carlo1.m:         Generates figure 3 of paper 
+monte_carlo_sdp.m:      Generates figure 4 of paper
+monte_carlo2.m:         Generates figure 5 of paper 
+example2.m:             Generates figure 6 of paper 
+
+Email Argyris Zymnis at azymnis@stanford.edu if there are any problems

@@ -1,0 +1,330 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>regressor_sel</title>
+      <meta name="generator" content="MATLAB 7.7">
+      <meta name="date" content="2011-02-16">
+      <meta name="m-file" content="regressor_sel"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#3">Global constants and defaults</a></li>
+               <li><a href="#4">Data preprocessing</a></li>
+               <li><a href="#5">ADMM solver</a></li>
+            </ul>
+         </div><pre class="codeinput"><span class="keyword">function</span> [z, history] = regressor_sel(A, b, K, rho)
+</pre><pre class="codeinput"><span class="comment">% regressor_sel  Solve lasso problem via ADMM</span>
+<span class="comment">%</span>
+<span class="comment">% [x, history] = regressor_sel(A, b, K, rho, alpha)</span>
+<span class="comment">%</span>
+<span class="comment">% Attempts to solve the following problem via ADMM:</span>
+<span class="comment">%</span>
+<span class="comment">%   minimize || Ax - b ||_2^2</span>
+<span class="comment">%   subject to card(x) &lt;= K</span>
+<span class="comment">%</span>
+<span class="comment">% where card() is the number of nonzero entries.</span>
+<span class="comment">%</span>
+<span class="comment">% The solution is returned in the vector x.</span>
+<span class="comment">%</span>
+<span class="comment">% history is a structure that contains the objective value, the primal and</span>
+<span class="comment">% dual residual norms, and the tolerances for the primal and dual residual</span>
+<span class="comment">% norms at each iteration.</span>
+<span class="comment">%</span>
+<span class="comment">% rho is the augmented Lagrangian parameter.</span>
+<span class="comment">%</span>
+<span class="comment">% alpha is the over-relaxation parameter (typical values for alpha are</span>
+<span class="comment">% between 1.0 and 1.8).</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">% More information can be found in the paper linked at:</span>
+<span class="comment">% http://www.stanford.edu/~boyd/papers/distr_opt_stat_learning_admm.html</span>
+<span class="comment">%</span>
+
+
+t_start = tic;
+</pre><h2>Global constants and defaults<a name="3"></a></h2><pre class="codeinput">QUIET    = 0;
+MAX_ITER = 1000;
+ABSTOL   = 1e-4;
+RELTOL   = 1e-2;
+</pre><h2>Data preprocessing<a name="4"></a></h2><pre class="codeinput">[m, n] = size(A);
+
+<span class="comment">% save a matrix-vector multiply</span>
+Atb = A'*b;
+</pre><h2>ADMM solver<a name="5"></a></h2><pre class="codeinput">x = zeros(n,1);
+z = zeros(n,1);
+u = zeros(n,1);
+
+<span class="comment">% cache the factorization</span>
+[L U] = factor(A, rho);
+
+<span class="keyword">if</span> ~QUIET
+    fprintf(<span class="string">'%3s\t%10s\t%10s\t%10s\t%10s\t%10s\n'</span>, <span class="string">'iter'</span>, <span class="keyword">...</span>
+      <span class="string">'r norm'</span>, <span class="string">'eps pri'</span>, <span class="string">'s norm'</span>, <span class="string">'eps dual'</span>, <span class="string">'objective'</span>);
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> k = 1:MAX_ITER
+
+    <span class="comment">% x-update</span>
+    q = Atb + rho*(z - u);    <span class="comment">% temporary value</span>
+    <span class="keyword">if</span>( m &gt;= n )    <span class="comment">% if skinny</span>
+       x = U \ (L \ q);
+    <span class="keyword">else</span>            <span class="comment">% if fat</span>
+       x = q/rho - (A'*(U \ ( L \ (A*q) )))/rho^2;
+    <span class="keyword">end</span>
+
+    <span class="comment">% z-update with relaxation</span>
+    zold = z;
+    z = keep_largest(x + u, K);
+
+    <span class="comment">% u-update</span>
+    u = u + (x - z);
+
+    <span class="comment">% diagnostics, reporting, termination checks</span>
+    history.objval(k)  = objective(A, b, x);
+
+    history.r_norm(k)  = norm(x - z);
+    history.s_norm(k)  = norm(-rho*(z - zold));
+
+    history.eps_pri(k) = sqrt(n)*ABSTOL + RELTOL*max(norm(x), norm(-z));
+    history.eps_dual(k)= sqrt(n)*ABSTOL + RELTOL*norm(rho*u);
+
+    <span class="keyword">if</span> ~QUIET
+        fprintf(<span class="string">'%3d\t%10.4f\t%10.4f\t%10.4f\t%10.4f\t%10.2f\n'</span>, k, <span class="keyword">...</span>
+            history.r_norm(k), history.eps_pri(k), <span class="keyword">...</span>
+            history.s_norm(k), history.eps_dual(k), history.objval(k));
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> (history.r_norm(k) &lt; history.eps_pri(k) &amp;&amp; <span class="keyword">...</span>
+       history.s_norm(k) &lt; history.eps_dual(k))
+         <span class="keyword">break</span>;
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> ~QUIET
+    toc(t_start);
+<span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+
+<span class="keyword">function</span> p = objective(A, b, x)
+    p = sum_square(A*x - b);
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> z = keep_largest(z, K)
+    [val pos] = sort(abs(z), <span class="string">'descend'</span>);
+    z(pos(K+1:end)) = 0;
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> [L U] = factor(A, rho)
+    [m, n] = size(A);
+    <span class="keyword">if</span> ( m &gt;= n )    <span class="comment">% if skinny</span>
+       L = chol( A'*A + rho*speye(n), <span class="string">'lower'</span> );
+    <span class="keyword">else</span>            <span class="comment">% if fat</span>
+       L = chol( speye(m) + 1/rho*(A*A'), <span class="string">'lower'</span> );
+    <span class="keyword">end</span>
+
+    <span class="comment">% force matlab to recognize the upper / lower triangular structure</span>
+    L = sparse(L);
+    U = sparse(L');
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.7<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+function [z, history] = regressor_sel(A, b, K, rho)
+% regressor_sel  Solve lasso problem via ADMM
+%
+% [x, history] = regressor_sel(A, b, K, rho, alpha)
+% 
+% Attempts to solve the following problem via ADMM:
+%
+%   minimize || Ax - b ||_2^2
+%   subject to card(x) <= K
+%
+% where card() is the number of nonzero entries. 
+%
+% The solution is returned in the vector x.
+%
+% history is a structure that contains the objective value, the primal and 
+% dual residual norms, and the tolerances for the primal and dual residual 
+% norms at each iteration.
+% 
+% rho is the augmented Lagrangian parameter. 
+%
+% alpha is the over-relaxation parameter (typical values for alpha are 
+% between 1.0 and 1.8).
+%
+%
+% More information can be found in the paper linked at:
+% http://www.stanford.edu/~boyd/papers/distr_opt_stat_learning_admm.html
+%
+
+
+t_start = tic;
+
+%% Global constants and defaults
+
+QUIET    = 0;
+MAX_ITER = 1000;
+ABSTOL   = 1e-4;
+RELTOL   = 1e-2;
+
+%% Data preprocessing
+
+[m, n] = size(A);
+
+% save a matrix-vector multiply
+Atb = A'*b;
+
+%% ADMM solver
+
+x = zeros(n,1);
+z = zeros(n,1);
+u = zeros(n,1);
+
+% cache the factorization
+[L U] = factor(A, rho);
+
+if ~QUIET
+    fprintf('%3s\t%10s\t%10s\t%10s\t%10s\t%10s\n', 'iter', ...
+      'r norm', 'eps pri', 's norm', 'eps dual', 'objective');
+end
+
+for k = 1:MAX_ITER
+    
+    % x-update
+    q = Atb + rho*(z - u);    % temporary value
+    if( m >= n )    % if skinny
+       x = U \ (L \ q);
+    else            % if fat
+       x = q/rho - (A'*(U \ ( L \ (A*q) )))/rho^2;
+    end
+
+    % z-update with relaxation
+    zold = z;
+    z = keep_largest(x + u, K);
+
+    % u-update
+    u = u + (x - z);
+    
+    % diagnostics, reporting, termination checks
+    history.objval(k)  = objective(A, b, x);
+
+    history.r_norm(k)  = norm(x - z);
+    history.s_norm(k)  = norm(-rho*(z - zold));
+    
+    history.eps_pri(k) = sqrt(n)*ABSTOL + RELTOL*max(norm(x), norm(-z));
+    history.eps_dual(k)= sqrt(n)*ABSTOL + RELTOL*norm(rho*u);
+    
+    if ~QUIET
+        fprintf('%3d\t%10.4f\t%10.4f\t%10.4f\t%10.4f\t%10.2f\n', k, ...
+            history.r_norm(k), history.eps_pri(k), ...
+            history.s_norm(k), history.eps_dual(k), history.objval(k));
+    end
+
+    if (history.r_norm(k) < history.eps_pri(k) && ...
+       history.s_norm(k) < history.eps_dual(k))
+         break;
+    end
+
+end
+
+if ~QUIET
+    toc(t_start);
+end
+
+end
+
+function p = objective(A, b, x)
+    p = sum_square(A*x - b);
+end
+
+function z = keep_largest(z, K)
+    [val pos] = sort(abs(z), 'descend');
+    z(pos(K+1:end)) = 0;
+end
+
+function [L U] = factor(A, rho)
+    [m, n] = size(A);
+    if ( m >= n )    % if skinny
+       L = chol( A'*A + rho*speye(n), 'lower' );
+    else            % if fat
+       L = chol( speye(m) + 1/rho*(A*A'), 'lower' );
+    end
+    
+    % force matlab to recognize the upper / lower triangular structure
+    L = sparse(L);
+    U = sparse(L');
+end
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

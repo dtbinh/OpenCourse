@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Matrix-Free Convex Optimization Modeling</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Matrix-Free Convex Optimization Modeling</h1>
+<div id="subtitle">S. Diamond and S. Boyd</div>
+</div>
+<p>Chapter in
+<i>Optimization and Its Applications in Control and Data Sciences</i>,
+Springer Optimization and Its Applications, 
+B. Goldengorin, editor, 
+155:221&ndash;264, 2016.</p>
+<p>Shorter version with title
+<i>Convex Optimization with Abstract Linear Operators</i> appeared in
+<i>Proceedings International Conference on Computer Vision (ICCV)</i>,
+pages 675-683, December 2015.</p>
+<ul>
+<li><p><a href="pdf/abs_ops.pdf">Full version</a></p>
+</li>
+<li><p><a href="pdf/abs_ops_iccv.pdf">ICCV version</a></p>
+</li>
+<li><p><a href="https://github.com/mfopt/mf_cvxpy"><tt>matrix-free CVXPY</tt> implementation</a></p>
+</li>
+<li><p><a href="https://github.com/mfopt/mf_scs"><tt>matrix-free SCS</tt> implementation</a></p>
+</li>
+<li><p><a href="https://github.com/mfopt/mf_pogs"><tt>matrix-free POGS</tt> implementation</a></p>
+</li>
+<li><p><a href="https://github.com/mfopt/FAO_DAG">a package that integrates matrix-free CVXPY and the solvers</a></p>
+</li>
+</ul>
+<p>We introduce a convex optimization modeling framework that
+transforms a convex optimization problem expressed in a form natural
+and convenient for the user into an equivalent cone
+program in a way that preserves fast linear transforms in
+the original problem.
+By representing linear functions in the
+transformation process not as matrices, but
+as graphs that encode composition of linear operators,
+we arrive at a matrix-free cone program, i.e.,
+one whose data matrix is represented by a linear operator and
+its adjoint.
+This cone program can then be solved by a matrix-free cone solver.
+By combining the matrix-free modeling framework and cone solver,
+we obtain a general method for efficiently solving convex
+optimization problems involving fast linear transforms.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:25 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

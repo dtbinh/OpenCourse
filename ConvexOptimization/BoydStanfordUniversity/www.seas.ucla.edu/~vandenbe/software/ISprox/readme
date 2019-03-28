@@ -1,0 +1,13 @@
+This directory contains MATLAB code for the examples in 
+
+H.-H. Chao and L. Vandenberghe, Entropic Proximal Operators for 
+Nonnegative Trigonometric Polynomials,
+to appear in IEEE Transactions on Signal Processing.
+
+example1.m:       covariance fitting
+example2.m:       projection on cone of nonnegative trigonometric example
+ISproj.m:         entropy projection
+toeplitzFact.m:   Levinson algorithm
+qmeif.m, qmef.m:  structured positive semidefinite matrix factorization
+
+The code requires CVX (cvxr.com).

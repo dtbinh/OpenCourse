@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Real Time Radiation Radiation Treatment Planning with Optimality Guarantees via Cluster and Bound Methods</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Real Time Radiation Radiation Treatment Planning with Optimality Guarantees via Cluster and Bound Methods</h1>
+<div id="subtitle">B. Ungun, L. Xing, and S. Boyd</div>
+</div>
+<p>To appear, <i>INFORMS Journal on Computing</i>, 2018.
+First posted January 2017.</p>
+<ul>
+<li><p><a href="pdf/rad_plan.pdf">Manuscript</a></p>
+</li>
+</ul>
+<p>Radiation therapy is widely used in cancer treatment; 
+however, plans necessarily involve tradeoffs between
+tumor coverage and damage to healthy tissue.
+While current hardware can deliver custom-shaped beams 
+from any angle around the patient, choosing 
+(from all possible beams) an optimal set of beams that 
+maximizes tumor coverage and while minimizing collateral 
+damage and treatment time is intractable. 
+Furthermore, even though planning algorithms used in
+practice consider highly restricted sets of candidate beams,
+the time per run combined with the number of runs
+required to explore clinical tradeoffs results in planning
+times of hours to days.
+We propose a suite of cluster and bound methods that 
+we hypothesize will 
+(a) yield higher quality plans by optimizing over much 
+(i.e., 100-fold) larger sets of candidate beams, and/or
+(b) reduce planning time by allowing clinicians to search through 
+candidate plans in real time. 
+Our methods hinge on phrasing the treatment planning problem as a 
+convex problem.
+To handle large scale optimizations, we form and solve 
+compressed approximations to the full problem by clustering beams 
+(i.e., columns of the dose influence matrix used in the optimization) 
+or voxels (rows of the matrix). 
+Duality theory allows us to bound the error incurred when applying 
+an approximate problem's solution to the full problem. 
+We observe that beam clustering and voxel clustering 
+both yield excellent solutions while enabling a 
+10&ndash;200-fold speedup.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:29 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

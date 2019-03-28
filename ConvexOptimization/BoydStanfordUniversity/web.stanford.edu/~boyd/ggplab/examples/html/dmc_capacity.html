@@ -1,0 +1,212 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>dmc_capacity</title>
+      <meta name="generator" content="MATLAB 7.0.4">
+      <meta name="date" content="2006-03-28">
+      <meta name="m-file" content="dmc_capacity"><style>
+body {
+  background-color: white;
+  margin:10px;
+}
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+pre.codeinput {
+  margin-left: 30px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.showbuttons {
+  margin-left: 30px;
+  border: solid black 2px;
+  padding: 4px;
+  background: #EBEFF3;
+}
+
+pre.codeoutput {
+  color: gray;
+  font-style: italic;
+}
+pre.error {
+  color: red;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+    </style></head>
+   <body><pre class="codeinput"><span class="comment">% Discrete memoryless channel (DMC) capacity computation.</span>
+<span class="comment">%</span>
+<span class="comment">% For more details see:</span>
+<span class="comment">%</span>
+<span class="comment">%    Geometric Programming Duals of Channel Capacity and Rate Distortion</span>
+<span class="comment">%    by M. Chiang and S. Boyd,</span>
+<span class="comment">%    IEEE Transactions on Information Theory, 2004.</span>
+<span class="comment">%</span>
+<span class="comment">% Computes exact capacity of a discrete memoryless channel (DMC)</span>
+<span class="comment">% via the dual problem, which is a GP.  GGPLAB does not return</span>
+<span class="comment">% dual variables, so we can't retrieve the optimal input distribution.</span>
+<span class="comment">% The Lagrange dual of the channel capacity problem is GP:</span>
+<span class="comment">%</span>
+<span class="comment">%   minimize   sum(z)</span>
+<span class="comment">%       s.t.   prod(z_j^{P_ij}) &gt;= exp(-entr(P^(i))),  for i = 1,...,N</span>
+<span class="comment">%</span>
+<span class="comment">% where variable is z, and P^(i) is the ith row of the channel matrix P.</span>
+<span class="comment">%</span>
+<span class="comment">% Almir Mutapcic 01/18/2005</span>
+
+<span class="comment">% transition probability matrix for a discrete memoryless channel</span>
+P = [0.3 0.2 0.5; 0.5 0.3 0.2; 0.2 0.5 0.3];
+
+<span class="comment">% number of input (N) and output (M) symbols</span>
+[N,M] = size(P);
+
+<span class="comment">% GP variables</span>
+gpvar <span class="string">z(M)</span>
+
+<span class="comment">% objective is the channel capacity</span>
+obj = sum(z);
+
+<span class="comment">% constraints</span>
+constr = gpconstraint;
+<span class="keyword">for</span> k = 1:N
+  constr(k) = exp( -entropy(P(k,:)) ) &lt;= prod( z.^(P(k,:)') );
+<span class="keyword">end</span>
+
+<span class="comment">% find the channel capacity</span>
+[capacity sol status] = gpsolve(obj,constr);
+
+disp(<span class="string">' '</span>)
+disp([<span class="string">'Channel capacity (via dual) is '</span> num2str(capacity) <span class="string">'.'</span>])
+</pre><pre class="codeoutput"> 
+Iteration     primal obj.         gap        dual residual     previous step.
+ 
+   1         1.00000e+00       9.00000e+00       5.40e-01               Inf
+   2        -6.77309e+01       7.88356e+00       5.23e-01       1.56250e-02
+ 
+Iteration     primal obj.         gap        dual residual     previous step.
+ 
+   1         6.98331e+01       9.00000e+00       3.11e-01               Inf
+   2         3.21968e+01       7.81598e+00       2.93e-01       2.89846e-02
+   3         1.17015e+01       6.79734e+00       2.67e-01       4.51992e-02
+   4         5.47154e+00       6.30509e+00       2.35e-01       6.25000e-02
+   5         2.08542e+00       5.72414e+00       1.80e-01       1.25000e-01
+   6         2.52278e-01       4.43882e+00       4.50e-02       5.00000e-01
+   7         1.61358e+00       4.99996e+00       3.60e-32       1.00000e+00
+   8         4.46629e-01       2.49998e+00       1.95e-32       1.00000e+00
+   9         2.97993e-02       1.24999e+00       2.30e-32       1.00000e+00
+  10        -1.78531e-01       6.24995e-01       5.60e-33       1.00000e+00
+  11        -2.82697e-01       3.12498e-01       1.00e-32       1.00000e+00
+  12        -3.34780e-01       1.56249e-01       4.13e-33       1.00000e+00
+  13        -3.60822e-01       7.81244e-02       5.21e-33       1.00000e+00
+  14        -3.73842e-01       3.90622e-02       1.38e-32       1.00000e+00
+  15        -3.80353e-01       1.95311e-02       1.27e-32       1.00000e+00
+  16        -3.83608e-01       9.76555e-03       1.03e-32       1.00000e+00
+  17        -3.85235e-01       4.88278e-03       1.09e-32       1.00000e+00
+  18        -3.86049e-01       2.44139e-03       4.89e-33       1.00000e+00
+  19        -3.86456e-01       1.22069e-03       9.08e-33       1.00000e+00
+  20        -3.86660e-01       6.10347e-04       1.93e-32       1.00000e+00
+  21        -3.86761e-01       3.05174e-04       1.15e-32       1.00000e+00
+  22        -3.86812e-01       1.52587e-04       1.12e-32       1.00000e+00
+  23        -3.86838e-01       7.62934e-05       7.71e-33       1.00000e+00
+  24        -3.86850e-01       3.81467e-05       1.80e-32       1.00000e+00
+  25        -3.86857e-01       1.90733e-05       2.98e-32       1.00000e+00
+  26        -3.86860e-01       9.53667e-06       2.03e-32       1.00000e+00
+  27        -3.86861e-01       4.76834e-06       6.88e-33       1.00000e+00
+  28        -3.86862e-01       2.38417e-06       9.70e-34       1.00000e+00
+  29        -3.86863e-01       1.19208e-06       5.77e-33       1.00000e+00
+  30        -3.86863e-01       5.96042e-07       9.40e-33       1.00000e+00
+  31        -3.86863e-01       2.98021e-07       3.02e-33       1.00000e+00
+  32        -3.86863e-01       1.49011e-07       2.06e-33       1.00000e+00
+  33        -3.86863e-01       7.45053e-08       1.25e-32       1.00000e+00
+  34        -3.86863e-01       3.72526e-08       1.83e-32       1.00000e+00
+  35        -3.86863e-01       1.86263e-08       1.53e-32       1.00000e+00
+  36        -3.86863e-01       9.31316e-09       3.71e-33       1.00000e+00
+Solved
+Problem succesfully solved.
+ 
+Channel capacity (via dual) is 0.67918.
+</pre><p class="footer"><br>
+         Published with MATLAB&reg; 7.0.4<br></p>
+      <!--
+##### SOURCE BEGIN #####
+% Discrete memoryless channel (DMC) capacity computation.
+%
+% For more details see:
+%
+%    Geometric Programming Duals of Channel Capacity and Rate Distortion
+%    by M. Chiang and S. Boyd,
+%    IEEE Transactions on Information Theory, 2004.
+%
+% Computes exact capacity of a discrete memoryless channel (DMC)
+% via the dual problem, which is a GP.  GGPLAB does not return
+% dual variables, so we can't retrieve the optimal input distribution.
+% The Lagrange dual of the channel capacity problem is GP:
+%
+%   minimize   sum(z)
+%       s.t.   prod(z_j^{P_ij}) >= exp(-entr(P^(i))),  for i = 1,...,N
+%
+% where variable is z, and P^(i) is the ith row of the channel matrix P.
+%
+% Almir Mutapcic 01/18/2005
+
+% transition probability matrix for a discrete memoryless channel
+P = [0.3 0.2 0.5; 0.5 0.3 0.2; 0.2 0.5 0.3];
+
+% number of input (N) and output (M) symbols
+[N,M] = size(P);
+
+% GP variables
+gpvar z(M)
+
+% objective is the channel capacity
+obj = sum(z);
+
+% constraints
+constr = gpconstraint;
+for k = 1:N
+  constr(k) = exp( -entropy(P(k,:)) ) <= prod( z.^(P(k,:)') );
+end
+
+% find the channel capacity
+[capacity sol status] = gpsolve(obj,constr);
+
+disp(' ')
+disp(['Channel capacity (via dual) is ' num2str(capacity) '.'])
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

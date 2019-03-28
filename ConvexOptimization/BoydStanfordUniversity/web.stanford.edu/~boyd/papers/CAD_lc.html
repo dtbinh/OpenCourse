@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>A New CAD Method and Associated Architectures for Linear Controllers</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>A New CAD Method and Associated Architectures for Linear Controllers</h1>
+<div id="subtitle">S. Boyd, V. Balakrishnan, C. Barratt, N. Khraishi, X. Li, D. Meyer, and S.  Norman</div>
+</div>
+<p><i>IEEE Transactions on Automatic Control</i>, 33(3):268-283, March 1988.<br />
+Shorter version
+appeared in <i>Proceedings of the American Control Conference</i>, 
+pages 611-616, June 1987, and <i>Proceedings Annual Allerton 
+Conference on Communication, Control and Computing</i>,
+pages 889-898, 1986.</p>
+<ul>
+<li><p><a href="pdf/CAD_lc.pdf">CAD_lc.pdf</a></p>
+</li>
+</ul>
+<p>A new CAD method and associated architectures are proposed for linear
+controllers. The design methods and architecture are based on recent results
+which parametrize all controllers which stabilize a given plant. With this
+architecture, the design of controllers is a convex programming problem which
+can be solved numerically. Constraints on the closed-loop system such as
+asymptotic tracking, decoupling, limits on peak excursions of variables, step
+responses, setting time, and overshoot, as well as frequency domain
+inequalities are readily incorporated in the design. The minimization objective
+is quite general, with LQG, <img class="eq" src="eqs/584281933671960289-130.png" alt="{bf H}_infty" style="vertical-align: -4px" />, and new <img class="eq" src="eqs/2349274112114421517-130.png" alt="ell_1" style="vertical-align: -3px" /> types as special cases. The
+constraints and objectives are specified in a control specification language
+which is natural for the control engineer, referring directly to step response,
+noise powers, transfer functions, and so on. This control specification
+language will be the input to a compiler which will translate the
+specifications into a standard convex program in <img class="eq" src="eqs/1464812390996254877-130.png" alt="{bf R}^L" style="vertical-align: -1px" />, which is then solved by
+some numerical convex program solver. A small but powerful subset of the
+language has been specified and its associated compiler implemented. The
+architecture proposed simplifies not only design of the controller but also its
+implementation. These controllers can be built right now from off the shelf
+components or integrated using standard VLSI cells.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:25 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

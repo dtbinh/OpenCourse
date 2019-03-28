@@ -1,0 +1,110 @@
+function [x,costs] = deblur_simpleTV_spingarn(b,kernel,params)
+
+% This code corresponds to section 5.1 in the paper
+% "Image deblurring by primal-dual operator splitting."                    
+% We solve minimize mu*||Kx - b ||_1 + || Dx ||_{iso}
+% subject to 0 <= x <= 1.
+% K convolves with kernel.  D is a discrete gradient operator.
+
+mu = params.mu; % The paper refers to gamma = 1/mu.
+t = params.t; % t is the primal step size 
+s = params.s; % s is the dual step size
+overRelax = params.overRelax; % overRelax is called rho in the paper.
+maxIter = params.maxIter;
+showTrigger = params.showTrigger;
+
+% t = tau;
+beta = sqrt(s/t); % operator gets scaled by beta. (p. 7 in paper)
+
+%%% Using two stepsizes is equivalent to modifying objective and the
+%%% operators, and using a single step size t.
+%%% K and D are multiplied by beta, and mu and b 
+%%% are adjusted to compensate for that.
+kernel = kernel*beta;
+mu = mu/beta;
+b = b*beta;
+%%% Finished modifying objective.
+% After this modification, we are now minimizing
+% mu*||Kx - b||_1 + (1/beta)*||Dx||_{iso}  subject to 0 <= x <= 1 (using the notation of this code)
+% We do this using Douglas-Rachford with a single step size t.
+
+evalIsoNorm = @(y) sum(sum(sqrt(y(:,:,1).^2 + y(:,:,2).^2)));
+
+[numRows,numCols] = size(b);
+
+eigValArr_K = eigValArrForCyclicConvOp(kernel,numRows,numCols);
+eigValArr_D1 = eigValArrForCyclicConvOp(beta*[-1 1]',numRows,numCols); % Note that D is being multiplied by beta
+eigValArr_D2 = eigValArrForCyclicConvOp(beta*[-1 1],numRows,numCols); % as mentioned above.
+
+eigValArr_KTrans = conj(eigValArr_K);
+eigValArr_D1Trans = conj(eigValArr_D1);
+eigValArr_D2Trans = conj(eigValArr_D2);
+
+applyK = @(x) applyCyclicConv2D(x,eigValArr_K);
+applyKTrans = @(x) applyCyclicConv2D(x,eigValArr_KTrans);
+applyD1 = @(x) applyCyclicConv2D(x,eigValArr_D1);
+applyD1Trans = @(x) applyCyclicConv2D(x,eigValArr_D1Trans);
+applyD2 = @(x) applyCyclicConv2D(x,eigValArr_D2);
+applyD2Trans = @(x) applyCyclicConv2D(x,eigValArr_D2Trans);
+
+applyD = @(x) cat(3,applyD1(x),applyD2(x));
+applyDTrans = @(y) applyD1Trans(y(:,:,1)) + applyD2Trans(y(:,:,2));
+
+applyMtrx = @(x) applyKTrans(applyK(x)) + applyDTrans(applyD(x)) + x; 
+eigValsMtrx = eigValArr_KTrans.*eigValArr_K ...
+                + eigValArr_D1Trans.*eigValArr_D1 + eigValArr_D2Trans.*eigValArr_D2 + ones(numRows,numCols);                                                                                                            
+
+p_x = b;
+p_y1 = zeros(numRows,numCols);
+p_y2 = zeros(numRows,numCols,2);
+
+costs = [];
+figure('Name','x inside Spingarn')
+
+for k = 1:maxIter
+                       
+    % compute a resolvent at p_x, p_y1,p_y2.
+    xPlus_x = min(p_x,1);
+    xPlus_x = max(xPlus_x,0);  
+  
+    xPlus_y1 = prox1Norm(p_y1 - b,mu*t) + b;
+    xPlus_y2 = proxIsoNorm(t/beta,p_y2);        
+                   
+    term_x = 2*xPlus_x - p_x;
+    term_y1 = 2*xPlus_y1 - p_y1;
+    term_y2 = 2*xPlus_y2 - p_y2;
+          
+    rhs = term_x + applyKTrans(term_y1) + applyDTrans(term_y2);
+    yPlus_x = ifft2(fft2(rhs)./eigValsMtrx);
+    
+%     check = applyMtrx(yPlus_x) - rhs;
+%     check = max(abs(check(:)));
+
+    yPlus_y1 = applyK(yPlus_x);
+    yPlus_y2 = applyD(yPlus_x);          
+    
+    p_xPlus = p_x + overRelax*(yPlus_x - xPlus_x);
+    p_y1Plus = p_y1 + overRelax*(yPlus_y1 - xPlus_y1);
+    p_y2Plus = p_y2 + overRelax*(yPlus_y2 - xPlus_y2);
+    
+    p_x = p_xPlus;
+    p_y1 = p_y1Plus;
+    p_y2 = p_y2Plus;        
+        
+    KxMinusb = applyK(xPlus_x) - b;
+    Dx = applyD(xPlus_x);
+    cost = mu*sum(abs(KxMinusb(:))) + (1/beta)*evalIsoNorm(Dx);
+    costs = [costs,cost];                
+    
+    if mod(k,showTrigger) == 0
+        imshow(xPlus_x,[]) 
+        disp(['Spingarn iteration is: ',num2str(k)])
+        disp(['primal cost is: ',num2str(cost)])   
+        keyboard        
+    end             
+                                           
+end
+
+x = xPlus_x;
+
+end

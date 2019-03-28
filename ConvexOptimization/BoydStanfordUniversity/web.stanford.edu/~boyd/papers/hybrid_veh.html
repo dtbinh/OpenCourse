@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Finding Ultimate Limits of Performance for Hybrid Electric Vehicles</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Finding Ultimate Limits of Performance for Hybrid Electric Vehicles</h1>
+<div id="subtitle">E. Tate and S. Boyd</div>
+</div>
+<p><i>Proceedings of Society of Automotive Engineers 2000 Future 
+Transportation Technology Conference</i>, paper 2000-01-3099, 00FTT-50, August 
+2000, section on Hybrid Electric Vehicles (SP-1560).<br /></p>
+<p>Journal paper will appear 
+in <i>SAE Transactions &ndash; Journal of Passenger Car &ndash; Mechanical Systems</i>,
+2001</p>
+<ul>
+<li><p>SAE proceedings paper: <a href="pdf/hybrid_veh.pdf">hybrid_veh.pdf</a></p>
+</li>
+</ul>
+<p>Hybrid electric vehicles are seen as a solution to improving fuel economy and 
+reducing pollution emissions from automobiles. By recovering kinetic energy 
+during braking and optimization the engine operation to reduce fuel consumption 
+and emissions, a hybrid vehicle can outperform a traditional vehicle. In 
+designing a hybrid vehicle, the task of finding optimal component sizes and an 
+appropriate control strategy is key to achieving maximum fuel economy. </p>
+<p>In this 
+paper we introduce the application of convex optimization to hybrid vehicle 
+optimization. This technique allows analysis of the propulsion system's 
+capabilities independent of any specific control law. To illustrate this, we 
+pose the problem of finding optimal engine operation in a pure series hybrid 
+vehicle over fixed drive cycle subject to a number of practical constraints 
+including:</p>
+<ul>
+<li><p>nonlinear fuel/power maps</p>
+</li>
+<li><p>min and max battery charge</p>
+</li>
+<li><p>battery efficiency</p>
+</li>
+<li><p>nonlinear vehicle dynamics and losses</p>
+</li>
+<li><p>drive train efficiency</p>
+</li>
+<li><p>engine slew rate limits </p>
+</li>
+</ul>
+<p>We formulate the problem of optimizing fuel 
+efficiency as a nonlinear convex optimization problem. This convex problem is 
+then accurately approximated as a large linear program. As a result, we compute 
+the globally minimum fuel consumption over the given drive cycle. This optimal 
+solution is the lower limit of fuel consumption that any control law can 
+achieve for the given vehicle and drive cycle. In fact, this result provides a 
+means to evaluate a realizable control law's performance. </p>
+<p>We carry out a 
+practical example using a spark ignition engine with lead-acid (PbA) batteries. 
+We close by discussing a number of extensions that can be done to improve the 
+accuracy and versatility of the methods. Among these extensions are 
+improvements tin accuracy, optimization of emissions and extensions to other 
+hybrid vehicle architectures.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:27 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Network Lasso: Clustering and Optimization in Large Graphs</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Network Lasso: Clustering and Optimization in Large Graphs</h1>
+<div id="subtitle">D. Hallac, J. Leskovec, and S. Boyd</div>
+</div>
+<p><i>Proceedings SIGKDD</i>, pages 387-396, 2015.</p>
+<ul>
+<li><p><a href="pdf/network_lasso.pdf">network_lasso.pdf</a></p>
+</li>
+<li><p><a href="http://snap.stanford.edu/snapvx/">SnapVX software</a></p>
+</li>
+</ul>
+<p>Convex optimization is an essential tool for modern data analysis, as it
+provides a framework to formulate and solve many problems in machine learning
+and data mining. However, general convex optimization solvers do not scale
+well, and scalable solvers are often specialized to only work on a narrow class
+of problems. Therefore, there is a need for simple, scalable algorithms that
+can solve many common optimization problems. In this paper, we introduce the
+network lasso, a generalization of the group lasso to a network setting that
+allows for simultaneous clustering and optimization on graphs. We develop an
+algorithm based on the Alternating Direction Method of Multipliers (ADMM) to
+solve this problem in a distributed and scalable manner, which allows for
+guaranteed global convergence even on large graphs. We also examine a
+non-convex extension of this approach. We then demonstrate that many types of
+problems can be expressed in our framework. We focus on three in particular —-
+binary classification, predicting housing prices, and event detection in time
+series data —- comparing the network lasso to baseline approaches and showing
+that it is both a fast and accurate method of solving large optimization
+problems.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:29 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

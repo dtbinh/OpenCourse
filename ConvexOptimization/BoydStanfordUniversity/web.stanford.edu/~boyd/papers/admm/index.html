@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<title>MATLAB scripts for alternating direction method of multipliers</title>
+</head>
+<body>
+<div id="layout-content">
+<div id="toptitle">
+<h1>MATLAB scripts for alternating direction method of multipliers</h1>
+<div id="subtitle">S. Boyd, N. Parikh, E. Chu, B. Peleato, and J. Eckstein</div>
+</div>
+<p>This page gives <a href="http://www.mathworks.com">MATLAB</a> implementations of the
+examples in
+<a href="http://www.stanford.edu/~boyd/papers/admm_distr_stats.html">our
+paper</a> on distributed optimization with the alternating direction method of
+multipliers.</p>
+<p>These scripts are serial implementations of ADMM for various problems. In
+cases where the scripts solve distributed consensus problems (e.g.,
+distributed <img class="eq" src="eqs/2349274112114421517-130.png" alt="ell_1" style="vertical-align: -3px" />-regularized logistic regression), the code runs serially
+instead of in parallel. These scripts give an idea of the structure and flavor
+of ADMM; an implementation in C/C++ that follows the structure laid out in
+our scripts and exploits parallelism can be competitive with state-of-the-art
+solvers for these problems. These are presented in MATLAB for readability.
+Unless otherwise noted on this page, most scripts stand alone and work in
+Matlab without further modification. Some scripts may require
+<a href="http://www.cvxr.com">CVX</a>.</p>
+<p>As output, each example script displays the primal residual <img class="eq" src="eqs/6305690147521869268-130.png" alt="|r^k|" style="vertical-align: -5px" />, the
+primal feasibility tolerance <img class="eq" src="eqs/4507436600676888759-130.png" alt="epsilon^mathrm{pri}" style="vertical-align: -1px" />, the dual residual
+<img class="eq" src="eqs/7214446748428035871-130.png" alt="|s^k|" style="vertical-align: -5px" />, and the dual feasibility tolerance <img class="eq" src="eqs/8156283258222152769-130.png" alt="epsilon^mathrm{dual}" style="vertical-align: -1px" />. See
+section 3.3 of the paper for more details on these quantities. Also included
+are plots of the objective value and the primal and dual residual by
+iteration. Note that the objective value at any particular iteration can go
+below the true solution value <img class="eq" src="eqs/6666860175169526889-130.png" alt="p^star" style="vertical-align: -4px" /> because the iterates need not be
+feasible (e.g., if the constraint is <img class="eq" src="eqs/3821392587595917803-130.png" alt="x - z = 0" style="vertical-align: -1px" />, we can have <img class="eq" src="eqs/2369422135449516093-130.png" alt="x^k - z^k neq 0" style="vertical-align: -4px" /> for some <img class="eq" src="eqs/13696041194-130.png" alt="k" style="vertical-align: -1px" />).</p>
+<p>You can use the <a href="http://www.mathworks.com/help/techdoc/ref/grabcode.html"><tt>grabcode</tt></a> function built in to MATLAB to obtain these codes. Please report
+any issues to the authors.</p>
+<h2>Examples</h2>
+<ol>
+<li><p>Basis pursuit</p>
+<ol>
+<li><p><a href="basis_pursuit/basis_pursuit.html">ADMM function</a></p>
+</li>
+<li><p><a href="basis_pursuit/basis_pursuit_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p>Sparse inverse covariance selection</p>
+<ol>
+<li><p><a href="covsel/covsel.html">ADMM function</a></p>
+</li>
+<li><p><a href="covsel/covsel_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p>Huber fitting</p>
+<ol>
+<li><p><a href="huber/huber_fit.html">ADMM function</a></p>
+</li>
+<li><p><a href="huber/huber_fit_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p>Intersection of polyhedra</p>
+<ol>
+<li><p><a href="intersection/polyhedra_intersection.html">ADMM function</a></p>
+</li>
+<li><p><a href="intersection/polyhedra_intersection_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p>Lasso</p>
+<ol>
+<li><p><a href="lasso/lasso.html">ADMM function</a></p>
+</li>
+<li><p><a href="lasso/lasso_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p>Lasso with <a href="http://www.mathworks.com/help/techdoc/ref/lsqr.html">LSQR</a>, an iterative method for solving sparse systems <img class="eq" src="eqs/1907656560650874554-130.png" alt="Ax = b" style="vertical-align: -1px" /></p>
+<ol>
+<li><p><a href="lasso/lasso_lsqr.html">ADMM function</a></p>
+</li>
+<li><p><a href="lasso/lasso_lsqr_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p>Least absolute deviations</p>
+<ol>
+<li><p><a href="least_abs_deviations/lad.html">ADMM function</a></p>
+</li>
+<li><p><a href="least_abs_deviations/lad_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p>Linear programming</p>
+<ol>
+<li><p><a href="linprog/linprog.html">ADMM function</a></p>
+</li>
+<li><p><a href="linprog/linprog_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p><img class="eq" src="eqs/2349274112114421517-130.png" alt="ell_1" style="vertical-align: -3px" />-regularized logistic regression</p>
+<ol>
+<li><p><a href="logreg-l1/logreg.html">ADMM function</a></p>
+</li>
+<li><p><a href="logreg-l1/logreg_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p>Distributed <img class="eq" src="eqs/2349274112114421517-130.png" alt="ell_1" style="vertical-align: -3px" />-regularized logistic regression</p>
+<ol>
+<li><p><a href="logreg-l1/distr_l1_logreg.html">ADMM function</a> - also requires <a href="logreg-l1/l2_log.m"><tt>l2_log</tt></a>, <a href="logreg-l1/l2_log_grad.m"><tt>l2_log_grad</tt></a>, <a href="logreg-l1/record_bfgs_iters.m"><tt>record_bfgs_iters</tt></a>, and <a href="http://www.mathworks.com/matlabcentral/fileexchange/15061">LBFGS-B</a> for Matlab.</p>
+</li>
+<li><p><a href="logreg-l1/distr_l1_logreg_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p>Regressor selection (nonconvex problem)</p>
+<ol>
+<li><p><a href="nonconvex/regressor_sel.html">ADMM function</a></p>
+</li>
+<li><p><a href="nonconvex/regressor_sel_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p>Quadratic programming</p>
+<ol>
+<li><p><a href="quadprog/quadprog.html">ADMM function</a></p>
+</li>
+<li><p><a href="quadprog/quadprog_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p>Sum-of-norms regularization (group lasso)</p>
+<ol>
+<li><p><a href="group_lasso/group_lasso.html">ADMM function</a></p>
+</li>
+<li><p><a href="group_lasso/group_lasso_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p>Sum-of-norms regularization (group lasso) with feature splitting</p>
+<ol>
+<li><p><a href="group_lasso/group_lasso_feat_split.html">ADMM function</a></p>
+</li>
+<li><p><a href="group_lasso/group_lasso_feat_split_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p>Support vector machine</p>
+<ol>
+<li><p><a href="svm/linear_svm.html">ADMM function</a></p>
+</li>
+<li><p><a href="svm/linear_svm_example.html">Example</a></p>
+</li></ol>
+</li>
+<li><p>Total variation minimization</p>
+<ol>
+<li><p><a href="total_variation/total_variation.html">ADMM function</a></p>
+</li>
+<li><p><a href="total_variation/total_variation_example.html">Example</a></p>
+</li>
+</ol>
+
+</li>
+</ol>
+<div id="footer">
+<div id="footer-text">
+Page generated 2011-04-26 09:03:42 PST, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+# Makefile for l1tf
+
+CC      = cc
+CFLAGS  = -xlic_lib=sunperf
+LDFLAGS =
+
+SRCS    = l1tf.c main.c
+OBJS    = $(patsubst %.c,%.o,$(SRCS))
+
+PROG    = l1tf
+
+all: $(PROG)
+
+$(OBJS) : %.o : %.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
+$(PROG) : $(OBJS)
+	$(CC) $(LDFLAGS) $(CFLAGS) -o $(PROG) $(OBJS) $(LIBS)
+
+.PHONY : clean 
+
+clean:
+	rm -f *.o *.gcno *.gcda $(PROG)
+

@@ -1,0 +1,442 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quiz</title>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Sans|Alike' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="quiz.css" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+      //close all the content divs on page load
+      $('.response').hide();
+
+      // toggle slide
+      $('.selection').click(function(){
+        // by calling sibling, we can use same div for all demos
+        $(this).siblings('.response').slideToggle('fast');
+      });
+
+      $('button').click(function(event){
+        var $target = $(event.target);
+        var $checkboxes = $target.parent('.mcq').find('input');
+        for (var i = 0; i < $checkboxes.length; i++) {
+          var $checkbox = $checkboxes.eq(i);
+          a = $checkbox;
+          if ($checkbox[0].checked && $checkbox.nextAll('.response').hasClass('right')) {
+            $checkbox.nextAll('.correct-checkbox').show();
+          } else if ($checkbox[0].checked &&
+              $checkbox.nextAll('.response').hasClass('wrong')) {
+            $checkbox.nextAll('.incorrect-checkbox').show();
+          } else if (!$checkbox[0].checked &&
+              $checkbox.nextAll('.response').hasClass('right')) {
+            $checkbox.nextAll('.incorrect-checkbox').show();
+          } else {
+            $checkbox.nextAll('.correct-checkbox').show();
+          }
+        }
+        $target.parent('.mcq').find('.response').slideToggle('fast');
+        if ($target.text() == 'Submit') {
+          $target.text('Hide');
+        } else {
+          $checkboxes.nextAll('.incorrect-checkbox').hide();
+          $checkboxes.nextAll('.correct-checkbox').hide();
+          $target.text('Submit');
+        }
+      });
+    });
+    </script>
+  </head>
+
+<body>
+  $\newcommand{\ones}{\mathbf 1}$
+  <div>
+	<h1>Convex functions</h1>
+	<fieldset>
+		<div>
+			<div class="description">
+The function $f(x) = \mathbf{max}( 1/2, x, x^2 )$ is convex.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+The function $f(x) = \mathbf{min}( 1/2, x, x^2)$ is concave.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+The function $f(x) = \mathbf{min}( 1/2, x, x^2)$ is quasilinear.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div>
+			<div class="description">
+The square of a convex nonnegative function is convex.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+The reciprocal of a positive concave function is convex.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div class="intro">$f(x) = (x^2 + 2)/(x+2)$, with $\mathbf{dom}f = (-\infty, -2)$.</div>
+		<hr/>
+		<div>
+			<div class="description">
+$f$ is convex.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+$f$ is concave.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div class="intro">$f(x) = 1/(1-x^2)$, with $\mathbf{dom} f = (-1, 1)$.</div>
+		<hr/>
+		<div>
+			<div class="description">
+$f$ is convex.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+$f$ is log-convex.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div>
+			<div class="description">
+$f(x) = \max_i x_i - \min_i x_i$ is convex.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div class="intro">$f(x) = \cosh x = (e^x+e^{-x})/2$.</div>
+		<hr/>
+		<div>
+			<div class="description">
+$f$ is convex.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True. </div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						 $f''(x) = \cosh x &gt;0$.
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+$f$ is log-concave.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False. </div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						 In fact, $f$ is log-convex.
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div>
+			<div class="description">
+For $x \in \mathbb{R}^n$, we define
+$f(x) = \min\{ k \mid \sum_{i=1}^k |x_i| &gt; 1 \}$,
+with $f(x) = \infty$ if $\sum_{i=1}^n |x_i| \leq 1$.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">$f$ is quasiconvex.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">$f$ is quasiconcave. </div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						 $\{x \mid f(x)\geq a \} = \{ x \mid \sum_{i=1}^k |x_i| \leq 1 \}$, where $k = \lceil a-1 \rceil$.
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">$f$ is quasilinear.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">$f$ is neither quasiconvex nor quasiconcave.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<legend>Conjugate function.</legend>
+		<div>
+			<div class="description">
+$f(x) = \mathbf{1}^T(x)_+$ where $(x)_+ = \max\{0,x\}$.
+What is $f^*$?</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">$f^*(y) = \mathbf{1}^T(y)_+$.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">$f^*(y) = 0$, $\mathbf{dom}\; f^* = \{x \mid 0 \preceq x \preceq 1\}$.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">$f^*(y) = 0$, $\mathbf{dom}\; f^* = \{x \mid -\infty \preceq x \preceq 1\}$.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div class="intro">We define $(x)_-$ to be $\max\{0,-x\}$,
+such that $x = (x)_+ - (x)_-$.</div>
+		<hr/>
+		<div>
+			<div class="description">
+The constraint $\mathbf{1}^T(x)_- \leq (1/2) \mathbf{1}^T(x)_+$
+defines a convex set.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True. </div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						 To see this, we re-write it as
+$(1/2) \mathbf{1}^T(x)_- - (1/2) \mathbf{1}^Tx \leq 0$; here the lefthand side is a
+convex function.
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+</div>
+
+  <footer>
+  Page generated using <a href="https://github.com/karanveerm/quizgen">Quizgen</a>
+  </footer>
+</body>
+</html>

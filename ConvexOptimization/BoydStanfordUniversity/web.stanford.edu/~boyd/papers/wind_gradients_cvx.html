@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Model Predictive Control for Wind Power Gradients</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Model Predictive Control for Wind Power Gradients</h1>
+<div id="subtitle">T. Hovgaard, S. Boyd, and J. J&oslash;rgensen</div>
+</div>
+<p><i>Wind Energy</i>, 18(6):991-1006, 2015.
+Preliminary version, using sequential convex programming instead of 
+convexification, appeared in <i>Proceedings European Control Conference</i>,
+pages 4071-4076, Zurich, July 2013.</p>
+<ul>
+<li><p><a href="pdf/wind_gradients_cvx.pdf">Wind Energy paper</a></p>
+</li>
+<li><p><a href="pdf/wind_pow_ramp_mpc.pdf">ECC paper</a></p>
+</li>
+</ul>
+<p>We consider the operation of a wind turbine and a connected local battery or
+other electrical storage device, taking into account varying wind speed, with
+the goal of maximizing the total energy generated while respecting limits on
+the time derivative (gradient) of power delivered to the grid.  We use the
+turbine inertia as an additional energy storage device, by varying its speed
+over time, and coordinate the flows of energy to achieve the goal.  The control
+variables are turbine pitch, generator torque, and charge/discharge rates for
+the storage device, each of which can be varied over given ranges.  The system
+dynamics are quite nonlinear, and the constraints and objectives are not convex
+functions of the control inputs, so the resulting optimal control problem is
+difficult to solve globally.  In this paper, we show that by a novel change of
+variables, which focuses on power flows, we can transform the problem to one
+with linear dynamics and (nearly) convex constraints. Thus, the problem can be
+globally solved, using robust, fast solvers tailored for embedded control
+applications. We implement the optimal control problem in a receding horizon
+manner and provide extensive closed-loop tests with real wind data and modern
+wind forecasting methods. The simulation results using real wind data
+demonstrate the ability to reject the disturbances from fast changes in wind
+speed, ensuring certain power gradients, with an insignificant loss in energy
+production.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:31 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

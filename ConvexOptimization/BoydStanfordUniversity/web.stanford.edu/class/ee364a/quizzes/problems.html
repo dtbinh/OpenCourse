@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quiz</title>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Sans|Alike' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="quiz.css" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+      //close all the content divs on page load
+      $('.response').hide();
+
+      // toggle slide
+      $('.selection').click(function(){
+        // by calling sibling, we can use same div for all demos
+        $(this).siblings('.response').slideToggle('fast');
+      });
+
+      $('button').click(function(event){
+        var $target = $(event.target);
+        var $checkboxes = $target.parent('.mcq').find('input');
+        for (var i = 0; i < $checkboxes.length; i++) {
+          var $checkbox = $checkboxes.eq(i);
+          a = $checkbox;
+          if ($checkbox[0].checked && $checkbox.nextAll('.response').hasClass('right')) {
+            $checkbox.nextAll('.correct-checkbox').show();
+          } else if ($checkbox[0].checked &&
+              $checkbox.nextAll('.response').hasClass('wrong')) {
+            $checkbox.nextAll('.incorrect-checkbox').show();
+          } else if (!$checkbox[0].checked &&
+              $checkbox.nextAll('.response').hasClass('right')) {
+            $checkbox.nextAll('.incorrect-checkbox').show();
+          } else {
+            $checkbox.nextAll('.correct-checkbox').show();
+          }
+        }
+        $target.parent('.mcq').find('.response').slideToggle('fast');
+        if ($target.text() == 'Submit') {
+          $target.text('Hide');
+        } else {
+          $checkboxes.nextAll('.incorrect-checkbox').hide();
+          $checkboxes.nextAll('.correct-checkbox').hide();
+          $target.text('Submit');
+        }
+      });
+    });
+    </script>
+  </head>
+
+<body>
+  $\newcommand{\ones}{\mathbf 1}$
+  <div>
+	<h1>Convex problems</h1>
+	<fieldset>
+		<div class="intro">Consider the optimization problem
+\[
+\begin{array}{ll}
+\mbox{minimize} &amp; x_1^2 \\
+\mbox{subject to} &amp; x_1 \leq -1, \quad x_1^2 + x_2^2 \leq 2,
+\end{array}
+\]
+with variable $x=(x_1,x_2)$.</div>
+		<hr/>
+		<div>
+			<div class="description">
+The point $(-1,1)$ is a solution.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+The optimal value is</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">$0$.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">$1$.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">$-1$.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+The problem is convex.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div>
+			<div class="description">
+If an optimization problem is feasible, its optimal value $p^\star$
+satisfies $p^\star &gt; -\infty$.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False. </div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						 The correct conclusion is $p^\star &lt; \infty$.
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+If the optimal value $p^\star$ of an optimization problem
+satisfies $p^\star &lt; \infty$, then the problem is feasible.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<legend>Geometric programming</legend>
+		<div>
+			<div class="description">
+$f(x,y) = x/y + y/x$ is a posynomial function
+($x$ and $y$ are positive variables).</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+The squareroot of a monomial function is a monomial function.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+Suppose $f$, $g$, and $h$ are posynomial functions of a positive
+variable $z$.  The constraint $f(z) + g(z) \leq h(z)$ can be handled
+by Geometric Programming.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<legend>Multi-objective optimization</legend>
+		<div>
+			<div class="description">
+Suppose $\tilde x$ uniquely minimizes $\max\{f(x),g(x)\}$.  Then $\tilde x$
+is Pareto optimal for the bi-criterion optimization problem
+\[
+\begin{array}{ll}
+\mbox{minimize} &amp; (f(x),g(x)).
+\end{array}
+\]</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+</div>
+
+  <footer>
+  Page generated using <a href="https://github.com/karanveerm/quizgen">Quizgen</a>
+  </footer>
+</body>
+</html>

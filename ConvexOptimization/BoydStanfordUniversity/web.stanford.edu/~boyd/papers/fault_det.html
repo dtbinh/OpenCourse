@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Relaxed Maximum a Posteriori Fault Identification</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Relaxed Maximum a Posteriori Fault Identification</h1>
+<div id="subtitle">A. Zymnis, S. Boyd, and D. Gorinevsky</div>
+</div>
+<p><i>Signal Processing</i>, 89(6):989-999, June 2009. 
+</p>
+<ul>
+<li><p><a href="pdf/fault_det.pdf">fault_det.pdf</a></p>
+</li>
+<li><p><a href="matlab/fault_det/">Matlab files</a> (requires 
+<a href="http://www.stanford.edu/~boyd/cvx/">CVX</a> to run)</p>
+</li>
+</ul>
+<p>We consider the problem of estimating a pattern of faults,
+represented as a binary vector, from a set of measurements.
+The measurements can be noise corrupted
+real values, or quantized versions of noise corrupted signals,
+including even 1-bit (sign) measurements.
+Maximum a posteriori probability (MAP) estimation of the 
+fault pattern leads to a
+difficult combinatorial optimization problem, so we propose a variation
+in which an approximate maximum a posteriori probability estimate is
+found instead, by solving a convex relaxation of the original problem,
+followed by rounding and simple local optimization.
+Our method is extremely efficient, and scales to very large problems,
+involving thousands (or more) possible faults and measurements.
+Using synthetic examples, we show that the method performs extremely
+well, both in identifying the true fault pattern, and in identifying
+an ambiguity group, i.e., a set of alternate fault patterns that explain
+the observed measurements almost as well as our estimate.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:27 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

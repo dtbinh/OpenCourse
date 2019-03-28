@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>A Perspective-Based Convex Relaxation for Switched-Affine Optimal Control</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>A Perspective-Based Convex Relaxation for Switched-Affine Optimal Control</h1>
+<div id="subtitle">N. Moehle and S. Boyd</div>
+</div>
+<p><i>Systems and Control Letters</i>, 86:34–40, December 2015.</p>
+<ul>
+<li><p><a href="pdf/sw_aff_ctrl.pdf">Final paper</a></p>
+</li>
+<li><p><a href="matlab/sw_aff_ctrl/">Code</a></p>
+</li>
+</ul>
+<p>We consider the switched-affine optimal control problem, 
+<i>i.e.</i>, the problem of selecting a sequence of affine dynamics 
+from a finite set
+in order to minimize a sum of convex functions of the system state.
+We develop a new reduction of this problem
+to a mixed-integer convex program (MICP),
+based on perspective functions.
+Relaxing the integer constraints of this MICP
+results in a convex optimization problem,
+whose optimal value is a lower bound on the original problem value.
+We show that this bound is at least as tight
+as a similar bound obtained from another well-known MICP reformulation
+(via conversion to a mixed logical dynamical system);
+our numerical study indicates it is often substantially tighter.
+Using simple integer-rounding techniques,
+we can also use our formulation to obtain an upper bound
+(and corresponding sequence of control inputs).
+In our numerical study,
+this bound was typically within a few percent of the optimal value,
+making it attractive as a standalone heuristic,
+or as a subroutine in a global algorithm such as branch and bound.
+We conclude with some extensions of our reformulation 
+to problems with switching costs and piecewise-affine dynamics.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:31 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

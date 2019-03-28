@@ -1,0 +1,286 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>covsel</title>
+      <meta name="generator" content="MATLAB 7.7">
+      <meta name="date" content="2011-02-16">
+      <meta name="m-file" content="covsel"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#3">Global constants and defaults</a></li>
+               <li><a href="#4">Data preprocessing</a></li>
+               <li><a href="#5">ADMM solver</a></li>
+            </ul>
+         </div><pre class="codeinput"><span class="keyword">function</span> [Z, history] = covsel(D, lambda, rho, alpha)
+</pre><pre class="codeinput"><span class="comment">% covsel  Sparse inverse covariance selection via ADMM</span>
+<span class="comment">%</span>
+<span class="comment">% [X, history] = covsel(D, lambda, rho, alpha)</span>
+<span class="comment">%</span>
+<span class="comment">% Solves the following problem via ADMM:</span>
+<span class="comment">%</span>
+<span class="comment">%   minimize  trace(S*X) - log det X + lambda*||X||_1</span>
+<span class="comment">%</span>
+<span class="comment">% with variable X, where S is the empirical covariance of the data</span>
+<span class="comment">% matrix D (training observations by features).</span>
+<span class="comment">%</span>
+<span class="comment">% The solution is returned in the matrix X.</span>
+<span class="comment">%</span>
+<span class="comment">% history is a structure that contains the objective value, the primal and</span>
+<span class="comment">% dual residual norms, and the tolerances for the primal and dual residual</span>
+<span class="comment">% norms at each iteration.</span>
+<span class="comment">%</span>
+<span class="comment">% rho is the augmented Lagrangian parameter.</span>
+<span class="comment">%</span>
+<span class="comment">% alpha is the over-relaxation parameter (typical values for alpha are</span>
+<span class="comment">% between 1.0 and 1.8).</span>
+<span class="comment">%</span>
+<span class="comment">% More information can be found in the paper linked at:</span>
+<span class="comment">% http://www.stanford.edu/~boyd/papers/distr_opt_stat_learning_admm.html</span>
+<span class="comment">%</span>
+
+t_start = tic;
+</pre><h2>Global constants and defaults<a name="3"></a></h2><pre class="codeinput">QUIET    = 0;
+MAX_ITER = 1000;
+ABSTOL   = 1e-4;
+RELTOL   = 1e-2;
+</pre><h2>Data preprocessing<a name="4"></a></h2><pre class="codeinput">S = cov(D);
+n = size(S,1);
+</pre><h2>ADMM solver<a name="5"></a></h2><pre class="codeinput">X = zeros(n);
+Z = zeros(n);
+U = zeros(n);
+
+<span class="keyword">if</span> ~QUIET
+    fprintf(<span class="string">'%3s\t%10s\t%10s\t%10s\t%10s\t%10s\n'</span>, <span class="string">'iter'</span>, <span class="keyword">...</span>
+      <span class="string">'r norm'</span>, <span class="string">'eps pri'</span>, <span class="string">'s norm'</span>, <span class="string">'eps dual'</span>, <span class="string">'objective'</span>);
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> k = 1:MAX_ITER
+
+    <span class="comment">% x-update</span>
+    [Q,L] = eig(rho*(Z - U) - S);
+    es = diag(L);
+    xi = (es + sqrt(es.^2 + 4*rho))./(2*rho);
+    X = Q*diag(xi)*Q';
+
+    <span class="comment">% z-update with relaxation</span>
+    Zold = Z;
+    X_hat = alpha*X + (1 - alpha)*Zold;
+    Z = shrinkage(X_hat + U, lambda/rho);
+
+    U = U + (X_hat - Z);
+
+    <span class="comment">% diagnostics, reporting, termination checks</span>
+
+    history.objval(k)  = objective(S, X, Z, lambda);
+
+    history.r_norm(k)  = norm(X - Z, <span class="string">'fro'</span>);
+    history.s_norm(k)  = norm(-rho*(Z - Zold),<span class="string">'fro'</span>);
+
+    history.eps_pri(k) = sqrt(n*n)*ABSTOL + RELTOL*max(norm(X,<span class="string">'fro'</span>), norm(Z,<span class="string">'fro'</span>));
+    history.eps_dual(k)= sqrt(n*n)*ABSTOL + RELTOL*norm(rho*U,<span class="string">'fro'</span>);
+
+
+    <span class="keyword">if</span> ~QUIET
+        fprintf(<span class="string">'%3d\t%10.4f\t%10.4f\t%10.4f\t%10.4f\t%10.2f\n'</span>, k, <span class="keyword">...</span>
+            history.r_norm(k), history.eps_pri(k), <span class="keyword">...</span>
+            history.s_norm(k), history.eps_dual(k), history.objval(k));
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> (history.r_norm(k) &lt; history.eps_pri(k) &amp;&amp; <span class="keyword">...</span>
+       history.s_norm(k) &lt; history.eps_dual(k))
+         <span class="keyword">break</span>;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> ~QUIET
+    toc(t_start);
+<span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+
+<span class="keyword">function</span> obj = objective(S, X, Z, lambda)
+    obj = trace(S*X) - log(det(X)) + lambda*norm(Z(:), 1);
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> y = shrinkage(a, kappa)
+    y = max(0, a-kappa) - max(0, -a-kappa);
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.7<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+function [Z, history] = covsel(D, lambda, rho, alpha)
+% covsel  Sparse inverse covariance selection via ADMM
+%
+% [X, history] = covsel(D, lambda, rho, alpha)
+% 
+% Solves the following problem via ADMM:
+% 
+%   minimize  trace(S*X) - log det X + lambda*||X||_1
+%
+% with variable X, where S is the empirical covariance of the data
+% matrix D (training observations by features).
+%
+% The solution is returned in the matrix X.
+%
+% history is a structure that contains the objective value, the primal and 
+% dual residual norms, and the tolerances for the primal and dual residual 
+% norms at each iteration.
+% 
+% rho is the augmented Lagrangian parameter. 
+%
+% alpha is the over-relaxation parameter (typical values for alpha are 
+% between 1.0 and 1.8).
+% 
+% More information can be found in the paper linked at:
+% http://www.stanford.edu/~boyd/papers/distr_opt_stat_learning_admm.html
+%
+
+t_start = tic;
+
+%% Global constants and defaults
+
+QUIET    = 0;
+MAX_ITER = 1000;
+ABSTOL   = 1e-4;
+RELTOL   = 1e-2;
+
+%% Data preprocessing
+
+S = cov(D);
+n = size(S,1);
+
+%% ADMM solver
+
+X = zeros(n);
+Z = zeros(n);
+U = zeros(n);
+
+if ~QUIET
+    fprintf('%3s\t%10s\t%10s\t%10s\t%10s\t%10s\n', 'iter', ...
+      'r norm', 'eps pri', 's norm', 'eps dual', 'objective');
+end
+
+for k = 1:MAX_ITER
+    
+    % x-update
+    [Q,L] = eig(rho*(Z - U) - S);
+    es = diag(L);
+    xi = (es + sqrt(es.^2 + 4*rho))./(2*rho);
+    X = Q*diag(xi)*Q';
+    
+    % z-update with relaxation
+    Zold = Z;
+    X_hat = alpha*X + (1 - alpha)*Zold;
+    Z = shrinkage(X_hat + U, lambda/rho);
+
+    U = U + (X_hat - Z);
+
+    % diagnostics, reporting, termination checks
+
+    history.objval(k)  = objective(S, X, Z, lambda);
+    
+    history.r_norm(k)  = norm(X - Z, 'fro');
+    history.s_norm(k)  = norm(-rho*(Z - Zold),'fro');
+    
+    history.eps_pri(k) = sqrt(n*n)*ABSTOL + RELTOL*max(norm(X,'fro'), norm(Z,'fro'));
+    history.eps_dual(k)= sqrt(n*n)*ABSTOL + RELTOL*norm(rho*U,'fro');
+
+
+    if ~QUIET
+        fprintf('%3d\t%10.4f\t%10.4f\t%10.4f\t%10.4f\t%10.2f\n', k, ...
+            history.r_norm(k), history.eps_pri(k), ...
+            history.s_norm(k), history.eps_dual(k), history.objval(k));
+    end
+
+    if (history.r_norm(k) < history.eps_pri(k) && ...
+       history.s_norm(k) < history.eps_dual(k))
+         break;
+    end
+end
+
+if ~QUIET
+    toc(t_start);
+end
+
+end
+
+function obj = objective(S, X, Z, lambda)
+    obj = trace(S*X) - log(det(X)) + lambda*norm(Z(:), 1);
+end
+
+function y = shrinkage(a, kappa)
+    y = max(0, a-kappa) - max(0, -a-kappa);
+end
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

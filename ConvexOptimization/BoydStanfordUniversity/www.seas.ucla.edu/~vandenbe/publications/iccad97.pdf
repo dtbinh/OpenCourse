@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<meta name="keywords" content="Stanford search google directory index" />
+<meta name="description" content="Stanford University search engine and directories." />
+<meta name="robots" content="all" />
+
+<title>Stanford University: Page not found!</title>
+<link rel="stylesheet" type="text/css" href="http://www.stanford.edu/search/css/styles.css" media="all" />
+</head>
+
+<body>
+<div id="container">
+	<div id="mainNav">
+
+    	<img src="http://www.stanford.edu/search/images/header_photo.jpg" alt="" align="top" />
+
+    	<ul>
+	    	<li><a href="http://www.stanford.edu/search/index.html">Search Home </a></li>
+		    <li><a href="http://www.stanford.edu/home/directories">Directories</a></li>
+    		<li><a href="http://www.stanford.edu/home/atoz">A to Z Index</a></li>
+	        <li><a href="http://www.stanford.edu/search/maps">Maps &amp; Directions</a></li>
+
+    	</ul>
+	    <div id="seal">
+    	  <p><a href="http://www.stanford.edu"><img src="http://www.stanford.edu/search/images/spacer.gif" width="102" height="102" /></a></p>
+        </div>
+    </div>
+    <div id="pageBody">
+    <div id="topNav"><a href="http://www.stanford.edu"><img src="http://www.stanford.edu/search/images/stanford_home.gif" alt="Go to Stanford Homepage" border="0"/></a></div>
+    <div id="siteTitle"><img src="http://www.stanford.edu/search/images/site_title.gif"/></div>
+        <div id="bodyText">
+            <h1>Page not found!</h1>
+
+
+    <p class="bodytext">The page you requested cannot be found. You may have used an outdated link or may have typed the address (URL) incorrectly. If you entered the URL manually, please check your spelling and try again. </p>
+
+    <p class="bodytext">The following resources may help you locate the website you're looking for:</p>
+    <ul>
+        <li><a href="http://google.stanford.edu">Stanford Search</a></li>
+        <li><a href="http://www.stanford.edu/home/atoz">A to Z index of Stanford websites</a></li>
+        <li><a href="http://www.stanford.edu">Stanford University homepage</a>   </li>
+    </ul>
+
+    <p class="bodytext">If you think you have reached this page due to a server error, please contact <a href="http://helpsu.stanford.edu"><em><strong>HelpSU</strong></em></a>.</p>
+    <p class="bodytext">&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+  
+
+        </div>
+    </div>
+    <div class="clearer"></div>
+</div>
+
+<div id="footer">
+    <a href="http://www.stanford.edu/" title="Stanford Home">Stanford Home</a> &nbsp; | &nbsp;
+    <a href="http://www.stanford.edu/home/atoz/contact.html" title="Contact">Contact</a>  &nbsp; | &nbsp;
+    <a href="http://www.stanford.edu/search/maps">Maps &amp; Directions</a>
+</div>
+
+<div id="copyright">
+    &copy; Stanford University.  All Rights Reserved.  Stanford, CA  94305. (650) 723-2300.  <a href="http://www.stanford.edu/home/atoz/terms.html">Terms of Use</a>&nbsp;|&nbsp;<a href="http://www.stanford.edu/home/atoz/copyright.html">Copyright Complaints</a>
+</div>
+
+</body>
+</html>
+

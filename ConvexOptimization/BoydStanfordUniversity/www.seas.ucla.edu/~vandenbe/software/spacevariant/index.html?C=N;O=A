@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+ <head>
+  <title>Index of /~vandenbe/software/spacevariant</title>
+ </head>
+ <body>
+<h1>Index of /~vandenbe/software/spacevariant</h1>
+<table><tr><th><img src="/icons/blank.gif" alt="[ICO]"></th><th><a href="?C=N;O=D">Name</a></th><th><a href="?C=M;O=A">Last modified</a></th><th><a href="?C=S;O=A">Size</a></th><th><a href="?C=D;O=A">Description</a></th></tr><tr><th colspan="5"><hr></th></tr>
+<tr><td valign="top"><img src="/icons/back.gif" alt="[DIR]"></td><td><a href="/~vandenbe/software/">Parent Directory</a></td><td>&nbsp;</td><td align="right">  - </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="applyCyclicConv2D.m">applyCyclicConv2D.m</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">256 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="applyNagyBlur.m">applyNagyBlur.m</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">209 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="applyNagyBlurTrans.m">applyNagyBlurTrans.m</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">242 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/image2.gif" alt="[IMG]"></td><td><a href="barbara.png">barbara.png</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">181K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="eigValArrForCyclicConvOp.m">eigValArrForCyclicConvOp.m</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">222 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="estimateNormByPowerIteration.m">estimateNormByPowerIteration.m</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">574 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="experiment_2.m">experiment_2.m</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">2.0K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="experiment_huber.m">experiment_huber.m</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">3.3K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="minPrimal_barb_huber_DR10k.mat">minPrimal_barb_huber_DR10k.mat</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">187 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="motorcycleSeg.mat">motorcycleSeg.mat</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">529K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="nrmK_CP_simple.mat">nrmK_CP_simple.mat</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">183 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="projectOntoDualIsoNormUnitBall.m">projectOntoDualIsoNormUnitBall.m</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">234 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="prox1Norm.m">prox1Norm.m</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right"> 84 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="proxHuber.m">proxHuber.m</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">426 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="tvDeblur_varBlur_freeBCs_CP_huber.m">tvDeblur_varBlur_freeBCs_CP_huber.m</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">4.7K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="tvDeblur_varBlur_freeBCs_CP_simple.m">tvDeblur_varBlur_freeBCs_CP_simple.m</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">4.1K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="tvDeblur_varBlur_freeBCs_DR.m">tvDeblur_varBlur_freeBCs_DR.m</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">6.5K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="tvDeblur_varBlur_freeBCs_DR_huber.m">tvDeblur_varBlur_freeBCs_DR_huber.m</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">7.7K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="xDR_10k_huber.mat">xDR_10k_huber.mat</a></td><td align="right">27-Feb-2015 09:00  </td><td align="right">1.8M</td><td>&nbsp;</td></tr>
+<tr><th colspan="5"><hr></th></tr>
+</table>
+</body></html>

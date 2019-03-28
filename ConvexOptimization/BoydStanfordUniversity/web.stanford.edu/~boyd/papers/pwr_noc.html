@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Managing Power Consumption in Networks on Chips</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Managing Power Consumption in Networks on Chips</h1>
+<div id="subtitle">T. Simunic, S. Boyd, and P. Glynn</div>
+</div>
+<p><i>IEEE Transactions on VLSI</i>, 12(1):96-107, January 2004.<br />
+Shorter version appeared in 
+<i>Proceedings of the 2002 Conference on 
+Design, Automation and Test in Europe (DATE)</i>, p110-116.</p>
+<ul>
+<li><p><a href="pdf/pwr_noc.pdf">pwr_noc.pdf</a></p>
+</li>
+<li><p><a href="pdf/pwr_noc_date.pdf">pwr_noc_date.pdf</a></p>
+</li>
+</ul>
+<p>In this work we present a new methodology for managing power consumption of 
+NOCs, which we formulate using closed-loop control concepts, by introducing an 
+estimator and a controller that implement the power management methodology. The 
+estimator is capable of very fast and accurate tracking of changes in the 
+system parameters. Our system model combines node and network centric power 
+management decisions. Node centric power management assumes no a priori 
+knowledge of requests coming in from outside the core, so it implements a 
+traditional dynamic voltage scaling and power management control algorithm. 
+Network-centric power management utilizes interaction with the other system 
+cores regarding power and QoS needs. The overall system is then based on 
+renewal theory. We introduce a fast optimization method that is far faster than 
+previous methods, and can be implemented in either hardware or software. The 
+new methodology for power management of NOCs is tested on a system consisting 
+of four satellite units, each implementing an estimator and a controller 
+capable of both node and network centric power management. Our results show 
+large savings in power with good QoS.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:29 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

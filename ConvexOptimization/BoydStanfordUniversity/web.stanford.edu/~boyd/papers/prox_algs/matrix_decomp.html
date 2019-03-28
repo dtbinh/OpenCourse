@@ -1,0 +1,399 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>matrix_decomp</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2013-05-07"><meta name="m-file" content="matrix_decomp"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Problem instance settings</a></li><li><a href="#4">Problem data</a></li><li><a href="#5">CVX</a></li><li><a href="#6">ADMM</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> h = matrix_decomp
+</pre><h2>Problem instance settings<a name="3"></a></h2><pre class="codeinput">m = 20;
+n = 50;
+use_cvx = 1; <span class="comment">% set to 0 for larger instances</span>
+</pre><h2>Problem data<a name="4"></a></h2><pre class="codeinput">s = RandStream.create(<span class="string">'mt19937ar'</span>,<span class="string">'seed'</span>,5489);
+RandStream.setDefaultStream(s);
+
+N = 3;
+r = 4;
+
+L = randn(m,r) * randn(r,n);    <span class="comment">% low rank</span>
+S = sprandn(m,n,0.05);          <span class="comment">% sparse</span>
+S(S ~= 0) = 20*binornd(1,0.5,nnz(S),1)-10;
+V = 0.01*randn(m,n);            <span class="comment">% noise</span>
+
+A = S + L + V;
+
+g2_max = norm(A(:),inf);
+g3_max = norm(A);
+g2 = 0.15*g2_max;
+g3 = 0.15*g3_max;
+</pre><h2>CVX<a name="5"></a></h2><pre class="codeinput"><span class="keyword">if</span> use_cvx
+    tic;
+
+    cvx_begin
+        cvx_precision <span class="string">low</span>
+        variables <span class="string">X_1(m,n)</span> <span class="string">X_2(m,n)</span> <span class="string">X_3(m,n)</span>
+        minimize(0.5*square_pos(norm(X_1,<span class="string">'fro'</span>)) + g2*norm(X_2(:),1) + g3*norm_nuc(X_3))
+        subject <span class="string">to</span>
+            X_1 + X_2 + X_3 == A;
+    cvx_end
+
+    h.cvx_toc = toc;
+    h.p_cvx = cvx_optval;
+    h.X1_cvx = X_1;
+    h.X2_cvx = X_2;
+    h.X3_cvx = X_3;
+
+    X_2(abs(X_2) &lt; 1e-4) = 0;
+    rhat = sum(svd(X_3) &gt; 1e-4);
+    fprintf(<span class="string">'CVX (vs true):\n'</span>);
+    fprintf(<span class="string">'|V| = %.2f;  |X_1| = %.2f\n'</span>, norm(V, <span class="string">'fro'</span>), norm(X_1,<span class="string">'fro'</span>));
+    fprintf(<span class="string">'nnz(S) = %d; nnz(X_2) = %d\n'</span>, nnz(S), nnz(X_2));
+    fprintf(<span class="string">'rank(L) = %d; rank(X_3) = %d\n'</span>, rank(L), rhat);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput"> 
+Calling sedumi: 5491 variables, 1002 equality constraints
+------------------------------------------------------------
+SeDuMi 1.21 by AdvOL, 2005-2008 and Jos F. Sturm, 1998-2003.
+Alg = 2: xz-corrector, Adaptive Step-Differentiation, theta = 0.250, beta = 0.500
+eqs m = 1002, order n = 2077, dim = 7908, blocks = 1004
+nnz(A) = 3005 + 0, nnz(ADA) = 1002004, nnz(L) = 501503
+ it :     b*y       gap    delta  rate   t/tP*  t/tD*   feas cg cg  prec
+  0 :            1.48E+04 0.000
+  1 :   7.70E+02 1.31E+04 0.000 0.8795 0.9000 0.9000   4.73  1  1  7.6E+00
+  2 :   1.47E+03 1.12E+04 0.000 0.8559 0.9000 0.9000   3.65  1  1  5.5E+00
+  3 :   1.78E+03 8.88E+03 0.000 0.7945 0.9000 0.9000   2.86  1  1  3.8E+00
+  4 :   2.01E+03 6.86E+03 0.000 0.7724 0.9000 0.9000   2.26  1  1  2.6E+00
+  5 :   1.99E+03 5.88E+03 0.000 0.8575 0.9000 0.9000   1.84  1  1  2.2E+00
+  6 :   2.24E+03 4.05E+03 0.000 0.6891 0.9000 0.9000   1.65  1  1  1.4E+00
+  7 :   2.18E+03 2.88E+03 0.000 0.7119 0.9000 0.9000   1.41  1  1  1.0E+00
+  8 :   2.20E+03 1.65E+03 0.000 0.5726 0.9000 0.9000   1.27  1  1  6.0E-01
+  9 :   2.18E+03 1.01E+03 0.000 0.6124 0.9000 0.9000   1.13  1  1  3.9E-01
+ 10 :   2.14E+03 3.02E+02 0.000 0.2985 0.9000 0.9000   1.08  1  1  1.3E-01
+ 11 :   2.13E+03 7.40E+01 0.000 0.2452 0.9000 0.9000   1.02  1  1  3.3E-02
+ 12 :   2.13E+03 1.76E+01 0.000 0.2372 0.9036 0.9000   1.01  1  1  8.1E-03
+ 13 :   2.12E+03 3.51E+00 0.000 0.1998 0.9086 0.9000   1.00  1  1  1.8E-03
+ 14 :   2.12E+03 6.93E-01 0.000 0.1977 0.9084 0.9000   1.00  1  1  4.2E-04
+ 15 :   2.12E+03 1.60E-01 0.000 0.2314 0.9049 0.9000   1.00  1  1  1.1E-04
+ 16 :   2.12E+03 8.96E-03 0.000 0.0558 0.9000 0.0000   1.00  1  1  4.8E-05
+ 17 :   2.12E+03 5.97E-09 0.000 0.0000 0.9134 0.9000   1.00  1  1  1.3E-05
+ 18 :   2.12E+03 1.25E-09 0.000 0.2092 0.9000 0.9000   1.00  1  1  2.7E-06
+ 19 :   2.12E+03 3.02E-10 0.000 0.2419 0.9000 0.9000   1.00  1  1  6.4E-07
+
+iter seconds digits       c*x               b*y
+ 19      7.6   Inf  2.1233920957e+03  2.1233920997e+03
+|Ax-b| =   1.6e-06, [Ay-c]_+ =   1.1E-06, |x|=  7.0e+02, |y|=  3.5e+02
+
+Detailed timing (sec)
+   Pre          IPM          Post
+3.000E-02    7.610E+00    2.000E-02    
+Max-norms: ||b||=1.453096e+01, ||c|| = 4.948966e+00,
+Cholesky |add|=0, |skip| = 0, ||L.L|| = 153.012.
+------------------------------------------------------------
+Status: Solved
+Optimal value (cvx_optval): +2123.39
+CVX (vs true):
+|V| = 0.31;  |X_1| = 26.24
+nnz(S) = 49; nnz(X_2) = 53
+rank(L) = 4; rank(X_3) = 4
+</pre><h2>ADMM<a name="6"></a></h2><pre class="codeinput">MAX_ITER = 100;
+ABSTOL   = 1e-4;
+RELTOL   = 1e-2;
+
+tic;
+
+lambda = 1;
+rho = 1/lambda;
+
+X_1 = zeros(m,n);
+X_2 = zeros(m,n);
+X_3 = zeros(m,n);
+z   = zeros(m,N*n);
+U   = zeros(m,n);
+
+fprintf(<span class="string">'\n%3s\t%10s\t%10s\t%10s\t%10s\t%10s\n'</span>, <span class="string">'iter'</span>, <span class="keyword">...</span>
+    <span class="string">'r norm'</span>, <span class="string">'eps pri'</span>, <span class="string">'s norm'</span>, <span class="string">'eps dual'</span>, <span class="string">'objective'</span>);
+
+<span class="keyword">for</span> k = 1:MAX_ITER
+
+    B = avg(X_1, X_2, X_3) - A./N + U;
+
+    <span class="comment">% x-update</span>
+    X_1 = (1/(1+lambda))*(X_1 - B);
+    X_2 = prox_l1(X_2 - B, lambda*g2);
+    X_3 = prox_matrix(X_3 - B, lambda*g3, @prox_l1);
+
+    <span class="comment">% (for termination checks only)</span>
+    x = [X_1 X_2 X_3];
+    zold = z;
+    z = x + repmat(-avg(X_1, X_2, X_3) + A./N, 1, N);
+
+    <span class="comment">% u-update</span>
+    U = B;
+
+    <span class="comment">% diagnostics, reporting, termination checks</span>
+    h.objval(k)   = objective(X_1, g2, X_2, g3, X_3);
+    h.r_norm(k)   = norm(x - z,<span class="string">'fro'</span>);
+    h.s_norm(k)   = norm(-rho*(z - zold),<span class="string">'fro'</span>);
+    h.eps_pri(k)  = sqrt(m*n*N)*ABSTOL + RELTOL*max(norm(x,<span class="string">'fro'</span>), norm(-z,<span class="string">'fro'</span>));
+    h.eps_dual(k) = sqrt(m*n*N)*ABSTOL + RELTOL*sqrt(N)*norm(rho*U,<span class="string">'fro'</span>);
+
+    <span class="keyword">if</span> k == 1 || mod(k,10) == 0
+        fprintf(<span class="string">'%4d\t%10.4f\t%10.4f\t%10.4f\t%10.4f\t%10.2f\n'</span>, k, <span class="keyword">...</span>
+            h.r_norm(k), h.eps_pri(k), h.s_norm(k), h.eps_dual(k), h.objval(k));
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> h.r_norm(k) &lt; h.eps_pri(k) &amp;&amp; h.s_norm(k) &lt; h.eps_dual(k)
+         <span class="keyword">break</span>;
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+h.admm_toc = toc;
+h.admm_iter = k;
+h.X1_admm = X_1;
+h.X2_admm = X_2;
+h.X3_admm = X_3;
+
+fprintf(<span class="string">'\nADMM (vs true):\n'</span>);
+fprintf(<span class="string">'|V| = %.2f;  |X_1| = %.2f\n'</span>, norm(V, <span class="string">'fro'</span>), norm(X_1,<span class="string">'fro'</span>));
+fprintf(<span class="string">'nnz(S) = %d; nnz(X_2) = %d\n'</span>, nnz(S), nnz(X_2));
+fprintf(<span class="string">'rank(L) = %d; rank(X_3) = %d\n'</span>, rank(L), rank(X_3));
+
+<span class="keyword">if</span> use_cvx
+    fprintf(<span class="string">'\nADMM vs CVX solutions (in Frobenius norm):\n'</span>);
+    fprintf(<span class="string">'X_1: %.2e; X_2: %.2e; X_3: %.2e\n'</span>, <span class="keyword">...</span>
+        norm(h.X1_cvx - X_1,<span class="string">'fro'</span>), norm(h.X2_cvx - X_2,<span class="string">'fro'</span>), norm(h.X3_cvx - X_3,<span class="string">'fro'</span>));
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">
+iter	    r norm	   eps pri	    s norm	  eps dual	 objective
+   1	   41.7766	    0.6214	   61.5891	    0.6077	    584.62
+  10	    9.7749	    0.7995	    7.9580	    0.6145	   2538.44
+  20	    3.9687	    0.8679	    2.3887	    0.4883	   2598.00
+  30	    1.2071	    0.8445	    0.6616	    0.4595	   2477.69
+
+ADMM (vs true):
+|V| = 0.31;  |X_1| = 26.18
+nnz(S) = 49; nnz(X_2) = 52
+rank(L) = 4; rank(X_3) = 4
+
+ADMM vs CVX solutions (in Frobenius norm):
+X_1: 3.59e-01; X_2: 6.14e-01; X_3: 5.30e-01
+</pre><pre class="codeinput"><span class="keyword">end</span>
+
+<span class="keyword">function</span> x = avg(varargin)
+    N = length(varargin);
+    x = 0;
+    <span class="keyword">for</span> k = 1:N
+        x = x + varargin{k};
+    <span class="keyword">end</span>
+    x = x/N;
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> p = objective(X_1, g_2, X_2, g_3, X_3)
+    p = norm(X_1,<span class="string">'fro'</span>).^2 + g_2*norm(X_2(:),1) + g_3*norm(svd(X_3),1);
+<span class="keyword">end</span>
+</pre>
+<p class="footer"><br>
+      Published with MATLAB&reg; 7.10<br></p></div><!--
+##### SOURCE BEGIN #####
+function h = matrix_decomp
+
+%% Problem instance settings
+
+m = 20;
+n = 50;
+use_cvx = 1; % set to 0 for larger instances
+
+%% Problem data
+
+s = RandStream.create('mt19937ar','seed',5489);
+RandStream.setDefaultStream(s);
+
+N = 3;
+r = 4;
+
+L = randn(m,r) * randn(r,n);    % low rank
+S = sprandn(m,n,0.05);          % sparse
+S(S ~= 0) = 20*binornd(1,0.5,nnz(S),1)-10;
+V = 0.01*randn(m,n);            % noise
+
+A = S + L + V;
+
+g2_max = norm(A(:),inf);
+g3_max = norm(A);
+g2 = 0.15*g2_max;
+g3 = 0.15*g3_max;
+
+%% CVX
+
+if use_cvx
+    tic;
+
+    cvx_begin
+        cvx_precision low
+        variables X_1(m,n) X_2(m,n) X_3(m,n)
+        minimize(0.5*square_pos(norm(X_1,'fro')) + g2*norm(X_2(:),1) + g3*norm_nuc(X_3))
+        subject to
+            X_1 + X_2 + X_3 == A;
+    cvx_end
+
+    h.cvx_toc = toc;
+    h.p_cvx = cvx_optval;
+    h.X1_cvx = X_1;
+    h.X2_cvx = X_2;
+    h.X3_cvx = X_3;
+
+    X_2(abs(X_2) < 1e-4) = 0;
+    rhat = sum(svd(X_3) > 1e-4);
+    fprintf('CVX (vs true):\n');
+    fprintf('|V| = %.2f;  |X_1| = %.2f\n', norm(V, 'fro'), norm(X_1,'fro'));
+    fprintf('nnz(S) = %d; nnz(X_2) = %d\n', nnz(S), nnz(X_2));
+    fprintf('rank(L) = %d; rank(X_3) = %d\n', rank(L), rhat);
+end
+
+%% ADMM
+
+MAX_ITER = 100;
+ABSTOL   = 1e-4;
+RELTOL   = 1e-2;
+
+tic;
+
+lambda = 1;
+rho = 1/lambda;
+
+X_1 = zeros(m,n);
+X_2 = zeros(m,n);
+X_3 = zeros(m,n);
+z   = zeros(m,N*n);
+U   = zeros(m,n);
+
+fprintf('\n%3s\t%10s\t%10s\t%10s\t%10s\t%10s\n', 'iter', ...
+    'r norm', 'eps pri', 's norm', 'eps dual', 'objective');
+
+for k = 1:MAX_ITER
+
+    B = avg(X_1, X_2, X_3) - A./N + U;
+
+    % x-update
+    X_1 = (1/(1+lambda))*(X_1 - B);
+    X_2 = prox_l1(X_2 - B, lambda*g2);
+    X_3 = prox_matrix(X_3 - B, lambda*g3, @prox_l1);
+
+    % (for termination checks only)
+    x = [X_1 X_2 X_3];
+    zold = z;
+    z = x + repmat(-avg(X_1, X_2, X_3) + A./N, 1, N);
+
+    % u-update
+    U = B;
+
+    % diagnostics, reporting, termination checks
+    h.objval(k)   = objective(X_1, g2, X_2, g3, X_3);
+    h.r_norm(k)   = norm(x - z,'fro');
+    h.s_norm(k)   = norm(-rho*(z - zold),'fro');
+    h.eps_pri(k)  = sqrt(m*n*N)*ABSTOL + RELTOL*max(norm(x,'fro'), norm(-z,'fro'));
+    h.eps_dual(k) = sqrt(m*n*N)*ABSTOL + RELTOL*sqrt(N)*norm(rho*U,'fro');
+    
+    if k == 1 || mod(k,10) == 0
+        fprintf('%4d\t%10.4f\t%10.4f\t%10.4f\t%10.4f\t%10.2f\n', k, ...
+            h.r_norm(k), h.eps_pri(k), h.s_norm(k), h.eps_dual(k), h.objval(k));
+    end
+
+    if h.r_norm(k) < h.eps_pri(k) && h.s_norm(k) < h.eps_dual(k)
+         break;
+    end
+
+end
+
+h.admm_toc = toc;
+h.admm_iter = k;
+h.X1_admm = X_1;
+h.X2_admm = X_2;
+h.X3_admm = X_3;
+
+fprintf('\nADMM (vs true):\n');
+fprintf('|V| = %.2f;  |X_1| = %.2f\n', norm(V, 'fro'), norm(X_1,'fro'));
+fprintf('nnz(S) = %d; nnz(X_2) = %d\n', nnz(S), nnz(X_2));
+fprintf('rank(L) = %d; rank(X_3) = %d\n', rank(L), rank(X_3));
+
+if use_cvx
+    fprintf('\nADMM vs CVX solutions (in Frobenius norm):\n');
+    fprintf('X_1: %.2e; X_2: %.2e; X_3: %.2e\n', ...
+        norm(h.X1_cvx - X_1,'fro'), norm(h.X2_cvx - X_2,'fro'), norm(h.X3_cvx - X_3,'fro'));
+end
+
+end
+
+function x = avg(varargin)
+    N = length(varargin);
+    x = 0;
+    for k = 1:N
+        x = x + varargin{k};
+    end
+    x = x/N;
+end
+
+function p = objective(X_1, g_2, X_2, g_3, X_3)
+    p = norm(X_1,'fro').^2 + g_2*norm(X_2(:),1) + g_3*norm(svd(X_3),1);
+end
+
+##### SOURCE END #####
+--></body></html>

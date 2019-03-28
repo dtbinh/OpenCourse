@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Nonconvex Model Predictive Control for Commercial Refrigeration</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Nonconvex Model Predictive Control for Commercial Refrigeration</h1>
+<div id="subtitle">T. Hovgaard, L. Larsen, J. J&oslash;rgensen and S. Boyd</div>
+</div>
+<p><i>International Journal of Control</i>, 86(8):1349-1366, 2013.<br />
+Shorter preliminary version appeared in <i>Proceedings 4th IFAC
+Nonlinear Model Predictice Control Conference</i>, pages 514-521,
+August 2012.</p>
+<ul>
+<li><p><a href="pdf/noncvx_mpc_refr.pdf">IJC paper</a></p>
+</li>
+<li><p><a href="pdf/noncvx_mpc_refr_nmpc.pdf">NMPC paper</a></p>
+</li>
+</ul>
+<p>We consider the control of a commercial multi-zone refrigeration system, 
+consisting of several cooling units that share a common compressor, and is 
+used to cool multiple areas or rooms. In each time period we choose 
+cooling capacity to each unit and a common evaporation temperature. The 
+goal is to minimize the total energy cost, using real-time electricity 
+prices, while obeying temperature constraints on the zones.
+We propose a variation on model predictive control to achieve this goal.
+When the right variables are used, the dynamics of the system are linear, 
+and the constraints are convex.  The cost function, however, is nonconvex 
+due to the temperature dependence of thermodynamic efficiency.
+To handle this nonconvexity we propose a sequential convex optimization 
+method, which typically converges in fewer than 5 or so iterations.
+We employ a fast convex quadratic programming solver to carry out the 
+iterations, which is more than fast enough to run in real-time.</p>
+<p>We demonstrate our method on a realistic model, with a full year simulation
+and 15 minute time periods, using historical electricity prices and
+weather data, as well as random variations in thermal load. These 
+simulations show substantial cost savings, on the order of 30%, compared 
+to a standard thermostat-based control system. Perhaps more important, we 
+see that the method exhibits sophisticated response to real-time 
+variations in electricity prices. This demand response is critical to help 
+balance real-time uncertainties in generation capacity associated with 
+large penetration of intermittent renewable energy sources in a future 
+smart grid.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:29 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

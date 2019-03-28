@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>A Heuristic for Optimizing Stochastic Activity Networks with Applications to Statistical Digital Circuit Sizing </title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>A Heuristic for Optimizing Stochastic Activity Networks with Applications to Statistical Digital Circuit Sizing </h1>
+<div id="subtitle">S.-J. Kim, S. Boyd, S. Yun, D. Patil, and M. Horowitz</div>
+</div>
+<p><i>Optimization and Engineering</i>, 8(4):397-430, December 2007.</p>
+<ul>
+<li><p><a href="pdf/heur_san_opt.pdf">heur_san_opt.pdf</a></p>
+</li>
+</ul>
+<p>A deterministic activity network (DAN) is a collection of activities, each with 
+some duration, along with a set of precedence constraints, which specify that 
+activities begin only when certain others have finished. One critical 
+performance measure for an activity network is its makespan, which is the time 
+required to complete all activities. In a stochastic activity network (SAN), 
+the durations of the activities and the makespan are random variables. The 
+analysis of SANs is quite involved, but can be carried out numerically by Monte 
+Carlo analysis. This paper concerns the optimization of a SAN, <i>i.e.</i>, the 
+choice of some design variables that affect the probability distributions of 
+the activity durations. We concentrate on the problem of minimizing a quantile 
+(<i>e.g.</i>, 90%) of the makespan, subject to constraints on the variables. This 
+problem has many applications, ranging from project management to digital 
+integrated circuit (IC) sizing (the latter being our motivation). While there 
+are effective methods for optimizing DANs, the SAN optimization problem is much 
+more difficult; the few existing methods cannot handle large scale problems. In 
+this paper we introduce a heuristic method for approximately optimizing a SAN, 
+by forming a related DAN optimization problem which includes extra margins in 
+each of the activity durations to account for the variation. Since the method 
+is based on optimizing a DAN, it readily handles large scale problems. To 
+assess the quality of the resulting suboptimal designs, we describe two widely 
+applicable lower bounds on achievable performance in optimal SAN design. We 
+demonstrate the method on a simplified statistical digital circuit sizing 
+problem, in which the device widths affect both the mean and variance of the 
+gate delays. Numerical experiments show that the resulting design is often 
+substantially better than one in which the variation in delay is ignored, and 
+is often quite close to the global optimum (as verified by the lower bounds).</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:27 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

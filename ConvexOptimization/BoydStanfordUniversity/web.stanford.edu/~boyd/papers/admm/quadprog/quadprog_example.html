@@ -1,0 +1,183 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>quadprog_example</title>
+      <meta name="generator" content="MATLAB 7.7">
+      <meta name="date" content="2011-02-16">
+      <meta name="m-file" content="quadprog_example"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#2">Generate problem data</a></li>
+               <li><a href="#3">Solve problem</a></li>
+               <li><a href="#4">Reporting</a></li>
+            </ul>
+         </div><pre class="codeinput"><span class="comment">% Standard form QP example</span>
+</pre><h2>Generate problem data<a name="2"></a></h2><pre class="codeinput">randn(<span class="string">'state'</span>, 0);
+rand(<span class="string">'state'</span>, 0);
+
+n = 100;
+
+<span class="comment">% generate a well-conditioned positive definite matrix</span>
+<span class="comment">% (for faster convergence)</span>
+P = rand(n);
+P = P + P';
+[V D] = eig(P);
+P = V*diag(1+rand(n,1))*V';
+
+q = randn(n,1);
+r = randn(1);
+
+l = randn(n,1);
+u = randn(n,1);
+lb = min(l,u);
+ub = max(l,u);
+</pre><h2>Solve problem<a name="3"></a></h2><pre class="codeinput">[x history] = quadprog(P, q, r, lb, ub, 1.0, 1.0);
+</pre><pre class="codeoutput">iter	    r norm	   eps pri	    s norm	  eps dual	 objective
+  1	    5.4585	    0.0508	    4.9772	    0.0556	    -23.62
+  2	    2.0050	    0.0546	    0.8151	    0.0734	    -10.06
+  3	    1.2096	    0.0558	    0.2823	    0.0845	     -4.36
+  4	    0.7197	    0.0562	    0.1188	    0.0912	     -0.39
+  5	    0.4287	    0.0564	    0.0578	    0.0952	      2.14
+  6	    0.2564	    0.0564	    0.0331	    0.0976	      3.70
+  7	    0.1541	    0.0564	    0.0199	    0.0990	      4.64
+  8	    0.0931	    0.0564	    0.0120	    0.0999	      5.21
+  9	    0.0566	    0.0564	    0.0073	    0.1004	      5.55
+ 10	    0.0345	    0.0564	    0.0044	    0.1007	      5.75
+Elapsed time is 0.019595 seconds.
+</pre><h2>Reporting<a name="4"></a></h2><pre class="codeinput">K = length(history.objval);
+
+h = figure;
+plot(1:K, history.objval, <span class="string">'k'</span>, <span class="string">'MarkerSize'</span>, 10, <span class="string">'LineWidth'</span>, 2);
+ylabel(<span class="string">'f(x^k) + g(z^k)'</span>); xlabel(<span class="string">'iter (k)'</span>);
+
+g = figure;
+subplot(2,1,1);
+semilogy(1:K, max(1e-8, history.r_norm), <span class="string">'k'</span>, <span class="keyword">...</span>
+    1:K, history.eps_pri, <span class="string">'k--'</span>,  <span class="string">'LineWidth'</span>, 2);
+ylabel(<span class="string">'||r||_2'</span>);
+
+subplot(2,1,2);
+semilogy(1:K, max(1e-8, history.s_norm), <span class="string">'k'</span>, <span class="keyword">...</span>
+    1:K, history.eps_dual, <span class="string">'k--'</span>, <span class="string">'LineWidth'</span>, 2);
+ylabel(<span class="string">'||s||_2'</span>); xlabel(<span class="string">'iter (k)'</span>);
+</pre><img vspace="5" hspace="5" src="quadprog_example_01.png" alt=""> <img vspace="5" hspace="5" src="quadprog_example_02.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.7<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+% Standard form QP example
+
+%% Generate problem data
+randn('state', 0);
+rand('state', 0);
+
+n = 100;
+
+% generate a well-conditioned positive definite matrix
+% (for faster convergence)
+P = rand(n);
+P = P + P';
+[V D] = eig(P);
+P = V*diag(1+rand(n,1))*V';
+
+q = randn(n,1);
+r = randn(1);
+
+l = randn(n,1);        
+u = randn(n,1);        
+lb = min(l,u);
+ub = max(l,u);
+
+%% Solve problem
+
+[x history] = quadprog(P, q, r, lb, ub, 1.0, 1.0);
+
+%% Reporting
+K = length(history.objval);                                                                                                        
+
+h = figure;
+plot(1:K, history.objval, 'k', 'MarkerSize', 10, 'LineWidth', 2); 
+ylabel('f(x^k) + g(z^k)'); xlabel('iter (k)');
+
+g = figure;
+subplot(2,1,1);                                                                                                                    
+semilogy(1:K, max(1e-8, history.r_norm), 'k', ...
+    1:K, history.eps_pri, 'kREPLACE_WITH_DASH_DASH',  'LineWidth', 2); 
+ylabel('||r||_2'); 
+
+subplot(2,1,2);                                                                                                                    
+semilogy(1:K, max(1e-8, history.s_norm), 'k', ...
+    1:K, history.eps_dual, 'kREPLACE_WITH_DASH_DASH', 'LineWidth', 2);   
+ylabel('||s||_2'); xlabel('iter (k)'); 
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

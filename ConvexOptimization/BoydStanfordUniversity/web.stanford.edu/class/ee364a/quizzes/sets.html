@@ -1,0 +1,434 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quiz</title>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Sans|Alike' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="quiz.css" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+      //close all the content divs on page load
+      $('.response').hide();
+
+      // toggle slide
+      $('.selection').click(function(){
+        // by calling sibling, we can use same div for all demos
+        $(this).siblings('.response').slideToggle('fast');
+      });
+
+      $('button').click(function(event){
+        var $target = $(event.target);
+        var $checkboxes = $target.parent('.mcq').find('input');
+        for (var i = 0; i < $checkboxes.length; i++) {
+          var $checkbox = $checkboxes.eq(i);
+          a = $checkbox;
+          if ($checkbox[0].checked && $checkbox.nextAll('.response').hasClass('right')) {
+            $checkbox.nextAll('.correct-checkbox').show();
+          } else if ($checkbox[0].checked &&
+              $checkbox.nextAll('.response').hasClass('wrong')) {
+            $checkbox.nextAll('.incorrect-checkbox').show();
+          } else if (!$checkbox[0].checked &&
+              $checkbox.nextAll('.response').hasClass('right')) {
+            $checkbox.nextAll('.incorrect-checkbox').show();
+          } else {
+            $checkbox.nextAll('.correct-checkbox').show();
+          }
+        }
+        $target.parent('.mcq').find('.response').slideToggle('fast');
+        if ($target.text() == 'Submit') {
+          $target.text('Hide');
+        } else {
+          $checkboxes.nextAll('.incorrect-checkbox').hide();
+          $checkboxes.nextAll('.correct-checkbox').hide();
+          $target.text('Submit');
+        }
+      });
+    });
+    </script>
+  </head>
+
+<body>
+  $\newcommand{\ones}{\mathbf 1}$
+  <div>
+	<h1>Convex sets</h1>
+	<fieldset>
+		<div class="intro">Define the square (in $\mathbf{R}^2$)
+$S = \{ x \in \mathbf{R}^2 \mid 0 \leq x_i \leq 1,~i=1,2 \}$,
+and the disk $D = \{ x \in \mathbf{R}^2 \mid \|x\|_2 \leq 1 \}$.</div>
+		<hr/>
+		<div>
+			<div class="description">
+$S \cap D$ is convex.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True. </div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						 Intersection of convex sets is convex.
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+$S \cup D$ is convex.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True. </div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						 In general, the union of convex sets is not convex, but here, it is.
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+$S \setminus D$ is convex.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div class="intro">$C = \{ (1,0), (1,1), (-1,-1), (0,0) \}$.</div>
+		<hr/>
+		<div>
+			<div class="description">
+$(0,-1/3) \in \mathbb{conv}\; C$.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+$(0,1/3) \in  \mathbb{conv}\; C$.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+$(0,1/3)$ is in the conic hull of $C$.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div class="intro">Consider the set $S = \{ (0,2),~ (1,1),~ (2,3),~ (1,2),~ (4,0) \}$.</div>
+		<hr/>
+		<div>
+			<div class="description">
+$(0,2)$ is the minimum element of $S$.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+$(0,2)$ is a minimal element of $S$.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+$(2,3)$ is a minimal element of $S$.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+$(1,1)$ is a minimal element of $S$.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div>
+			<div class="description">
+$\{Ax + b \mid Fx = g \}$ is affine.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div class="intro">$S = \{ \alpha \in \mathbf{R}^3 \mid \alpha_1 + \alpha_2e^{-t} +
+\alpha_3 e^{-2t} \leq 1.1 \mbox{ for } t\geq 1\}$.</div>
+		<hr/>
+		<div>
+			<div class="description">
+$S$ is affine.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+$S$ is a polyhedron.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+$S$ is convex.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<legend>Generalized inequality.</legend>
+		<div class="intro">$K = \{(x_1,x_2) \mid 0 \leq x_1 \leq x_2 \}$.</div>
+		<hr/>
+		<div>
+			<div class="description">
+$(1,3) \preceq_K (3,4)$.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+$(-1,2) \in K^*$.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+</div>
+
+  <footer>
+  Page generated using <a href="https://github.com/karanveerm/quizgen">Quizgen</a>
+  </footer>
+</body>
+</html>

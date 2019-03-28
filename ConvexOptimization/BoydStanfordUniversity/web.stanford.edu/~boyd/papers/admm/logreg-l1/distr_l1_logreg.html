@@ -1,0 +1,374 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>distr_l1_logreg</title>
+      <meta name="generator" content="MATLAB 7.7">
+      <meta name="date" content="2011-02-16">
+      <meta name="m-file" content="distr_l1_logreg"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#3">Global constants and defaults</a></li>
+               <li><a href="#4">Preprocessing</a></li>
+               <li><a href="#5">ADMM solver</a></li>
+            </ul>
+         </div><pre class="codeinput"><span class="keyword">function</span> [z, history] = distr_l1_logreg(A, b, mu, N, rho, alpha)
+</pre><pre class="codeinput"><span class="comment">% distr_l1_logreg   Solve distributed L1 regularized logistic regression</span>
+<span class="comment">%</span>
+<span class="comment">% [x, history] = distr_l1_logreg(A, b, mu, N, rho, alpha)</span>
+<span class="comment">%</span>
+<span class="comment">% solves the following problem via ADMM:</span>
+<span class="comment">%</span>
+<span class="comment">%   minimize   sum( log(1 + exp(-b_i*(a_i'w + v)) ) + m*mu*norm(w,1)</span>
+<span class="comment">%</span>
+<span class="comment">% where A is a feature matrix and b is a response vector. The scalar m is</span>
+<span class="comment">% the number of examples in the matrix A.</span>
+<span class="comment">%</span>
+<span class="comment">% This solves the L1 regularized logistic regression problem. It uses</span>
+<span class="comment">% a custom Newton solver for the x-step. This version solves a distributed</span>
+<span class="comment">% version of L1 regularized logistic regression.</span>
+<span class="comment">%</span>
+<span class="comment">% The solution is returned in the vector x = (v,w).</span>
+<span class="comment">%</span>
+<span class="comment">% history is a structure that contains the objective value, the primal and</span>
+<span class="comment">% dual residual norms, and the tolerances for the primal and dual residual</span>
+<span class="comment">% norms at each iteration.</span>
+<span class="comment">%</span>
+<span class="comment">% N is the number of subsystems to use to split the examples. This code</span>
+<span class="comment">% will (serially) solve N x-updates with m / N examples per subsystem.</span>
+<span class="comment">% Therefore, the number of examples, m, should be divisible by N. No error</span>
+<span class="comment">% checking is done.</span>
+<span class="comment">%</span>
+<span class="comment">% rho is the augmented Lagrangian parameter.</span>
+<span class="comment">%</span>
+<span class="comment">% alpha is the over-relaxation parameter (typical values for alpha are</span>
+<span class="comment">% between 1.0 and 1.8).</span>
+<span class="comment">%</span>
+<span class="comment">% This example requires the "MATLAB Interface for L-BFGS-B" and L-BFGS-B</span>
+<span class="comment">% installed. These can be acquiured at</span>
+<span class="comment">% http://www.cs.ubc.ca/~pcarbo/lbfgsb-for-matlab.html.</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">% More information can be found in the paper linked at:</span>
+<span class="comment">% http://www.stanford.edu/~boyd/papers/distr_opt_stat_learning_admm.html</span>
+<span class="comment">%</span>
+
+
+t_start = tic;
+</pre><h2>Global constants and defaults<a name="3"></a></h2><pre class="codeinput">QUIET    = 0;
+MAX_ITER = 1000;
+ABSTOL   = 1e-4;
+RELTOL   = 1e-2;
+</pre><h2>Preprocessing<a name="4"></a></h2><pre class="codeinput">[m, n] = size(A);
+m = m / N;  <span class="comment">% should be divisible</span>
+</pre><h2>ADMM solver<a name="5"></a></h2><pre class="codeinput">x = zeros(n+1,N);
+z = zeros(n+1,N);
+u = zeros(n+1,N);
+
+
+<span class="keyword">if</span> ~QUIET
+    fprintf(<span class="string">'%3s\t%10s\t%10s\t%10s\t%10s\t%10s\t%10s\n'</span>, <span class="string">'iter'</span>, <span class="string">'# bfgs'</span>, <span class="keyword">...</span>
+      <span class="string">'r norm'</span>, <span class="string">'eps pri'</span>, <span class="string">'s norm'</span>, <span class="string">'eps dual'</span>, <span class="string">'objective'</span>);
+<span class="keyword">end</span>
+p = size(z,1);
+C = [-b -A]';
+
+<span class="keyword">global</span> BFGS_ITERS;  <span class="comment">% global variable to keep track of bfgs iterations</span>
+bfgs_iters = zeros(N,1);
+
+<span class="keyword">for</span> k = 1:MAX_ITER
+
+    <span class="comment">% serial x-update</span>
+    <span class="keyword">for</span> i = 1:N,
+        K = C(:,1+(i-1)*m:i*m)';
+        x(:,i) = bfgs_update(K, u(:,i), z(:,i), rho, N, x(:,i));
+        bfgs_iters(i) = BFGS_ITERS;
+    <span class="keyword">end</span>
+
+    <span class="comment">% z-update with relaxation</span>
+    zold = z;
+    x_hat = alpha*x + (1-alpha)*zold;
+    ztilde = mean(x_hat + u,2);
+    ztilde(2:end) = shrinkage( ztilde(2:end), (m*N)*mu/(rho*N) );
+
+    z = ztilde*ones(1,N);
+
+    <span class="comment">% u-update</span>
+    u = u + (x_hat - z);
+
+    <span class="comment">% diagnostics, reporting, termination checks</span>
+    history.objval(k)  = objective(A, b, mu, x, z(:,1));
+
+    history.r_norm(k)  = norm(x - z, <span class="string">'fro'</span>);
+    history.s_norm(k)  = norm(rho*(z - zold),<span class="string">'fro'</span>);
+
+    history.LBFGS_iters(:,k) = bfgs_iters;
+
+    history.eps_pri(k) = sqrt(p*N)*ABSTOL + RELTOL*max(norm(x,<span class="string">'fro'</span>), norm(z,<span class="string">'fro'</span>));
+    history.eps_dual(k)= sqrt(p*N)*ABSTOL + RELTOL*norm(rho*u,<span class="string">'fro'</span>);
+
+    <span class="keyword">if</span> ~QUIET
+        fprintf(<span class="string">'%3d\t%10d\t%10.4f\t%10.4f\t%10.4f\t%10.4f\t%10.2f\n'</span>, k, sum(bfgs_iters), <span class="keyword">...</span>
+            history.r_norm(k), history.eps_pri(k), <span class="keyword">...</span>
+            history.s_norm(k), history.eps_dual(k), history.objval(k));
+    <span class="keyword">end</span>
+
+
+    <span class="keyword">if</span> history.r_norm(k) &lt; history.eps_pri(k) &amp;&amp; <span class="keyword">...</span>
+       history.s_norm(k) &lt; history.eps_dual(k)
+        <span class="keyword">break</span>;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> ~QUIET
+    toc(t_start);
+<span class="keyword">end</span>
+z = z(:,1);
+</pre><pre class="codeinput"><span class="keyword">end</span>
+
+<span class="keyword">function</span> obj = objective(A, b, mu, x, z)
+    m = size(A,1);
+    obj = sum(log(1 + exp(-A*z(2:end) -b*z(1)))) + m*mu*norm(z(2:end),1);
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> [x t] = bfgs_update(C, u, z, rho, N, x0)
+    <span class="comment">% solve the x update</span>
+    <span class="comment">%   minimize [ -logistic(x_i) + (rho/2)||x_i - z^k + u^k||^2 ]</span>
+    <span class="comment">% via L-BFGS</span>
+
+    [m n] = size(C);
+
+    auxdata{1} = C;
+    auxdata{2} = z;
+    auxdata{3} = u;
+    auxdata{4} = rho;
+
+    x = lbfgsb(x0, -Inf*ones(n,1), +Inf*ones(n,1), <span class="string">'l2_log'</span>, <span class="string">'l2_log_grad'</span>, auxdata, <span class="string">'record_bfgs_iters'</span>);
+<span class="keyword">end</span>
+
+
+<span class="keyword">function</span> z = shrinkage(a, kappa)
+    z = max(0, a-kappa) - max(0, -a-kappa);
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.7<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+function [z, history] = distr_l1_logreg(A, b, mu, N, rho, alpha)
+% distr_l1_logreg   Solve distributed L1 regularized logistic regression 
+%
+% [x, history] = distr_l1_logreg(A, b, mu, N, rho, alpha)
+%
+% solves the following problem via ADMM:
+%
+%   minimize   sum( log(1 + exp(-b_i*(a_i'w + v)) ) + m*mu*norm(w,1)
+%
+% where A is a feature matrix and b is a response vector. The scalar m is
+% the number of examples in the matrix A. 
+%
+% This solves the L1 regularized logistic regression problem. It uses
+% a custom Newton solver for the x-step. This version solves a distributed
+% version of L1 regularized logistic regression.
+%
+% The solution is returned in the vector x = (v,w).
+%
+% history is a structure that contains the objective value, the primal and 
+% dual residual norms, and the tolerances for the primal and dual residual 
+% norms at each iteration.
+%
+% N is the number of subsystems to use to split the examples. This code
+% will (serially) solve N x-updates with m / N examples per subsystem.
+% Therefore, the number of examples, m, should be divisible by N. No error
+% checking is done.
+%
+% rho is the augmented Lagrangian parameter. 
+%
+% alpha is the over-relaxation parameter (typical values for alpha are 
+% between 1.0 and 1.8).
+%
+% This example requires the "MATLAB Interface for L-BFGS-B" and L-BFGS-B
+% installed. These can be acquiured at
+% http://www.cs.ubc.ca/~pcarbo/lbfgsb-for-matlab.html.
+%
+%
+% More information can be found in the paper linked at:
+% http://www.stanford.edu/~boyd/papers/distr_opt_stat_learning_admm.html
+%
+
+
+t_start = tic;
+
+%% Global constants and defaults
+
+QUIET    = 0;
+MAX_ITER = 1000;
+ABSTOL   = 1e-4;
+RELTOL   = 1e-2;
+
+%% Preprocessing
+[m, n] = size(A);
+m = m / N;  % should be divisible
+
+%% ADMM solver
+
+x = zeros(n+1,N);
+z = zeros(n+1,N);
+u = zeros(n+1,N);
+
+
+if ~QUIET
+    fprintf('%3s\t%10s\t%10s\t%10s\t%10s\t%10s\t%10s\n', 'iter', '# bfgs', ...
+      'r norm', 'eps pri', 's norm', 'eps dual', 'objective');
+end
+p = size(z,1);
+C = [-b -A]';
+
+global BFGS_ITERS;  % global variable to keep track of bfgs iterations
+bfgs_iters = zeros(N,1);
+
+for k = 1:MAX_ITER
+    
+    % serial x-update
+    for i = 1:N,
+        K = C(:,1+(i-1)*m:i*m)';
+        x(:,i) = bfgs_update(K, u(:,i), z(:,i), rho, N, x(:,i));
+        bfgs_iters(i) = BFGS_ITERS;
+    end    
+
+    % z-update with relaxation
+    zold = z;
+    x_hat = alpha*x + (1-alpha)*zold;
+    ztilde = mean(x_hat + u,2);
+    ztilde(2:end) = shrinkage( ztilde(2:end), (m*N)*mu/(rho*N) );
+    
+    z = ztilde*ones(1,N);
+
+    % u-update
+    u = u + (x_hat - z);
+    
+    % diagnostics, reporting, termination checks
+    history.objval(k)  = objective(A, b, mu, x, z(:,1));
+    
+    history.r_norm(k)  = norm(x - z, 'fro');
+    history.s_norm(k)  = norm(rho*(z - zold),'fro');
+
+    history.LBFGS_iters(:,k) = bfgs_iters;
+        
+    history.eps_pri(k) = sqrt(p*N)*ABSTOL + RELTOL*max(norm(x,'fro'), norm(z,'fro'));
+    history.eps_dual(k)= sqrt(p*N)*ABSTOL + RELTOL*norm(rho*u,'fro');
+ 
+    if ~QUIET
+        fprintf('%3d\t%10d\t%10.4f\t%10.4f\t%10.4f\t%10.4f\t%10.2f\n', k, sum(bfgs_iters), ...
+            history.r_norm(k), history.eps_pri(k), ...
+            history.s_norm(k), history.eps_dual(k), history.objval(k));
+    end
+    
+
+    if history.r_norm(k) < history.eps_pri(k) && ...
+       history.s_norm(k) < history.eps_dual(k)
+        break;
+    end
+end
+
+if ~QUIET
+    toc(t_start);
+end
+z = z(:,1);
+end
+
+function obj = objective(A, b, mu, x, z)
+    m = size(A,1);
+    obj = sum(log(1 + exp(-A*z(2:end) -b*z(1)))) + m*mu*norm(z(2:end),1);
+end
+
+function [x t] = bfgs_update(C, u, z, rho, N, x0)
+    % solve the x update
+    %   minimize [ -logistic(x_i) + (rho/2)||x_i - z^k + u^k||^2 ]
+    % via L-BFGS
+
+    [m n] = size(C);
+
+    auxdata{1} = C;
+    auxdata{2} = z;
+    auxdata{3} = u;
+    auxdata{4} = rho;
+
+    x = lbfgsb(x0, -Inf*ones(n,1), +Inf*ones(n,1), 'l2_log', 'l2_log_grad', auxdata, 'record_bfgs_iters');
+end
+
+
+function z = shrinkage(a, kappa)
+    z = max(0, a-kappa) - max(0, -a-kappa);
+end
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

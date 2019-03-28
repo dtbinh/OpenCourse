@@ -1,0 +1,332 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>linear_svm</title>
+      <meta name="generator" content="MATLAB 7.7">
+      <meta name="date" content="2011-02-16">
+      <meta name="m-file" content="linear_svm"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#3">Global constants and defaults</a></li>
+               <li><a href="#4">Data preprocessing</a></li>
+               <li><a href="#5">ADMM solver</a></li>
+            </ul>
+         </div><pre class="codeinput"><span class="keyword">function</span> [xave, history] = linear_svm(A, lambda, p, rho, alpha)
+</pre><pre class="codeinput"><span class="comment">% linear_svm   Solve linear support vector machine (SVM) via ADMM</span>
+<span class="comment">%</span>
+<span class="comment">% [x, history] = linear_svm(A, lambda, p, rho, alpha)</span>
+<span class="comment">%</span>
+<span class="comment">% Solves the following problem via ADMM:</span>
+<span class="comment">%</span>
+<span class="comment">%   minimize   (1/2)||w||_2^2 + \lambda sum h_j(w, b)</span>
+<span class="comment">%</span>
+<span class="comment">% where A is a matrix given by [-y_j*x_j -y_j], lambda is a</span>
+<span class="comment">% regularization parameter, and p is a partition of the observations in to</span>
+<span class="comment">% different subsystems.</span>
+<span class="comment">%</span>
+<span class="comment">% The function h_j(w, b) is a hinge loss on the variables w and b.</span>
+<span class="comment">% It corresponds to h_j(w,b) = (Ax + 1)_+, where x = (w,b).</span>
+<span class="comment">%</span>
+<span class="comment">% This function implements a *distributed* SVM that runs its updates</span>
+<span class="comment">% serially.</span>
+<span class="comment">%</span>
+<span class="comment">% The solution is returned in the vector x = (w,b).</span>
+<span class="comment">%</span>
+<span class="comment">% history is a structure that contains the objective value, the primal and</span>
+<span class="comment">% dual residual norms, and the tolerances for the primal and dual residual</span>
+<span class="comment">% norms at each iteration.</span>
+<span class="comment">%</span>
+<span class="comment">% rho is the augmented Lagrangian parameter.</span>
+<span class="comment">%</span>
+<span class="comment">% alpha is the over-relaxation parameter (typical values for alpha are</span>
+<span class="comment">% between 1.0 and 1.8).</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">% More information can be found in the paper linked at:</span>
+<span class="comment">% http://www.stanford.edu/~boyd/papers/distr_opt_stat_learning_admm.html</span>
+<span class="comment">%</span>
+
+t_start = tic;
+</pre><h2>Global constants and defaults<a name="3"></a></h2><pre class="codeinput">QUIET    = 0;
+MAX_ITER = 1000;
+ABSTOL   = 1e-4;
+RELTOL   = 1e-2;
+</pre><h2>Data preprocessing<a name="4"></a></h2><pre class="codeinput">[m, n] = size(A);
+N = max(p);
+<span class="comment">% group samples together</span>
+<span class="keyword">for</span> i = 1:N,
+    tmp{i} = A(p==i,:);
+<span class="keyword">end</span>
+A = tmp;
+</pre><h2>ADMM solver<a name="5"></a></h2><pre class="codeinput">x = zeros(n,N);
+z = zeros(n,N);
+u = zeros(n,N);
+
+
+
+<span class="keyword">if</span> ~QUIET
+    fprintf(<span class="string">'%3s\t%10s\t%10s\t%10s\t%10s\t%10s\n'</span>, <span class="string">'iter'</span>, <span class="keyword">...</span>
+      <span class="string">'r norm'</span>, <span class="string">'eps pri'</span>, <span class="string">'s norm'</span>, <span class="string">'eps dual'</span>, <span class="string">'objective'</span>);
+<span class="keyword">end</span>
+
+
+<span class="keyword">for</span> k = 1:MAX_ITER
+
+	<span class="comment">% x-update</span>
+    <span class="keyword">for</span> i = 1:N,
+        cvx_begin <span class="string">quiet</span>
+            variable <span class="string">x_var(n)</span>
+            minimize ( sum(pos(A{i}*x_var + 1)) + rho/2*sum_square(x_var - z(:,i) + u(:,i)) )
+        cvx_end
+        x(:,i) = x_var;
+    <span class="keyword">end</span>
+    xave = mean(x,2);
+
+    <span class="comment">% z-update with relaxation</span>
+    zold = z;
+    x_hat = alpha*x +(1-alpha)*zold;
+    z = N*rho/(1/lambda + N*rho)*mean( x_hat + u, 2 );
+    z = z*ones(1,N);
+
+    <span class="comment">% u-update</span>
+    u = u + (x_hat - z);
+
+    <span class="comment">% diagnostics, reporting, termination checks</span>
+    history.objval(k)  = objective(A, lambda, p, x, z);
+
+    history.r_norm(k)  = norm(x - z);
+    history.s_norm(k)  = norm(-rho*(z - zold));
+
+    history.eps_pri(k) = sqrt(n)*ABSTOL + RELTOL*max(norm(x), norm(-z));
+    history.eps_dual(k)= sqrt(n)*ABSTOL + RELTOL*norm(rho*u);
+
+    <span class="keyword">if</span> ~QUIET
+        fprintf(<span class="string">'%3d\t%10.4f\t%10.4f\t%10.4f\t%10.4f\t%10.2f\n'</span>, k, <span class="keyword">...</span>
+            history.r_norm(k), history.eps_pri(k), <span class="keyword">...</span>
+            history.s_norm(k), history.eps_dual(k), history.objval(k));
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> (history.r_norm(k) &lt; history.eps_pri(k) &amp;&amp; <span class="keyword">...</span>
+       history.s_norm(k) &lt; history.eps_dual(k))
+         <span class="keyword">break</span>;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> ~QUIET
+    toc(t_start);
+<span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+
+<span class="keyword">function</span> obj = objective(A, lambda, p, x, z)
+    obj = hinge_loss(A,x) + 1/(2*lambda)*sum_square(z(:,1));
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> val = hinge_loss(A,x)
+    val = 0;
+    <span class="keyword">for</span> i = 1:length(A)
+        val = val + sum(pos(A{i}*x(:,i) + 1));
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.7<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+function [xave, history] = linear_svm(A, lambda, p, rho, alpha)
+% linear_svm   Solve linear support vector machine (SVM) via ADMM
+%
+% [x, history] = linear_svm(A, lambda, p, rho, alpha)
+%
+% Solves the following problem via ADMM:
+%
+%   minimize   (1/2)||w||_2^2 + \lambda sum h_j(w, b)
+%
+% where A is a matrix given by [-y_j*x_j -y_j], lambda is a
+% regularization parameter, and p is a partition of the observations in to
+% different subsystems.
+%
+% The function h_j(w, b) is a hinge loss on the variables w and b.
+% It corresponds to h_j(w,b) = (Ax + 1)_+, where x = (w,b).
+%
+% This function implements a *distributed* SVM that runs its updates
+% serially.
+%
+% The solution is returned in the vector x = (w,b).
+%
+% history is a structure that contains the objective value, the primal and 
+% dual residual norms, and the tolerances for the primal and dual residual 
+% norms at each iteration.
+% 
+% rho is the augmented Lagrangian parameter. 
+%
+% alpha is the over-relaxation parameter (typical values for alpha are 
+% between 1.0 and 1.8).
+%
+%
+% More information can be found in the paper linked at:
+% http://www.stanford.edu/~boyd/papers/distr_opt_stat_learning_admm.html
+%
+
+t_start = tic;
+
+%% Global constants and defaults
+
+QUIET    = 0;
+MAX_ITER = 1000;
+ABSTOL   = 1e-4;
+RELTOL   = 1e-2;
+
+%% Data preprocessing
+
+[m, n] = size(A);
+N = max(p);
+% group samples together
+for i = 1:N,
+    tmp{i} = A(p==i,:);
+end
+A = tmp;
+
+%% ADMM solver
+
+x = zeros(n,N);
+z = zeros(n,N);
+u = zeros(n,N);
+
+
+
+if ~QUIET
+    fprintf('%3s\t%10s\t%10s\t%10s\t%10s\t%10s\n', 'iter', ...
+      'r norm', 'eps pri', 's norm', 'eps dual', 'objective');
+end
+
+
+for k = 1:MAX_ITER
+
+	% x-update
+    for i = 1:N,
+        cvx_begin quiet
+            variable x_var(n)
+            minimize ( sum(pos(A{i}*x_var + 1)) + rho/2*sum_square(x_var - z(:,i) + u(:,i)) )
+        cvx_end
+        x(:,i) = x_var;
+    end
+    xave = mean(x,2);
+
+    % z-update with relaxation
+    zold = z;
+    x_hat = alpha*x +(1-alpha)*zold;
+    z = N*rho/(1/lambda + N*rho)*mean( x_hat + u, 2 );
+    z = z*ones(1,N);
+
+    % u-update
+    u = u + (x_hat - z);
+    
+    % diagnostics, reporting, termination checks
+    history.objval(k)  = objective(A, lambda, p, x, z);
+
+    history.r_norm(k)  = norm(x - z);
+    history.s_norm(k)  = norm(-rho*(z - zold));
+    
+    history.eps_pri(k) = sqrt(n)*ABSTOL + RELTOL*max(norm(x), norm(-z));
+    history.eps_dual(k)= sqrt(n)*ABSTOL + RELTOL*norm(rho*u);
+    
+    if ~QUIET
+        fprintf('%3d\t%10.4f\t%10.4f\t%10.4f\t%10.4f\t%10.2f\n', k, ...
+            history.r_norm(k), history.eps_pri(k), ...
+            history.s_norm(k), history.eps_dual(k), history.objval(k));
+    end
+    
+    if (history.r_norm(k) < history.eps_pri(k) && ...
+       history.s_norm(k) < history.eps_dual(k))
+         break;
+    end
+end
+
+if ~QUIET
+    toc(t_start);
+end
+
+end
+
+function obj = objective(A, lambda, p, x, z)
+    obj = hinge_loss(A,x) + 1/(2*lambda)*sum_square(z(:,1));
+end
+
+function val = hinge_loss(A,x)
+    val = 0;
+    for i = 1:length(A)
+        val = val + sum(pos(A{i}*x(:,i) + 1));
+    end
+end
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

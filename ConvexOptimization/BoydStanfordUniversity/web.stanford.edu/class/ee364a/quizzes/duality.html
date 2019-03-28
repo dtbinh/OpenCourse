@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quiz</title>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Sans|Alike' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="quiz.css" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+      //close all the content divs on page load
+      $('.response').hide();
+
+      // toggle slide
+      $('.selection').click(function(){
+        // by calling sibling, we can use same div for all demos
+        $(this).siblings('.response').slideToggle('fast');
+      });
+
+      $('button').click(function(event){
+        var $target = $(event.target);
+        var $checkboxes = $target.parent('.mcq').find('input');
+        for (var i = 0; i < $checkboxes.length; i++) {
+          var $checkbox = $checkboxes.eq(i);
+          a = $checkbox;
+          if ($checkbox[0].checked && $checkbox.nextAll('.response').hasClass('right')) {
+            $checkbox.nextAll('.correct-checkbox').show();
+          } else if ($checkbox[0].checked &&
+              $checkbox.nextAll('.response').hasClass('wrong')) {
+            $checkbox.nextAll('.incorrect-checkbox').show();
+          } else if (!$checkbox[0].checked &&
+              $checkbox.nextAll('.response').hasClass('right')) {
+            $checkbox.nextAll('.incorrect-checkbox').show();
+          } else {
+            $checkbox.nextAll('.correct-checkbox').show();
+          }
+        }
+        $target.parent('.mcq').find('.response').slideToggle('fast');
+        if ($target.text() == 'Submit') {
+          $target.text('Hide');
+        } else {
+          $checkboxes.nextAll('.incorrect-checkbox').hide();
+          $checkboxes.nextAll('.correct-checkbox').hide();
+          $target.text('Submit');
+        }
+      });
+    });
+    </script>
+  </head>
+
+<body>
+  $\newcommand{\ones}{\mathbf 1}$
+  <div>
+	<h1>Duality</h1>
+	<fieldset>
+		<legend>Sensitivity Analysis</legend>
+		<div class="intro">Consider the convex optimization problem
+\[
+\begin{array}{ll}
+\mbox{minimize} &amp; f_0(x) \\
+\mbox{subject to} &amp; f_1(x) \leq s, \quad Ax=b,
+\end{array}
+\]
+with variables $x \in \mathbf{R}^n$,
+where $s$ is some fixed real number.
+Let $\lambda^\star$ be an optimal dual variable (Lagrange multiplier)
+associated with the constraint $f_1(x) \leq s$.
+Below we consider scenarios in which we change the value of $s$,
+and then solve the modified problem.
+We are interested in the optimal objective value of this modified problem,
+compared to the original one above.</div>
+		<hr/>
+		<div>
+			<div class="description">
+If $\lambda^\star$ is large, then decreasing $s$</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">might decrease the optimal value</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">will increase the optimal value a lot</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">can leave the optimal value unchanged</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+If $\lambda^\star$ is large, then increasing $s$</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">will decrease the optimal value a lot</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">will increase the optimal value a lot</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">can leave the optimal value unchanged</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+If $\lambda^\star=0$, then increasing $s$</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">can decrease the objective value</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">can increase the objective value</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">will leave the optimal value unchanged</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div class="intro">Consider a convex optimization problem
+\[
+\begin{array}{ll}
+\mbox{minimize} &amp; f_0(x) \\
+\mbox{subject to} &amp; f_i(x) \leq 0, \quad i=1,\ldots, m\\ &amp; Ax=b,
+\end{array}
+\]
+that satisfies Slater's constraint qualification.</div>
+		<hr/>
+		<div>
+			<div class="description">
+The primal and dual problems have the same objective value.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+The primal problem has a unique solution.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+The dual problem is not unbounded.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+Suppose $x^\star$ is optimal, with $f_1(x^\star) = -0.2$.
+Then for every dual optimal point $(\lambda^\star,\nu^\star)$,
+we have $\lambda^\star_1=0$.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+</div>
+
+  <footer>
+  Page generated using <a href="https://github.com/karanveerm/quizgen">Quizgen</a>
+  </footer>
+</body>
+</html>

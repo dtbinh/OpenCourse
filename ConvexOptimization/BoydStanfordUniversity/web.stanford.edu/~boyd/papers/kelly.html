@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Risk-Constrained Kelly Gambling</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Risk-Constrained Kelly Gambling</h1>
+<div id="subtitle">E. Busseti, E. Ryu, and  S. Boyd</div>
+</div>
+<p><i>Journal of Investing</i>, 25(3):118-134, Fall 2016.</p>
+<ul>
+<li><p><a href="pdf/kelly.pdf">Manuscript</a></p>
+</li>
+<li><p><a href="http://github.com/cvxgrp/kelly_code">Code and examples</a></p>
+</li>
+</ul>
+<p>We consider the classic Kelly gambling problem with general distribution of
+outcomes, and an additional risk constraint that limits the probability of a
+drawdown of wealth to a given undesirable level. We develop a bound on the
+drawdown probability; using this bound instead of the original risk constraint
+yields a convex optimization problem that guarantees the drawdown risk
+constraint holds. Numerical experiments show that our bound on drawdown
+probability is reasonably close to the actual drawdown risk, as computed by
+Monte Carlo simulation. Our method is parametrized by a single parameter that
+has a natural interpretation as a risk-aversion parameter, allowing us to
+systematically trade off asymptotic growth rate and drawdown risk. Simulations
+show that this method yields bets that out perform fractional-Kelly bets for
+the same drawdown risk level or growth rate. Finally, we show that a natural
+quadratic approximation of our convex problem is closely connected to the
+classical mean-variance Markowitz portfolio selection problem.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:28 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

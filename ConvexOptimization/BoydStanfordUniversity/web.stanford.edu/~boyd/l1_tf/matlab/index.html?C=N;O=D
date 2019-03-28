@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+ <head>
+  <title>Index of /~boyd/l1_tf/matlab</title>
+ </head>
+ <body>
+<h1>Index of /~boyd/l1_tf/matlab</h1>
+  <table>
+   <tr><th valign="top"><img src="/icons/blank.gif" alt="[ICO]"></th><th><a href="?C=N;O=A">Name</a></th><th><a href="?C=M;O=A">Last modified</a></th><th><a href="?C=S;O=A">Size</a></th><th><a href="?C=D;O=A">Description</a></th></tr>
+   <tr><th colspan="5"><hr></th></tr>
+<tr><td valign="top"><img src="/icons/back.gif" alt="[PARENTDIR]"></td><td><a href="/~boyd/l1_tf/">Parent Directory</a></td><td>&nbsp;</td><td align="right">  - </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="snp500.dat">snp500.dat</a></td><td align="right">2008-05-15 16:24  </td><td align="right">119K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="pwl_fit_l1.m">pwl_fit_l1.m</a></td><td align="right">2008-05-15 16:24  </td><td align="right">1.1K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="pwl_fit.m">pwl_fit.m</a></td><td align="right">2008-05-15 16:24  </td><td align="right">750 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="plot_signals.m">plot_signals.m</a></td><td align="right">2008-05-15 16:24  </td><td align="right">2.4K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="l1tf_lambdamax.m">l1tf_lambdamax.m</a></td><td align="right">2008-05-15 16:24  </td><td align="right">529 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="l1tf_cvx.m">l1tf_cvx.m</a></td><td align="right">2008-05-15 16:24  </td><td align="right">1.5K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="l1tf.m">l1tf.m</a></td><td align="right">2008-05-15 16:24  </td><td align="right">4.9K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="ex_synthetic.m">ex_synthetic.m</a></td><td align="right">2008-05-15 16:24  </td><td align="right">2.4K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="ex_snp500.m">ex_snp500.m</a></td><td align="right">2008-05-15 16:24  </td><td align="right">1.7K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="ex_basic.m">ex_basic.m</a></td><td align="right">2008-05-15 16:24  </td><td align="right">1.5K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="README.TXT">README.TXT</a></td><td align="right">2008-05-15 16:24  </td><td align="right">1.5K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="COPYING.TXT">COPYING.TXT</a></td><td align="right">2008-05-15 16:24  </td><td align="right">789 </td><td>&nbsp;</td></tr>
+   <tr><th colspan="5"><hr></th></tr>
+</table>
+</body></html>

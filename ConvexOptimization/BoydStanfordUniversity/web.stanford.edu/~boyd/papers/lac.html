@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Low-Authority Controller Design via Convex Optimization</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Low-Authority Controller Design via Convex Optimization</h1>
+<div id="subtitle">A. Hassibi, J. How, and S. Boyd</div>
+</div>
+<p><i>AIAA Journal of Guidance, Control, and Dynamics</i>, 22(6):862-872, 
+November-December 1999.<br />
+Short version appeared in
+<i>Proceedings of the IEEE Conference on Decision and Control</i>, 1:140-145, 
+December 1998. </p>
+<ul>
+<li><p>CDC 98 paper: <a href="pdf/lac_cdc98.pdf">lac_cdc98.pdf</a></p>
+</li>
+<li><p>Journal paper: <a href="pdf/lacAIAA.pdf">lacAIAA.pdf</a></p>
+</li>
+</ul>
+<p>In this paper we address the problem of low-authority controller (LAC) design. 
+The premise is that the actuators have limited authority, and hence cannot 
+significantly shift the eigenvalues of the system. As a result, the closed-loop 
+eigenvalues can be well approximated analytically using perturbation theory. 
+These analytical approximations may suffice to predict the behavior of the 
+closed-loop system in practical cases, and will provide at least a very strong 
+rationale for the first step in the design iteration loop. We will show that 
+LAC design can be cast as convex optimization problems that can be solved 
+efficiently in practice using interior-point methods. Also, we will show that 
+by optimizing the l1 norm of the feedback gains, we can arrive at sparse 
+designs, <i>i.e.</i>, designs in which only a small number of the control gains are 
+nonzero. Thus, in effect, we can also solve actuator/sensor placement or 
+controller architecture design problems.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:28 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

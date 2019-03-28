@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Distributed Optimization and Statistical Learning via the Alternating Direction Method of Multipliers</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Distributed Optimization and Statistical Learning via the Alternating Direction Method of Multipliers</h1>
+<div id="subtitle">S. Boyd, N. Parikh, E. Chu, B. Peleato, and J. Eckstein</div>
+</div>
+<p><i>Foundations and Trends in Machine Learning</i>, 3(1):1&ndash;122, 2011.
+(Original draft posted November 2010.)</p>
+<ul>
+<li><p><a href="pdf/admm_distr_stats.pdf">Paper</a></p>
+</li>
+<li><p><a href="admm">Matlab examples</a></p>
+</li>
+<li><p><a href="admm/mpi">MPI example</a></p>
+</li>
+<li><p><a href="../admm.html">ADMM links and resources</a></p>
+</li>
+</ul>
+<p>Many problems of recent interest in statistics and machine learning can be
+posed in the framework of convex optimization. Due to the explosion in size
+and complexity of modern datasets, it is increasingly important to be able to
+solve problems with a very large number of features, training examples, or
+both. As a result, both the decentralized collection or storage of these
+datasets as well as accompanying distributed solution methods are either
+necessary or at least highly desirable. 
+In this paper, we argue that the
+<i>alternating direction method of multipliers</i> is well suited to
+distributed convex optimization, and in particular to large-scale problems
+arising in statistics, machine learning, and related areas. The method was
+developed in the 1970s, with roots in the 1950s, and is equivalent or closely
+related to many other algorithms, such as dual decomposition, the method of
+multipliers, Douglas-Rachford splitting, Spingarn's method of partial
+inverses, Dykstra's alternating projections, Bregman iterative algorithms for
+<img class="eq" src="eqs/2349274112114421517-130.png" alt="ell_1" style="vertical-align: -3px" /> problems, proximal methods, and others. 
+After briefly surveying the theory and history of the algorithm, we discuss
+applications to a wide variety of statistical and machine learning problems of
+recent interest, including the lasso, sparse logistic regression, basis
+pursuit, covariance selection, support vector machines, and many others. We
+also discuss general distributed optimization, extensions to the nonconvex
+setting, and efficient implementation, including some details on distributed
+MPI and Hadoop MapReduce implementations.</p>
+<p><i>Talks</i>:</p>
+<ul>
+<li><p><a href="pdf/admm_talk.pdf">Stanford Statistics department</a></p>
+</li>
+<li><p><a href="pdf/admm_slides.pdf">EE 364b lecture</a> (longer and more recent)</p>
+</li>
+<li><p><a href="http://videolectures.net/nipsworkshops2011_boyd_multipliers/">NIPS Optimization workshop</a> (video)</p>
+</li>
+</ul>
+<p><i>Related papers</i>:</p>
+<ul>
+<li><p><a href="prox_algs.html">Proximal algorithms</a>, 2013.</p>
+</li>
+<li><p><a href="msg_pass_dyn.html">Dynamic network energy management via proximal message passing</a>, 2013.</p>
+</li>
+<li><p><a href="admm_gam.html">A distributed algorithm for fitting generalized additive models</a>, 2013.</p>
+</li>
+<li><p><a href="block_splitting.html">Graph projection block splitting for distributed optimization</a>, 2012.</p>
+</li>
+<li><p><a href="oper_splt_ctrl.html">A splitting method for optimal control</a>, 2012.</p>
+</li>
+<li><p><a href="admm_tv_est.html">An ADMM algorithm for a class of total variation regularized estimation problems</a>, 2012.</p>
+</li>
+</ul>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:25 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

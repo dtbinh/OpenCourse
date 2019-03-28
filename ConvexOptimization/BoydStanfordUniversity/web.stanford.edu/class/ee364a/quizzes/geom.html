@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quiz</title>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Sans|Alike' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="quiz.css" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+      //close all the content divs on page load
+      $('.response').hide();
+
+      // toggle slide
+      $('.selection').click(function(){
+        // by calling sibling, we can use same div for all demos
+        $(this).siblings('.response').slideToggle('fast');
+      });
+
+      $('button').click(function(event){
+        var $target = $(event.target);
+        var $checkboxes = $target.parent('.mcq').find('input');
+        for (var i = 0; i < $checkboxes.length; i++) {
+          var $checkbox = $checkboxes.eq(i);
+          a = $checkbox;
+          if ($checkbox[0].checked && $checkbox.nextAll('.response').hasClass('right')) {
+            $checkbox.nextAll('.correct-checkbox').show();
+          } else if ($checkbox[0].checked &&
+              $checkbox.nextAll('.response').hasClass('wrong')) {
+            $checkbox.nextAll('.incorrect-checkbox').show();
+          } else if (!$checkbox[0].checked &&
+              $checkbox.nextAll('.response').hasClass('right')) {
+            $checkbox.nextAll('.incorrect-checkbox').show();
+          } else {
+            $checkbox.nextAll('.correct-checkbox').show();
+          }
+        }
+        $target.parent('.mcq').find('.response').slideToggle('fast');
+        if ($target.text() == 'Submit') {
+          $target.text('Hide');
+        } else {
+          $checkboxes.nextAll('.incorrect-checkbox').hide();
+          $checkboxes.nextAll('.correct-checkbox').hide();
+          $target.text('Submit');
+        }
+      });
+    });
+    </script>
+  </head>
+
+<body>
+  $\newcommand{\ones}{\mathbf 1}$
+  <div>
+	<h1>Geometrical problems</h1>
+	<fieldset>
+		<div class="intro">Let $\mathcal P \subset \mathbf{R}^n$ be a polyhedron described by a set of
+linear inequalities, and $a$ a point in $\mathbf{R}^n$.
+Are the following problems easy or hard?  (Easy means the solution can
+be found by solving one or a modest number of convex optimization problems.)</div>
+		<hr/>
+		<div>
+			<div class="description">
+Find a point in $\mathcal P$ that is closest to $a$
+in Euclidean norm.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">Easy. </div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						 This can be done by solving a QP.
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">Hard.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+Find a point in $\mathcal P$ that is closest to $a$
+in $\ell_\infty$ norm.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">Easy. </div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						 This can be done by solving an LP.
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">Hard.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+Find a point in $\mathcal P$ that is farthest from $a$
+in Euclidean norm.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">Easy.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">Hard. </div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						 This problem is NP-hard. In fact, it's hard to just check whether
+or not $\mathcal P$ lies inside a given Euclidean ball.
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+Find a point in $\mathcal P$ that is farthest from $a$
+in $\ell_\infty$ norm.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">Easy. </div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						 This can be done by maximizing and minimizing each component
+of $x$, subject to $x \in \mathcal P$.  This requires solving $2n$ LPs.
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">Hard.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+</div>
+
+  <footer>
+  Page generated using <a href="https://github.com/karanveerm/quizgen">Quizgen</a>
+  </footer>
+</body>
+</html>

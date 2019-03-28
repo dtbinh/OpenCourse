@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Self-tuning for maximized lifetime energy-efficiency in the presence of circuit aging</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Self-tuning for maximized lifetime energy-efficiency in the presence of circuit aging</h1>
+<div id="subtitle">E. Mintarno, J. Skaf, R. Zheng, J. Velamela, Y. Cao, 
+S. Boyd, R. Dutton, and S. Mitra</div>
+</div>
+<p><i>IEEE Transactions on Computer-Aided Design of Integrated Circuits 
+and Systems</i>, 30(5):760&ndash;773, May 2011.</p>
+<ul>
+<li><p><a href="pdf/self_tuning_max_lifetime.pdf">self_tuning_max_lifetime.pdf</a></p>
+</li>
+</ul>
+<p>This paper presents an integrated framework, together with control policies,
+for optimizing dynamic control of self-tuning parameters of a digital system
+over its lifetime in the presence of circuit aging. A variety of self-tuning
+parameters such as supply voltage, operating clock frequency, and dynamic
+cooling are considered, and jointly optimized using efficient algorithms
+described in this paper. Our optimized self-tuning approach satisfies
+performance constraints at all times, and maximizes a lifetime computational
+power efficiency (LCPE) metric, which is defined as the total number of clock
+cycles achieved over lifetime divided by the total energy consumed over
+lifetime. We present three control policies: 1) progressive-worst-case-aging
+(PWCA), which assumes worst-case aging at all times; 2) 
+progressive-on-state-aging (POSA), which estimates aging by tracking 
+active/sleep modes, and then
+assumes worst-case aging in active mode and long recovery effects in sleep
+mode; and 3) progressive-real-time-aging-assisted (PRTA), which acquires
+real-time information and initiates optimized control actions. Various flavors
+of these control policies for systems with dynamic voltage and frequency
+scaling (DVFS) are also analyzed. Simulation results on benchmark circuits,
+using aging models validated by 45nm measurements, demonstrate the
+effectiveness and practicality of our approach in significantly improving LCPE
+and/or lifetime compared to traditional one-time worst-case guardbanding. We
+also derive system design guidelines to maximize self-tuning benefits.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:30 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Mixing Times for Random Walks on Geometric Random Graphs </title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Mixing Times for Random Walks on Geometric Random Graphs </h1>
+<div id="subtitle">S. Boyd, A. Ghosh, B. Prabhakar, D. Shah (listed in alphabetical order)</div>
+</div>
+<p><i>SIAM Workshop on Analytic Algorithmics &amp; Combinatorics (ANALCO)</i>,
+Vancouver, January 2005.</p>
+<ul>
+<li><p><a href="pdf/gnr_mix.pdf">gnr_mix.pdf</a></p>
+</li>
+</ul>
+<p>A geometric random graph, <img class="eq" src="eqs/8622782448281137746-130.png" alt="G^d(n,r)" style="vertical-align: -5px" />, is formed as follows: place <img class="eq" src="eqs/14080042351-130.png" alt="n" style="vertical-align: -1px" /> nodes 
+uniformly at random onto the surface of the <img class="eq" src="eqs/12800038501-130.png" alt="d" style="vertical-align: -1px" />-dimensional unit torus and 
+connect nodes which are within a distance <img class="eq" src="eqs/14592043891-130.png" alt="r" style="vertical-align: -1px" /> of each other. 
+The <img class="eq" src="eqs/8622782448281137746-130.png" alt="G^d(n,r)" style="vertical-align: -5px" /> has been of great interest due to its success as a model for ad-hoc wireless 
+networks. It is well known that the connectivity of <img class="eq" src="eqs/8622782448281137746-130.png" alt="G^d(n,r)" style="vertical-align: -5px" /> exhibits a 
+threshold property: there exists a constant <img class="eq" src="eqs/2031553203773749399-130.png" alt="alpha_d" style="vertical-align: -4px" /> such that for any 
+<img class="eq" src="eqs/1577491495014864033-130.png" alt="epsilon &gt;0" style="vertical-align: -1px" />, for <img class="eq" src="eqs/8424035182479146498-130.png" alt="r^d &lt; alpha_d (1-epsilon)log n/n" style="vertical-align: -5px" />, the <img class="eq" src="eqs/8622782448281137746-130.png" alt="G^d(n,r)" style="vertical-align: -5px" /> is not 
+connected with high probability, and for <img class="eq" src="eqs/1406380281378921313-130.png" alt="r^d &gt; alpha_d (1+epsilon)log  n/n" style="vertical-align: -5px" />, the <img class="eq" src="eqs/8622782448281137746-130.png" alt="G^d(n,r)" style="vertical-align: -5px" /> is connected w.h.p. 
+In this paper, we study mixing properties 
+of random walks on <img class="eq" src="eqs/8622782448281137746-130.png" alt="G^d(n,r)" style="vertical-align: -5px" /> for <img class="eq" src="eqs/4623964888421721942-130.png" alt="r^d(n)=Omega(log n/n)" style="vertical-align: -5px" />. 
+Specifically, we 
+study the scaling of mixing times of the fastest-mixing reversible random walk, 
+and the natural random walk. We find that the mixing time of both of these 
+random walks have the same scaling laws and scale proportional to 
+<img class="eq" src="eqs/792287768805266689-130.png" alt="r^{-2}" style="vertical-align: -1px" /> (for 
+all <img class="eq" src="eqs/12800038501-130.png" alt="d" style="vertical-align: -1px" />). These results hold for <img class="eq" src="eqs/8622782448281137746-130.png" alt="G^d(n,r)" style="vertical-align: -5px" /> when distance is defined 
+using any <img class="eq" src="eqs/6653501418137561474-130.png" alt="L_p" style="vertical-align: -6px" /> norm. Though the results of this paper are 
+not so surprising, they are 
+nontrivial and require new methods. To obtain the scaling law for the 
+fastest-mixing reversible random walk, we first explicitly characterize the 
+fastest-mixing reversible random walk on a regular (grid-type) graph in <img class="eq" src="eqs/12800038501-130.png" alt="d" style="vertical-align: -1px" /> 
+dimensions. We subsequently use this to bound the mixing time of the 
+fastest-mixing random walk on <img class="eq" src="eqs/8622782448281137746-130.png" alt="G^d(n,r)" style="vertical-align: -5px" />. In the course of our analysis, we 
+obtain a tight relation between the mixing time of the fastest-mixing symmetric 
+random walk and the fastest-mixing reversible random walk with a specified 
+equilibrium distribution on an arbitrary graph. To study the natural random 
+walk, we first generalize a method of Diaconis and Stroock (1991) to bound 
+eigenvalues based on Poincare's inequality and then apply it to the 
+<img class="eq" src="eqs/8622782448281137746-130.png" alt="G^d(n,r)" style="vertical-align: -5px" /> graph.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:27 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Enhancing Sparsity by Reweighted l1 Minimization</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Enhancing Sparsity by Reweighted l1 Minimization</h1>
+<div id="subtitle">E. J. Candes, M. B. Wakin, and S. Boyd</div>
+</div>
+<p><i>Journal of Fourier Analysis and Applications</i>, 14(5):877-905, 
+special issue on sparsity, December 2008.</p>
+<ul>
+<li><p><a href="pdf/rwl1.pdf">rwl1.pdf</a></p>
+</li>
+</ul>
+<p>It is now well understood that (1) it is possible to reconstruct sparse signals 
+exactly from what appear to be highly incomplete sets of linear measurements 
+and (2) that this can be done by constrained l1-minimization. In this paper, we 
+study a novel method for sparse signal recovery that in many situations 
+outperforms l1-minimization in the sense that substantially fewer measurements 
+are needed for exact recovery. The algorithm consists of solving a sequence of 
+weighted l1-minimization problems where the weights used for the next iteration 
+are computed from the value of the current solution. We present a series of 
+experiments demonstrating the remarkable performance and broad applicability of 
+this algorithm in the areas of sparse signal recovery, statistical estimation, 
+error correction and image processing. Interestingly, superior gains are also 
+achieved when our method is applied to recover signals with assumed 
+near-sparsity in overcomplete representations&#8201;&mdash;&#8201;not by reweighting the l1 norm 
+of the coefficient sequence as is common, but by reweighting the l1 norm of the 
+transformed object. An immediate consequence is the possibility of highly 
+efficient data acquisition protocols by improving on a technique known as 
+compressed sensing.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:30 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

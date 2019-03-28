@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<title><tt>l1_ls</tt>: Simple Matlab Solver for l1-regularized Least Squares Problems</title>
+</head>
+<body>
+<div id="layout-content">
+<div id="toptitle">
+<h1><tt>l1_ls</tt>: Simple Matlab Solver for l1-regularized Least Squares Problems</h1>
+</div>
+<p>Version Beta (Apr 2008)<br />
+<a href="http://www.stanford.edu/~deneb1">Kwangmoo Koh</a>,
+<a href="http://www.stanford.edu/~sjkim">Seung-Jean Kim</a>, and
+<a href="http://www.stanford.edu/~boyd">Stephen Boyd</a></p>
+<h2>Purpose</h2>
+<p><tt>l1_ls</tt> is a Matlab implementation of the interior-point method for
+<img class="eq" src="eqs/1533415667-130.png" alt="ell_1" style="vertical-align: -3px" />-regularized least squares described in the paper
+<a href="http://www.stanford.edu/~boyd/papers/l1_ls.html"><i>A Method for 
+Large-Scale l1-Regularized Least Squares</i></a>.
+<tt>l1_ls</tt> solves an optimization problem of the form</p>
+<p><center>
+<img class="eq" src="eqs/602337058-130.png" alt=" mbox{minimize } |Ax-y|_2^2+lambda|x|_1," style="vertical-align: -5px" /> </p>
+<p></center>
+where the variable is <img class="eq" src="eqs/973879547-130.png" alt="xinmathbf{R}^{n}" style="vertical-align: -1px" />, and the problem data 
+are <img class="eq" src="eqs/1995391867-130.png" alt="Ainmathbf{R}^{mtimes n}" style="vertical-align: -1px" />, <img class="eq" src="eqs/682965627-130.png" alt="yinmathbf{R}^{m}" style="vertical-align: -4px" /> and 
+<img class="eq" src="eqs/1362347308-130.png" alt="lambdainmathbf{R}_{+}^{n}" style="vertical-align: -7px" />.
+Another version of <tt>l1_ls</tt> handles the same problem, with the 
+additional constraint that <img class="eq" src="eqs/1819822983-130.png" alt="x" style="vertical-align: -1px" /> is nonnegative.</p>
+<p><p>
+<tt>l1_ls</tt> is developed for large problems. 
+It can solve large sparse problems with a million variables with 
+high accuracy in a few tens of minutes on a PC.  
+It can also efficiently solve very large dense problems, that 
+arise in sparse signal
+recovery with orthogonal transforms, by exploiting fast algorithms 
+for these transforms.</p>
+<h2>Feedback</h2>
+<p>Please report any bugs to Kwangmoo Koh <a href="mailto:deneb1@stanford.edu">&lt;deneb1@stanford.edu&gt;</a>, Seung-Jean Kim <a href="mailto:sjkim@stanford.edu">&lt;sjkim@stanford.edu&gt;</a> or Stephen Boyd <a href="mailto:boyd@stanford.edu">&lt;boyd@stanford.edu&gt;</a>.</p>
+<h2>Download</h2>
+<p><tt>l1_ls</tt> is distributed under the terms of the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License 2.0</a>.</p>
+<ul>
+<li><p><tt>l1_ls</tt> package: <a href="l1_ls_matlab.zip">(zip file)</a> or
+<a href="l1_ls_matlab.tar.gz">(gzipped tar file)</a></p>
+</li>
+<li><p><a href="l1_ls_usrguide.pdf"><tt>l1_ls</tt> user guide</a> (included in the package, 
+so you don&rsquo;t have to download it separately)</p>
+</li>
+</ul>
+<h2></h2>
+<p><a href="http://www.stanford.edu/~boyd/research.html">Boyd&rsquo;s research group page.</a></p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2008-05-15 16:23:12 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</div>
+</body>
+</html>

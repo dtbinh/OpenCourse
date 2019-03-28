@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>A Primal-Dual Potential Reduction Method for Problems Involving Matrix Inequalities</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>A Primal-Dual Potential Reduction Method for Problems Involving Matrix Inequalities</h1>
+<div id="subtitle">L. Vandenberghe and S. Boyd</div>
+</div>
+<p><i>Mathematical Programming</i>, Series B, 69(1):205-236, 1995.</p>
+<ul>
+<li><p><a href="pdf/pd_pot_red.pdf">pd_pot_red.pdf</a></p>
+</li>
+</ul>
+<p>We describe a potential reduction method for convex optimization problems 
+involving matrix inequalities. The method is based on the theory developed by 
+Nesterov and Nemirovsky and generalizes Gonzaga and Todd's method for linear 
+programming. A worst-case analysis shows that the number of iterations grows as 
+the square root of the problem size, but in practice it appears to grow more 
+slowly. As in other interior-point methods the overall computational effort is 
+therefore dominated by the least-squares system that must be solved in each 
+iteration. A type of conjugate-gradient algorithm can be used for this purpose, 
+which results in important savings for two reasons. First, it allows us to take 
+advantage of the special structure the problems often have (<i>e.g.</i>, Lyapunov or 
+algebraic Riccati inequalities). Second, we show that the polynomial bound on 
+the number of iterations remains valid even if the conjugate-gradient algorithm 
+is not run until completion, which in practice can greatly reduce the 
+computational effort per iteration. We describe in detail how the algorithm 
+works for optimization problems with <tt>L</tt> Lyapunov inequalities, each of size 
+<tt>m</tt>. We prove an overall worst-case operation count of <tt>O(m^{5.5}L^{1.5})</tt>. The 
+average case complexity appears to be closer to <tt>O(m^4L^{1.5})</tt>. This estimate 
+is justified by extensive numerical experimentation, and is consistent with 
+other researchers&rsquo; experience with the practical performance of interior-point 
+algorithms for linear programming. This result means the computational cost of 
+extending current control theory that is based on the solution of Lyapunov or 
+Riccati equations to a theory that is based on the solution of (multiple, 
+coupled) Lyapunov or Riccati inequalities is modest.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:29 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

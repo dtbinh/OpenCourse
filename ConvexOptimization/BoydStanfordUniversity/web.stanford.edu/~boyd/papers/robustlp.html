@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<title>Robust Linear Programming and Optimal Control</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<div id="layout-content">
+<div id="toptitle">
+<h1>Robust Linear Programming and Optimal Control</h1>
+<div id="subtitle">L. Vandenberghe,  S. Boyd, and M. Nouralishahi</div>
+</div>
+<p><i>Proceedings of the 15th IFAC World Congress on Automatic Control</i>,
+July 2002.</p>
+<ul>
+<li><p><a href="pdf/ifacpaper1299.pdf">ifacpaper1299.pdf</a></p>
+</li>
+<li><p><a href="pdf/robustlp.pdf">robustlp.pdf</a></p>
+</li>
+</ul>
+<p>We describe an efficient method for solving an optimal control problem 
+that arises in robust model-predictive control. The problem is to design 
+the input sequence that minimizes the peak tracking error between the 
+output of a linear dynamical system and a desired target output, subject 
+to inequality constraints on the inputs. The system is uncertain, with 
+an impulse response that can take arbitrary values in a given polyhedral 
+set. The method is based on Mehrotra's interior-point method for linear 
+programming, and takes advantage of the problem structure to achieve a
+complexity that grows linearly with the control horizon, and increases as 
+a cubic polynomial as a function of the system order, the number of 
+inputs, and the number of uncertainty parameters.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:30 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

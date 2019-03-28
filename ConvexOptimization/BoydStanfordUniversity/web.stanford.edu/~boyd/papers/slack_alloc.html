@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>An Efficient Method for Large-scale Slack Allocation</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>An Efficient Method for Large-scale Slack Allocation</h1>
+<div id="subtitle">S. Joshi and S. Boyd</div>
+</div>
+<p><i>Engineering Optimization</i>, 41(12)1163-1176, Dec. 2009.</p>
+<ul>
+<li><p><a href="pdf/slack_alloc.pdf">slack_alloc.pdf</a>
+</p>
+</li>
+</ul>
+<p>We consider a timing or project graph, with given delays on the
+edges and given arrival times at the source and sink nodes.  We
+are to find the arrival times at the other nodes; these determine
+the timing slacks, which must be nonnegative, on the edges.  The
+set of possible timing slacks is a polyhedron; to choose one we
+maximize a separable concave utility function, such as the sum of
+the logarithms of the slacks.  This slack allocation problem, for
+which we give a simple statistical interpretation, is convex, and
+can be solved by a variety of methods.  Gradient and coordinate
+ascent methods are simple and scale to large problems, but can
+converge slowly, depending on the topology and problem data.
+The Newton method, in contrast, reliably computes an accurate
+solution, but typically cannot scale beyond problems with a few
+thousand nodes.  In this paper we describe a custom
+truncated Newton method that efficiently computes an accurate
+solution, and scales to large graphs (say, with a million or more
+nodes).  Our method typically requires just a few hundred
+iterations, with each iteration requiring a few passes over the
+graph; in particular, our method has approximately linear
+complexity in the size of the problem.  The same approach can be
+used to solve slack allocation problems with constraints, using
+an interior-point method that relies on our custom
+truncated Newton approach.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:30 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

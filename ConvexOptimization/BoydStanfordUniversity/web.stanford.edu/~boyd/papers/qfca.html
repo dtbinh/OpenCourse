@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Quantitative Flux Coupling Analysis</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Quantitative Flux Coupling Analysis</h1>
+<div id="subtitle">M. Tefagh and S. Boyd</div>
+</div>
+<p><i>Journal of Mathematical Biology</i>, online, December 2018.</p>
+<ul>
+<li><p><a href="pdf/qfca.pdf">Manuscript</a></p>
+</li>
+<li><p><a href="https://mtefagh.github.io/qfca/">QFCA</a></p>
+</li>
+</ul>
+<p><i>Flux coupling analysis</i> (FCA) aims to describe the functional dependencies among reactions 
+in a metabolic network. Currently studied coupling relations are qualitative in the sense that
+they identify pairs of reactions for which the activity of one reaction necessitates the activity 
+of the other one, but without giving any numerical bounds relating the possible activity rates. 
+The potential applications of FCA are heavily investigated, however apart from some trivial 
+cases there is no clue of what bottleneck in the metabolic network causes each dependency.</p>
+<p>In this article, we introduce a quantitative approach to the same flux coupling problem named 
+<i>quantitative flux coupling analysis</i> (QFCA). It generalizes the current concepts as we 
+show that all the qualitative information provided by FCA is readily available in the quantitative 
+flux coupling equations of QFCA, without the need for any additional analysis. Moreover, we design 
+a simple algorithm to efficiently identify these flux coupling equations which scales up to the 
+genome-scale metabolic networks with thousands of reactions and metabolites in an effective way.</p>
+<p>Furthermore, this framework enables us to quantify the strength of the flux coupling relations. 
+We also provide different biologically meaningful interpretations, including one which gives 
+an intuitive certificate of precisely which metabolites in the network enforce each flux coupling 
+relation. Eventually, we conclude by suggesting the possible application of QFCA to the metabolic 
+gap-filling problem, which we only begin to address here and is left for future research to further 
+investigate.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:29 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

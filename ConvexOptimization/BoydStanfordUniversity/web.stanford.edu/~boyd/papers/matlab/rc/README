@@ -1,0 +1,13 @@
+This directory contains the Matlab code that was used to create
+the examples in the paper `Optimizing dominant time constant
+in RC circuits' (Vandenberghe, Boyd, El Gamal).
+
+The code calls the program SP, which is available in 
+/pub/boyd/semidef_prog.
+
+example1.m:  wire sizing
+example2.m:  combined sizing of drivers, repeaters and wire
+example3.m:  wire sizing and topology design 
+example4.m:  tri-state bus sizing and topology design
+example5.m:  combined wire sizing and spacing 
+

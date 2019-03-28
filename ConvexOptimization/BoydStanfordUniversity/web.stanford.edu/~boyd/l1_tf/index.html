@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<title><tt>l1_tf</tt>: Software for l1 Trend Filtering</title>
+</head>
+<body>
+<div id="layout-content">
+<div id="toptitle">
+<h1><tt>l1_tf</tt>: Software for l1 Trend Filtering</h1>
+</div>
+<p>Version Beta (May 2008)<br />
+<a href="http://www.stanford.edu/~deneb1">Kwangmoo Koh</a>,
+<a href="http://www.stanford.edu/~sjkim">Seung-Jean Kim</a>, and
+<a href="http://www.stanford.edu/~boyd">Stephen Boyd</a></p>
+<h2>Purpose</h2>
+<p><tt>l1_tf</tt> is an implementation of the interior-point method
+for <img class="eq" src="eqs/1533415667-130.png" alt="ell_1" style="vertical-align: -3px" /> trend filtering (also called trend estimation) 
+described in the paper
+<a href="http://www.stanford.edu/~boyd/l1_trend_filter.html"><i>l1 Trend 
+Filtering</i></a>.
+<tt>l1_tf</tt> solves an optimization problem of the form</p>
+<p><center>
+<img class="eq" src="eqs/197470770-130.png" alt=" (1/2)|x-y|_2^2+lambda|Dx|_1," style="vertical-align: -5px" /></p>
+<p></center>
+where the variable is <img class="eq" src="eqs/973879547-130.png" alt="xinmathbf{R}^{n}" style="vertical-align: -1px" />, and the problem data are
+<img class="eq" src="eqs/683965496-130.png" alt="yinmathbf{R}^{n}" style="vertical-align: -4px" /> and <img class="eq" src="eqs/1362347308-130.png" alt="lambdainmathbf{R}_{+}^{n}" style="vertical-align: -7px" />. Here,
+<img class="eq" src="eqs/35703108-130.png" alt="D in mathbf{R}^{(n-2) times n}" style="vertical-align: -1px" /> is the second-order difference matrix</p>
+<p><center>
+<img class="eq" src="eqs/1489478981-130.png" alt="tiny D = left[ begin{array}{rrrrrrrr} 1 &amp;  -2 &amp; 1   &amp; 1 &amp; -2  &amp;  1   &amp; &amp; ddots &amp; ddots &amp; ddots   &amp; &amp; &amp; 1 &amp;  -2 &amp; 1  &amp; &amp; &amp; &amp; 1 &amp; -2 &amp; 1 end{array}  right]. " style="vertical-align: -58px" /></p>
+<p></center></p>
+<p><p>
+The figure below shows the l1 trend filtering
+result for (the log of) the S&amp;P 500 index for the period March
+25, 1999 to March 9, 2007, with <img class="eq" src="eqs/150477493-130.png" alt="lambda=50" style="vertical-align: -1px" />.</p>
+<p></p></p>
+<p><center></p>
+<p><img alt="S&amp;P500" src="snp500_l1t_0200.png"></p>
+<p></center></p>
+<h2>Feedback</h2>
+<p>Please report any bugs to Kwangmoo Koh <a href="mailto:deneb1@stanford.edu">&lt;deneb1@stanford.edu&gt;</a>, Seung-Jean Kim <a href="mailto:sjkim@stanford.edu">&lt;sjkim@stanford.edu&gt;</a> or Stephen Boyd <a href="mailto:boyd@stanford.edu">&lt;boyd@stanford.edu&gt;</a>.</p>
+<h2>Download</h2>
+<p><tt>l1_tf</tt> is distributed under the terms of the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License 2.0</a>.</p>
+<p><tt>l1_tf</tt> is implemented in both Matlab and C.</p>
+<ul>
+<li><p><tt>l1_tf</tt> Matlab package: <a href="l1_tf_matlab.tar.gz">gzipped tar file</a> or <a href="matlab">directory</a></p>
+</li>
+<li><p><tt>l1_tf</tt> C package: <a href="l1_tf.tar.gz">gzipped tar file</a> or <a href="C">directory</a></p>
+</li>
+</ul>
+<h2></h2>
+<p><a href="http://www.stanford.edu/~boyd/research.html">Boyd&rsquo;s research group page.</a></p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2008-05-15 15:27:35 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</div>
+</body>
+</html>

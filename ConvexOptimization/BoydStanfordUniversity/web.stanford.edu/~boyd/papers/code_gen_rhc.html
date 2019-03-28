@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Receding Horizon Control: Automatic Generation of High-Speed Solvers</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Receding Horizon Control: Automatic Generation of High-Speed Solvers</h1>
+<div id="subtitle">J. Mattingley, Y. Wang, and S. Boyd</div>
+</div>
+<p><i>IEEE Control Systems Magazine</i>, 31(3):52&ndash;65, June 2011.<br />
+Shorter version appeared with title 
+<i>Code Generation for Receding Horizon Control</i> in
+<i>Proceedings IEEE Multi-Conference on Systems and Control</i>,
+pages 985&ndash;992, Yokohama, Japan, September 2010.</p>
+<ul>
+<li><p><a href="pdf/rhc_aut_gen_solvers.pdf">CSM paper</a></p>
+</li>
+<li><p><a href="pdf/code_gen_rhc.pdf">Final manuscript</a></p>
+</li>
+<li><p><a href="pdf/code_gen_rhc_msc.pdf">Proceedings MSC paper</a></p>
+</li>
+</ul>
+<p>Receding horizon control (RHC), also known as model predictive control (MPC), is
+a general purpose control scheme that involves repeatedly solving a constrained
+optimization problem, using predictions of future costs, disturbances, and
+constraints over a moving time horizon to choose the control action.
+RHC handles constraints, such as limits on control variables, in a direct
+and natural way, and generates sophisticated feed-forward actions.
+The main disadvantage of RHC is that an optimization problem has to be solved
+at each step, which leads many control engineers to think that it
+can only be used for systems with slow sampling (say, less than one Hz).
+Several techniques have recently been developed to get around this problem.
+In one approach, called explicit MPC,
+the optimization problem is solved analytically and explicitly, so
+evaluating the control policy requires only a lookup table search.
+Another approach, which is our focus here, is to exploit the structure
+in the optimization problem to solve it efficiently.
+This approach has previously been applied in several specific cases, using
+custom, hand written code.
+However, this requires significant development time, and
+specialist knowledge of optimization and numerical algorithms.
+Recent developments in convex optimization code
+generation have made the task much easier and quicker.
+With code generation, the RHC policy is specified in a high-level
+language, then automatically transformed
+into source code for a custom solver.  The custom solver is typically
+orders of magnitude faster than a generic solver, solving in
+milliseconds or microseconds on standard processors, making
+it possible to use RHC policies at kilohertz rates.
+In this paper we demonstrate code generation with four
+simple control examples. They show a range of problems that may be handled by
+RHC. In every case, we show a speedup of several hundred times from
+generic parser-solvers.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:25 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

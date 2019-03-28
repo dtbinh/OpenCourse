@@ -1,0 +1,10 @@
+This directory contains the Matlab code that was used to create
+the examples in the paper `Optimal wire and transistor sizing
+for circuits with non-tree topology' (Vandenberghe, Boyd, El Gamal).
+
+The code calls the program SP, which is available in 
+/pub/boyd/semidef_prog.
+
+example1.m:  clock mesh
+example2.m:  combined wire sizing and spacing 
+

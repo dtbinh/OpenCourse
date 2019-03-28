@@ -1,0 +1,569 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>control</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2013-05-07"><meta name="m-file" content="control"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Problem data</a></li><li><a href="#4">CVX</a></li><li><a href="#5">ADMM</a></li><li><a href="#6">Plotting</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> h = control
+</pre><h2>Problem data<a name="3"></a></h2><pre class="codeinput">s = RandStream.create(<span class="string">'mt19937ar'</span>,<span class="string">'seed'</span>,0);
+RandStream.setDefaultStream(s);
+
+n = 50; <span class="comment">% decision variables</span>
+m = 5;  <span class="comment">% PWL components</span>
+
+A = randn(m,4*n,8);
+b = randn(m,1);
+
+f = @(u,A) max(A*u(:) + b);
+</pre><h2>CVX<a name="4"></a></h2><pre class="codeinput">tic
+cvx_begin <span class="string">quiet</span>
+    variables <span class="string">y_aaa(n,4)</span> <span class="string">y_aab(n,4)</span> <span class="string">y_aba(n,4)</span> <span class="string">y_abb(n,4)</span> <span class="keyword">...</span>
+              <span class="string">y_baa(n,4)</span> <span class="string">y_bab(n,4)</span> <span class="string">y_bba(n,4)</span> <span class="string">y_bbb(n,4)</span>;
+    obj = f(y_aaa,A(:,:,1)) + f(y_aab,A(:,:,2)) + f(y_aba,A(:,:,3)) + f(y_abb,A(:,:,4)) + <span class="keyword">...</span>
+          f(y_baa,A(:,:,5)) + f(y_bab,A(:,:,6)) + f(y_bba,A(:,:,7)) + f(y_bbb,A(:,:,8));
+    minimize(obj);
+    subject <span class="string">to</span>
+
+        <span class="comment">% all initial actions must agree</span>
+        y_aaa(:,1) == y_aab(:,1);
+        y_aab(:,1) == y_aba(:,1);
+        y_aba(:,1) == y_abb(:,1);
+        y_abb(:,1) == y_baa(:,1);
+        y_baa(:,1) == y_bab(:,1);
+        y_bab(:,1) == y_bba(:,1);
+        y_bba(:,1) == y_bbb(:,1);
+
+        y_aaa(:,2) == y_aab(:,2);
+        y_aab(:,2) == y_aba(:,2);
+        y_aba(:,2) == y_abb(:,2);
+
+        y_baa(:,2) == y_bab(:,2);
+        y_bab(:,2) == y_bba(:,2);
+        y_bba(:,2) == y_bbb(:,2);
+
+        y_aaa(:,3) == y_aab(:,3);
+        y_aba(:,3) == y_abb(:,3);
+        y_baa(:,3) == y_bab(:,3);
+        y_bba(:,3) == y_bbb(:,3);
+
+        y_aaa &lt;= 1;
+        y_aab &lt;= 1;
+        y_aba &lt;= 1;
+        y_abb &lt;= 1;
+        y_baa &lt;= 1;
+        y_bab &lt;= 1;
+        y_bba &lt;= 1;
+        y_bbb &lt;= 1;
+
+        y_aaa &gt;= -1;
+        y_aab &gt;= -1;
+        y_aba &gt;= -1;
+        y_abb &gt;= -1;
+        y_baa &gt;= -1;
+        y_bab &gt;= -1;
+        y_bba &gt;= -1;
+        y_bbb &gt;= -1;
+cvx_end
+toc
+
+h.p_cvx = cvx_optval/8;
+
+<span class="comment">% Prescient solution</span>
+cvx_begin <span class="string">quiet</span>
+    variables <span class="string">w_aaa(n,4)</span> <span class="string">w_aab(n,4)</span> <span class="string">w_aba(n,4)</span> <span class="string">w_abb(n,4)</span> <span class="keyword">...</span>
+              <span class="string">w_baa(n,4)</span> <span class="string">w_bab(n,4)</span> <span class="string">w_bba(n,4)</span> <span class="string">w_bbb(n,4)</span>;
+    obj = f(w_aaa,A(:,:,1)) + f(w_aab,A(:,:,2)) + f(w_aba,A(:,:,3)) + f(w_abb,A(:,:,4)) + <span class="keyword">...</span>
+          f(w_baa,A(:,:,5)) + f(w_bab,A(:,:,6)) + f(w_bba,A(:,:,7)) + f(w_bbb,A(:,:,8));
+    minimize(obj);
+    subject <span class="string">to</span>
+        w_aaa &lt;= 1;
+        w_aab &lt;= 1;
+        w_aba &lt;= 1;
+        w_abb &lt;= 1;
+        w_baa &lt;= 1;
+        w_bab &lt;= 1;
+        w_bba &lt;= 1;
+        w_bbb &lt;= 1;
+        w_aaa &gt;= -1;
+        w_aab &gt;= -1;
+        w_aba &gt;= -1;
+        w_abb &gt;= -1;
+        w_baa &gt;= -1;
+        w_bab &gt;= -1;
+        w_bba &gt;= -1;
+        w_bbb &gt;= -1;
+cvx_end
+
+h.p_cvx_pres = cvx_optval/8;
+</pre><pre class="codeoutput">Elapsed time is 0.291739 seconds.
+</pre><h2>ADMM<a name="5"></a></h2><pre class="codeinput">MAX_ITER = 100;
+ABSTOL   = 1e-4;
+RELTOL   = 1e-2;
+
+lambda = 1;
+
+x_aaa = zeros(n,4); x_aab = zeros(n,4); x_aba = zeros(n,4); x_abb = zeros(n,4);
+x_baa = zeros(n,4); x_bab = zeros(n,4); x_bba = zeros(n,4); x_bbb = zeros(n,4);
+
+z_0   = zeros(n,1);
+z_a   = zeros(n,1); z_b   = zeros(n,1);
+z_aa  = zeros(n,1); z_ab  = zeros(n,1); z_ba  = zeros(n,1); z_bb  = zeros(n,1);
+z_aaa = zeros(n,4); z_aab = zeros(n,4); z_aba = zeros(n,4); z_abb = zeros(n,4);
+z_baa = zeros(n,4); z_bab = zeros(n,4); z_bba = zeros(n,4); z_bbb = zeros(n,4);
+z = [ z_aaa z_aab z_aba z_abb z_baa z_bab z_bba z_bbb ];
+
+u_aaa = zeros(n,4); u_aab = zeros(n,4); u_aba = zeros(n,4); u_abb = zeros(n,4);
+u_baa = zeros(n,4); u_bab = zeros(n,4); u_bba = zeros(n,4); u_bbb = zeros(n,4);
+
+tstart = tic;
+tx = 0;
+
+<span class="keyword">for</span> k = 1:MAX_ITER
+
+    <span class="comment">% x-update</span>
+    titer = tic;
+    x_aaa = prox_f(z_aaa - u_aaa, lambda, A(:,:,1), b);
+    x_aab = prox_f(z_aab - u_aab, lambda, A(:,:,2), b);
+    x_aba = prox_f(z_aba - u_aba, lambda, A(:,:,3), b);
+    x_abb = prox_f(z_abb - u_abb, lambda, A(:,:,4), b);
+    x_baa = prox_f(z_baa - u_baa, lambda, A(:,:,5), b);
+    x_bab = prox_f(z_bab - u_bab, lambda, A(:,:,6), b);
+    x_bba = prox_f(z_bba - u_bba, lambda, A(:,:,7), b);
+    x_bbb = prox_f(z_bbb - u_bbb, lambda, A(:,:,8), b);
+    tx = tx + toc(titer);
+
+    <span class="comment">% z-update</span>
+    <span class="comment">% Note: should strictly be x + u, but u's sum to zero, so are omitted.</span>
+    z_0 = avg(x_aaa(:,1), x_aab(:,1), x_aba(:,1), x_abb(:,1), <span class="keyword">...</span>
+              x_baa(:,1), x_bab(:,1), x_bba(:,1), x_bbb(:,1));
+
+    z_a = avg(x_aaa(:,2), x_aab(:,2), x_aba(:,2), x_abb(:,2));
+    z_b = avg(x_baa(:,2), x_bab(:,2), x_bba(:,2), x_bbb(:,2));
+
+    z_aa = avg(x_aaa(:,3), x_aab(:,3));
+    z_ab = avg(x_aba(:,3), x_abb(:,3));
+    z_ba = avg(x_baa(:,3), x_bab(:,3));
+    z_bb = avg(x_bba(:,3), x_bbb(:,3));
+
+    z_aaa = [z_0 z_a z_aa x_aaa(:,4)];
+    z_aab = [z_0 z_a z_aa x_aab(:,4)];
+    z_aba = [z_0 z_a z_ab x_aba(:,4)];
+    z_abb = [z_0 z_a z_ab x_abb(:,4)];
+    z_baa = [z_0 z_b z_ba x_baa(:,4)];
+    z_bab = [z_0 z_b z_ba x_bab(:,4)];
+    z_bba = [z_0 z_b z_bb x_bba(:,4)];
+    z_bbb = [z_0 z_b z_bb x_bbb(:,4)];
+
+    <span class="comment">% u-update</span>
+    u_aaa = u_aaa + x_aaa - z_aaa;
+    u_aab = u_aab + x_aab - z_aab;
+    u_aba = u_aba + x_aba - z_aba;
+    u_abb = u_abb + x_abb - z_abb;
+    u_baa = u_baa + x_baa - z_baa;
+    u_bab = u_bab + x_bab - z_bab;
+    u_bba = u_bba + x_bba - z_bba;
+    u_bbb = u_bbb + x_bbb - z_bbb;
+
+    <span class="comment">% diagnostics, reporting, termination checks</span>
+    x = [ x_aaa x_aab x_aba x_abb x_baa x_bab x_bba x_bbb ];
+    zold = z;
+    z = [ z_aaa z_aab z_aba z_abb z_baa z_bab z_bba z_bbb ];
+    u = [ u_aaa u_aab u_aba u_abb u_baa u_bab u_bba u_bbb ];
+
+    h.r_norm(k)   = norm(x - z,<span class="string">'fro'</span>);
+    h.s_norm(k)   = norm(-(z - zold)/lambda,<span class="string">'fro'</span>);
+    h.eps_pri(k)  = sqrt(numel(x))*ABSTOL + RELTOL*max(norm(x,<span class="string">'fro'</span>), norm(-z,<span class="string">'fro'</span>));
+    h.eps_dual(k) = sqrt(numel(x))*ABSTOL + RELTOL*norm(u/lambda,<span class="string">'fro'</span>);
+
+    h.objval(k)   = (1/8)*(f(z_aaa,A(:,:,1)) + f(z_aab,A(:,:,2)) + f(z_aba,A(:,:,3)) + <span class="keyword">...</span>
+                           f(z_abb,A(:,:,4)) + f(z_baa,A(:,:,5)) + f(z_bab,A(:,:,6)) + <span class="keyword">...</span>
+                           f(z_bba,A(:,:,7)) + f(z_bbb,A(:,:,8)));
+
+    <span class="keyword">if</span> mod(k,10) == 0
+        fprintf(<span class="string">'%3d\t%10.4f\t%10.4f\t%10.4f\t%10.4f\n'</span>, k, <span class="keyword">...</span>
+            h.r_norm(k), h.eps_pri(k), h.s_norm(k), h.eps_dual(k));
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> h.r_norm(k) &lt; h.eps_pri(k) &amp;&amp; h.s_norm(k) &lt; h.eps_dual(k)
+         <span class="keyword">break</span>;
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+tx/k
+toc(tstart)
+</pre><pre class="codeoutput"> 10	    0.3626	    0.3495	    1.3970	    0.1377
+ 20	    0.1103	    0.3718	    0.5046	    0.1376
+ 30	    0.0878	    0.3801	    0.2681	    0.1377
+ 40	    0.0399	    0.3839	    0.1831	    0.1377
+ans =
+    0.0058
+Elapsed time is 0.299336 seconds.
+</pre><h2>Plotting<a name="6"></a></h2><pre class="codeinput">figure(1);
+
+<span class="comment">% objective convergence (evaluated with z^k)</span>
+hold <span class="string">on</span>;
+plot(h.objval);
+plot(repmat(h.p_cvx,k,1), <span class="string">'k--'</span>);
+plot(repmat(h.p_cvx_pres,k,1), <span class="string">'k--'</span>);
+hold <span class="string">off</span>;
+xlim([0 25]);
+ylim([-80 -10]);
+print <span class="string">-depsc</span> <span class="string">ctrl_progress.eps</span>;
+</pre><img vspace="5" hspace="5" src="control_01.png" alt=""> <pre class="codeinput"><span class="keyword">end</span>
+
+<span class="keyword">function</span> x = avg(varargin)
+    N = length(varargin);
+    x = 0;
+    <span class="keyword">for</span> k = 1:N
+        x = x + varargin{k};
+    <span class="keyword">end</span>
+    x = x/N;
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> x = prox_f(v, lambda, A, b)
+<span class="comment">% CVXGEN-based solver.</span>
+    [n T] = size(v);
+    params.A_0 = A(:,1:n);
+    params.A_1 = A(:,n+1:2*n);
+    params.A_2 = A(:,2*n+1:3*n);
+    params.A_3 = A(:,3*n+1:4*n);
+    params.lambda = lambda;
+    params.b   = b;
+    params.v_0 = v(:,1);
+    params.v_1 = v(:,2);
+    params.v_2 = v(:,3);
+    params.v_3 = v(:,4);
+    settings.verbose = 0;
+    vars = csolve(params, settings);
+    x = [vars.x_0 vars.x_1 vars.x_2 vars.x_3];
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> x = prox_f_cvx(v, lambda, f, A)
+<span class="comment">% For testing purposes.</span>
+    [n T] = size(v);
+    cvx_begin <span class="string">quiet</span>
+        variable <span class="string">x(n,T)</span>
+        minimize(f(x,A) + (1/(2*lambda))*square_pos(norm(x - v,<span class="string">'fro'</span>)))
+        subject <span class="string">to</span>
+            x &lt;= 1;
+            x &gt;= -1;
+    cvx_end
+<span class="keyword">end</span>
+</pre>
+<p class="footer"><br>
+      Published with MATLAB&reg; 7.10<br></p></div><!--
+##### SOURCE BEGIN #####
+function h = control
+
+%% Problem data
+
+s = RandStream.create('mt19937ar','seed',0);
+RandStream.setDefaultStream(s);
+
+n = 50; % decision variables
+m = 5;  % PWL components
+
+A = randn(m,4*n,8);
+b = randn(m,1);
+
+f = @(u,A) max(A*u(:) + b);
+
+%% CVX
+
+tic
+cvx_begin quiet
+    variables y_aaa(n,4) y_aab(n,4) y_aba(n,4) y_abb(n,4) ...
+              y_baa(n,4) y_bab(n,4) y_bba(n,4) y_bbb(n,4);
+    obj = f(y_aaa,A(:,:,1)) + f(y_aab,A(:,:,2)) + f(y_aba,A(:,:,3)) + f(y_abb,A(:,:,4)) + ...
+          f(y_baa,A(:,:,5)) + f(y_bab,A(:,:,6)) + f(y_bba,A(:,:,7)) + f(y_bbb,A(:,:,8));
+    minimize(obj);
+    subject to
+
+        % all initial actions must agree
+        y_aaa(:,1) == y_aab(:,1);
+        y_aab(:,1) == y_aba(:,1);
+        y_aba(:,1) == y_abb(:,1);
+        y_abb(:,1) == y_baa(:,1);
+        y_baa(:,1) == y_bab(:,1);
+        y_bab(:,1) == y_bba(:,1);
+        y_bba(:,1) == y_bbb(:,1);
+
+        y_aaa(:,2) == y_aab(:,2);
+        y_aab(:,2) == y_aba(:,2);
+        y_aba(:,2) == y_abb(:,2);
+
+        y_baa(:,2) == y_bab(:,2);
+        y_bab(:,2) == y_bba(:,2);
+        y_bba(:,2) == y_bbb(:,2);
+
+        y_aaa(:,3) == y_aab(:,3);
+        y_aba(:,3) == y_abb(:,3);
+        y_baa(:,3) == y_bab(:,3);
+        y_bba(:,3) == y_bbb(:,3);
+
+        y_aaa <= 1;
+        y_aab <= 1;
+        y_aba <= 1;
+        y_abb <= 1;
+        y_baa <= 1;
+        y_bab <= 1;
+        y_bba <= 1;
+        y_bbb <= 1;
+
+        y_aaa >= -1;
+        y_aab >= -1;
+        y_aba >= -1;
+        y_abb >= -1;
+        y_baa >= -1;
+        y_bab >= -1;
+        y_bba >= -1;
+        y_bbb >= -1;
+cvx_end
+toc
+
+h.p_cvx = cvx_optval/8;
+
+% Prescient solution
+cvx_begin quiet
+    variables w_aaa(n,4) w_aab(n,4) w_aba(n,4) w_abb(n,4) ...
+              w_baa(n,4) w_bab(n,4) w_bba(n,4) w_bbb(n,4);
+    obj = f(w_aaa,A(:,:,1)) + f(w_aab,A(:,:,2)) + f(w_aba,A(:,:,3)) + f(w_abb,A(:,:,4)) + ...
+          f(w_baa,A(:,:,5)) + f(w_bab,A(:,:,6)) + f(w_bba,A(:,:,7)) + f(w_bbb,A(:,:,8));
+    minimize(obj);
+    subject to
+        w_aaa <= 1;
+        w_aab <= 1;
+        w_aba <= 1;
+        w_abb <= 1;
+        w_baa <= 1;
+        w_bab <= 1;
+        w_bba <= 1;
+        w_bbb <= 1;
+        w_aaa >= -1;
+        w_aab >= -1;
+        w_aba >= -1;
+        w_abb >= -1;
+        w_baa >= -1;
+        w_bab >= -1;
+        w_bba >= -1;
+        w_bbb >= -1;
+cvx_end
+
+h.p_cvx_pres = cvx_optval/8;
+
+%% ADMM
+
+MAX_ITER = 100;
+ABSTOL   = 1e-4;
+RELTOL   = 1e-2;
+
+lambda = 1;
+
+x_aaa = zeros(n,4); x_aab = zeros(n,4); x_aba = zeros(n,4); x_abb = zeros(n,4);
+x_baa = zeros(n,4); x_bab = zeros(n,4); x_bba = zeros(n,4); x_bbb = zeros(n,4);
+
+z_0   = zeros(n,1);
+z_a   = zeros(n,1); z_b   = zeros(n,1);
+z_aa  = zeros(n,1); z_ab  = zeros(n,1); z_ba  = zeros(n,1); z_bb  = zeros(n,1);
+z_aaa = zeros(n,4); z_aab = zeros(n,4); z_aba = zeros(n,4); z_abb = zeros(n,4);
+z_baa = zeros(n,4); z_bab = zeros(n,4); z_bba = zeros(n,4); z_bbb = zeros(n,4);
+z = [ z_aaa z_aab z_aba z_abb z_baa z_bab z_bba z_bbb ];
+
+u_aaa = zeros(n,4); u_aab = zeros(n,4); u_aba = zeros(n,4); u_abb = zeros(n,4);
+u_baa = zeros(n,4); u_bab = zeros(n,4); u_bba = zeros(n,4); u_bbb = zeros(n,4);
+
+tstart = tic;
+tx = 0;
+
+for k = 1:MAX_ITER
+
+    % x-update
+    titer = tic;
+    x_aaa = prox_f(z_aaa - u_aaa, lambda, A(:,:,1), b);
+    x_aab = prox_f(z_aab - u_aab, lambda, A(:,:,2), b);
+    x_aba = prox_f(z_aba - u_aba, lambda, A(:,:,3), b);
+    x_abb = prox_f(z_abb - u_abb, lambda, A(:,:,4), b);
+    x_baa = prox_f(z_baa - u_baa, lambda, A(:,:,5), b);
+    x_bab = prox_f(z_bab - u_bab, lambda, A(:,:,6), b);
+    x_bba = prox_f(z_bba - u_bba, lambda, A(:,:,7), b);
+    x_bbb = prox_f(z_bbb - u_bbb, lambda, A(:,:,8), b);
+    tx = tx + toc(titer);
+
+    % z-update
+    % Note: should strictly be x + u, but u's sum to zero, so are omitted.
+    z_0 = avg(x_aaa(:,1), x_aab(:,1), x_aba(:,1), x_abb(:,1), ...
+              x_baa(:,1), x_bab(:,1), x_bba(:,1), x_bbb(:,1));
+
+    z_a = avg(x_aaa(:,2), x_aab(:,2), x_aba(:,2), x_abb(:,2));
+    z_b = avg(x_baa(:,2), x_bab(:,2), x_bba(:,2), x_bbb(:,2));
+
+    z_aa = avg(x_aaa(:,3), x_aab(:,3));
+    z_ab = avg(x_aba(:,3), x_abb(:,3));
+    z_ba = avg(x_baa(:,3), x_bab(:,3));
+    z_bb = avg(x_bba(:,3), x_bbb(:,3));
+
+    z_aaa = [z_0 z_a z_aa x_aaa(:,4)];
+    z_aab = [z_0 z_a z_aa x_aab(:,4)];
+    z_aba = [z_0 z_a z_ab x_aba(:,4)];
+    z_abb = [z_0 z_a z_ab x_abb(:,4)];
+    z_baa = [z_0 z_b z_ba x_baa(:,4)];
+    z_bab = [z_0 z_b z_ba x_bab(:,4)];
+    z_bba = [z_0 z_b z_bb x_bba(:,4)];
+    z_bbb = [z_0 z_b z_bb x_bbb(:,4)];
+
+    % u-update
+    u_aaa = u_aaa + x_aaa - z_aaa;
+    u_aab = u_aab + x_aab - z_aab;
+    u_aba = u_aba + x_aba - z_aba;
+    u_abb = u_abb + x_abb - z_abb;
+    u_baa = u_baa + x_baa - z_baa;
+    u_bab = u_bab + x_bab - z_bab;
+    u_bba = u_bba + x_bba - z_bba;
+    u_bbb = u_bbb + x_bbb - z_bbb;
+
+    % diagnostics, reporting, termination checks
+    x = [ x_aaa x_aab x_aba x_abb x_baa x_bab x_bba x_bbb ];
+    zold = z;
+    z = [ z_aaa z_aab z_aba z_abb z_baa z_bab z_bba z_bbb ];
+    u = [ u_aaa u_aab u_aba u_abb u_baa u_bab u_bba u_bbb ];
+
+    h.r_norm(k)   = norm(x - z,'fro');
+    h.s_norm(k)   = norm(-(z - zold)/lambda,'fro');
+    h.eps_pri(k)  = sqrt(numel(x))*ABSTOL + RELTOL*max(norm(x,'fro'), norm(-z,'fro'));
+    h.eps_dual(k) = sqrt(numel(x))*ABSTOL + RELTOL*norm(u/lambda,'fro');
+
+    h.objval(k)   = (1/8)*(f(z_aaa,A(:,:,1)) + f(z_aab,A(:,:,2)) + f(z_aba,A(:,:,3)) + ...
+                           f(z_abb,A(:,:,4)) + f(z_baa,A(:,:,5)) + f(z_bab,A(:,:,6)) + ...
+                           f(z_bba,A(:,:,7)) + f(z_bbb,A(:,:,8)));
+
+    if mod(k,10) == 0
+        fprintf('%3d\t%10.4f\t%10.4f\t%10.4f\t%10.4f\n', k, ...
+            h.r_norm(k), h.eps_pri(k), h.s_norm(k), h.eps_dual(k));
+    end
+
+    if h.r_norm(k) < h.eps_pri(k) && h.s_norm(k) < h.eps_dual(k)
+         break;
+    end
+
+end
+
+tx/k
+toc(tstart)
+
+%% Plotting
+
+figure(1);
+
+% objective convergence (evaluated with z^k)
+hold on;
+plot(h.objval); 
+plot(repmat(h.p_cvx,k,1), 'kREPLACE_WITH_DASH_DASH');
+plot(repmat(h.p_cvx_pres,k,1), 'kREPLACE_WITH_DASH_DASH');
+hold off;
+xlim([0 25]);
+ylim([-80 -10]);
+print -depsc ctrl_progress.eps;
+
+end
+
+function x = avg(varargin)
+    N = length(varargin);
+    x = 0;
+    for k = 1:N
+        x = x + varargin{k};
+    end
+    x = x/N;
+end
+
+function x = prox_f(v, lambda, A, b)
+% CVXGEN-based solver.
+    [n T] = size(v);
+    params.A_0 = A(:,1:n);
+    params.A_1 = A(:,n+1:2*n);
+    params.A_2 = A(:,2*n+1:3*n);
+    params.A_3 = A(:,3*n+1:4*n);
+    params.lambda = lambda;
+    params.b   = b;
+    params.v_0 = v(:,1);
+    params.v_1 = v(:,2);
+    params.v_2 = v(:,3);
+    params.v_3 = v(:,4);
+    settings.verbose = 0;
+    vars = csolve(params, settings);
+    x = [vars.x_0 vars.x_1 vars.x_2 vars.x_3];
+end
+
+function x = prox_f_cvx(v, lambda, f, A)
+% For testing purposes.
+    [n T] = size(v);
+    cvx_begin quiet
+        variable x(n,T)
+        minimize(f(x,A) + (1/(2*lambda))*square_pos(norm(x - v,'fro')))
+        subject to
+            x <= 1;
+            x >= -1;
+    cvx_end
+end
+
+
+##### SOURCE END #####
+--></body></html>

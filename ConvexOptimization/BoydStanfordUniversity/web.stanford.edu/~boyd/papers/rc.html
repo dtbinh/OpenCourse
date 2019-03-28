@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Optimizing Dominant Time Constant in RC Circuits</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Optimizing Dominant Time Constant in RC Circuits</h1>
+<div id="subtitle">L. Vandenberghe, S. Boyd, and A. El Gamal</div>
+</div>
+<p><i>IEEE Transactions on Computer Aided Design</i>, 17(2):110-125, February 1998.</p>
+<ul>
+<li><p>Full report: <a href="pdf/rc.pdf">rc.pdf</a></p>
+</li>
+<li><p>Final paper: <a href="pdf/rc_final.pdf">rc_final.pdf</a></p>
+</li>
+<li><p><a href="matlab/rc/">Matlab code for the examples</a>.  To run these Matlab scripts,
+you need <a href="http://www.stanford.edu/~boyd/cvx/">CVX</a>.</p>
+</li>
+</ul>
+<p>We propose to use the dominant time constant of a resistor-capacitor (RC) 
+circuit as a measure of the signal propagation delay through the circuit. We 
+show that the dominant time constant is a quasiconvex function of the 
+conductances and capacitances, and use this property to cast several 
+interesting design problems as convex optimization problems, specifically, 
+semidefinite programs (SDPs). For example, assuming that the conductances and 
+capacitances are affine functions of the design parameters (which is a common 
+model in transistor or interconnect wire sizing), one can minimize the power 
+consumption or the area subject to an upper bound on the dominant time 
+constant, or compute the optimal tradeoff surface between power, dominant time 
+constant, and area. We will also note that, to a certain extent, convex 
+optimization can be used to design the topology of the interconnect wires. This 
+approach has two advantages over methods based on Elmore delay optimization. 
+First, it handles a far wider class of circuits, <i>e.g.</i>, those with 
+non-grounded capacitors. Second, it always results in convex optimization 
+problems for which very efficient interior-point methods have recently been 
+developed. We illustrate the method, and extensions, with several examples 
+involving optimal wire and transistor sizing.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:29 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

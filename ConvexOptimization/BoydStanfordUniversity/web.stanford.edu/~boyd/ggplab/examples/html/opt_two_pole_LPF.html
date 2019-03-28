@@ -1,0 +1,272 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>opt_two_pole_LPF</title>
+      <meta name="generator" content="MATLAB 7.0.4">
+      <meta name="date" content="2006-03-28">
+      <meta name="m-file" content="opt_two_pole_LPF"><style>
+body {
+  background-color: white;
+  margin:10px;
+}
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+pre.codeinput {
+  margin-left: 30px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.showbuttons {
+  margin-left: 30px;
+  border: solid black 2px;
+  padding: 4px;
+  background: #EBEFF3;
+}
+
+pre.codeoutput {
+  color: gray;
+  font-style: italic;
+}
+pre.error {
+  color: red;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+    </style></head>
+   <body><pre class="codeinput"><span class="comment">% Optimal two-pole lowpass filter implementation.</span>
+<span class="comment">% (a figure with the tradeoff between the power and noise is generated)</span>
+<span class="comment">% FIX: make sure that this numerical example is fine.</span>
+<span class="comment">%</span>
+<span class="comment">% This is an example taken directly from the paper:</span>
+<span class="comment">%</span>
+<span class="comment">%   Geometric Programming and its Applications to EDA Problems</span>
+<span class="comment">%   (DATE Tutorial 2005) by Boyd, Kim, and Mohan.</span>
+<span class="comment">%   (see pages 87-92)</span>
+<span class="comment">%</span>
+<span class="comment">% Implements an optimal two-pole Butterworth filter with frequency wc,</span>
+<span class="comment">% which minimizes total power, subject to area, output noise limits, etc.</span>
+<span class="comment">% The problem can be posed as a generalized GP:</span>
+<span class="comment">%</span>
+<span class="comment">%   minimize   P(u1) + P(u2)</span>
+<span class="comment">%       s.t.   t1 = sqrt(2)/wc,   t2 = (1/sqrt(2))/wc</span>
+<span class="comment">%              Aamp(u1) + Aamp(u2) + Acap(v1) + Acap(v2) &lt;= Amax</span>
+<span class="comment">%              M = (wc/4*sqrt(2))*sqrt(N1^2 + 2*N2^2) &lt;= Mmax</span>
+<span class="comment">%</span>
+<span class="comment">% where variables are u1, u2, v1, and v2.</span>
+<span class="comment">%</span>
+<span class="comment">% Almir Mutapcic 02/02/06</span>
+close <span class="string">all</span>; clear <span class="string">all</span>;
+
+<span class="comment">% set the quiet flag (no solver reporting)</span>
+<span class="keyword">global</span> QUIET; QUIET = 1;
+
+<span class="comment">% problem constants</span>
+wc = 10^8;
+wc = 100;
+Amax = 4*10^-6;
+Amax = 4*10^-1;
+
+<span class="comment">% GP variables</span>
+gpvar <span class="string">W1</span> <span class="string">L1</span> <span class="string">W2</span> <span class="string">L2</span> <span class="string">Acap1</span> <span class="string">Acap2</span>
+
+<span class="comment">% amplifier model</span>
+Aamp1 = W1*L1;
+Aamp2 = W2*L2;
+
+P1 = (2.5*10^-4)*(W1/L1);
+P2 = (2.5*10^-4)*(W2/L2);
+
+g1 = (4*10^-5)*W1/L1;
+g2 = (4*10^-5)*W2/L2;
+
+N1 = sqrt(7.5*10^-16)*sqrt(L1/W1);
+N2 = sqrt(7.5*10^-16)*sqrt(L2/W2);
+
+C1 = (10^-4)*Acap1;
+C2 = (10^-4)*Acap2;
+
+t1 = C1/g1;
+t2 = C2/g2;
+
+M = wc/(4*sqrt(2))*sqrt(N1^2 + 2*N2^2);
+
+<span class="comment">% variable parameter (max noise)</span>
+Mmax = [10:10:100]*10^-6;
+Mmax = [10:10:100]*10^-4;
+
+<span class="comment">% objective is to minimize total power of the implementation</span>
+<span class="comment">% obj = P(u1) + P(u2) (private variables, let u1 = L and u2 = W)</span>
+obj = P1 + P2;
+
+<span class="comment">% constraint set</span>
+constr = [ <span class="keyword">...</span>
+  t1 == sqrt(2)/wc;
+  t2 == (1/sqrt(2))/wc;
+  Aamp1 + Aamp2 + Acap1 + Acap2 &lt;= Amax;
+];
+
+power = zeros(1,10);
+status = {};
+<span class="comment">% setup GP problems with varying parameter Mmax and obtain tradeoff curve</span>
+<span class="keyword">for</span> m = 1:length(Mmax)
+  <span class="comment">% add constraints that have varying parameters</span>
+  constr(4) = M &lt;= Mmax(m);
+
+  <span class="comment">% solve the optimal filter implementation problem</span>
+  prob = gpproblem(obj, constr);
+  res = solve(prob);
+  power(m) = res.obj_value;
+  status{end+1} = res.status;
+<span class="keyword">end</span>
+
+disp(<span class="string">'Displaying power vector: '</span>)
+power
+
+<span class="comment">% enable solver reports</span>
+<span class="keyword">global</span> QUIET; QUIET = 0;
+
+<span class="comment">% tradeoff plot</span>
+semilogy(Mmax*10^3, power*10^3);
+xlabel(<span class="string">'max noise Mmax (milli-Volts)'</span>);
+ylabel(<span class="string">'power P (milli-Watts)'</span>);
+</pre><pre class="codeoutput">Error using ==&gt; evalin
+ In an assignment  A(I) = B, the number of elements in B and
+ I must be the same.</pre><p class="footer"><br>
+         Published with MATLAB&reg; 7.0.4<br></p>
+      <!--
+##### SOURCE BEGIN #####
+% Optimal two-pole lowpass filter implementation.
+% (a figure with the tradeoff between the power and noise is generated)
+% FIX: make sure that this numerical example is fine.
+%
+% This is an example taken directly from the paper:
+%
+%   Geometric Programming and its Applications to EDA Problems
+%   (DATE Tutorial 2005) by Boyd, Kim, and Mohan.
+%   (see pages 87-92)
+%
+% Implements an optimal two-pole Butterworth filter with frequency wc,
+% which minimizes total power, subject to area, output noise limits, etc.
+% The problem can be posed as a generalized GP:
+%
+%   minimize   P(u1) + P(u2) 
+%       s.t.   t1 = sqrt(2)/wc,   t2 = (1/sqrt(2))/wc
+%              Aamp(u1) + Aamp(u2) + Acap(v1) + Acap(v2) <= Amax
+%              M = (wc/4*sqrt(2))*sqrt(N1^2 + 2*N2^2) <= Mmax
+%
+% where variables are u1, u2, v1, and v2.
+%
+% Almir Mutapcic 02/02/06
+close all; clear all;
+
+% set the quiet flag (no solver reporting)
+global QUIET; QUIET = 1;
+
+% problem constants
+wc = 10^8;
+wc = 100;
+Amax = 4*10^-6;
+Amax = 4*10^-1;
+
+% GP variables
+gpvar W1 L1 W2 L2 Acap1 Acap2
+
+% amplifier model
+Aamp1 = W1*L1;
+Aamp2 = W2*L2;
+
+P1 = (2.5*10^-4)*(W1/L1);
+P2 = (2.5*10^-4)*(W2/L2);
+
+g1 = (4*10^-5)*W1/L1;
+g2 = (4*10^-5)*W2/L2;
+
+N1 = sqrt(7.5*10^-16)*sqrt(L1/W1);
+N2 = sqrt(7.5*10^-16)*sqrt(L2/W2);
+
+C1 = (10^-4)*Acap1;
+C2 = (10^-4)*Acap2;
+
+t1 = C1/g1;
+t2 = C2/g2;
+
+M = wc/(4*sqrt(2))*sqrt(N1^2 + 2*N2^2);
+
+% variable parameter (max noise)
+Mmax = [10:10:100]*10^-6;
+Mmax = [10:10:100]*10^-4;
+
+% objective is to minimize total power of the implementation
+% obj = P(u1) + P(u2) (private variables, let u1 = L and u2 = W)
+obj = P1 + P2;
+
+% constraint set 
+constr = [ ...
+  t1 == sqrt(2)/wc;
+  t2 == (1/sqrt(2))/wc;
+  Aamp1 + Aamp2 + Acap1 + Acap2 <= Amax;
+];
+
+power = zeros(1,10);
+status = {};
+% setup GP problems with varying parameter Mmax and obtain tradeoff curve
+for m = 1:length(Mmax)
+  % add constraints that have varying parameters
+  constr(4) = M <= Mmax(m);
+
+  % solve the optimal filter implementation problem
+  prob = gpproblem(obj, constr);
+  res = solve(prob);
+  power(m) = res.obj_value;
+  status{end+1} = res.status;
+end
+
+disp('Displaying power vector: ')
+power
+
+% enable solver reports
+global QUIET; QUIET = 0;
+
+% tradeoff plot
+semilogy(Mmax*10^3, power*10^3);
+xlabel('max noise Mmax (milli-Volts)');
+ylabel('power P (milli-Watts)');
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

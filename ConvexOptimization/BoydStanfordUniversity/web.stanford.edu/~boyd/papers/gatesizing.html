@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>An Efficient Method for Large-Scale Gate Sizing</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>An Efficient Method for Large-Scale Gate Sizing</h1>
+<div id="subtitle">S. Joshi and S. Boyd</div>
+</div>
+<p><i>IEEE Transactions on Circuits and Systems I</i>, 55(9):2760&ndash;2773,
+October 2008.
+</p>
+<ul>
+<li><p><a href="pdf/gatesizing.pdf">Final manuscript</a></p>
+</li>
+<li><p><a href="../lsgs/"><tt>lsgs</tt>: Large-scale gate sizing MATLAB toolbox</a></p>
+</li>
+</ul>
+<p>We consider the problem of choosing the gate sizes or scale factors in a 
+combinational logic circuit in order to minimize the total area, subject to 
+simple RC timing constraints, and a minimum allowed gate size. This problem is 
+well known to be a geometric program (GP), and can be solved using standard 
+interior-point methods for small and medium size problems with up to several 
+thousand gates. In this paper we describe a new method for solving this problem 
+that handles far larger circuits, up to a million gates, and is far faster. 
+Numerical experiments show that our method can compute an adequately accurate 
+solution within around 150 iterations; each iteration, in turn, consists of a 
+few passes over the circuit. In particular, the complexity of our method is 
+linear in the number of gates. A simple implementation of our algorithm can 
+size a 10000 gate circuit in 25 seconds, a 100000 gate circuit in 4 minutes, 
+and a million gate circuit in 40 minutes, approximately. For the million gate 
+circuit, the associated GP has 3 million variables and more than 6 million 
+monomial terms in its constraints; as far as we know, these are the largest GPs 
+ever solved.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:27 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

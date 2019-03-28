@@ -1,0 +1,309 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>cantilever_beam_norec</title>
+      <meta name="generator" content="MATLAB 7.0.4">
+      <meta name="date" content="2006-03-28">
+      <meta name="m-file" content="cantilever_beam_norec"><style>
+body {
+  background-color: white;
+  margin:10px;
+}
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+pre.codeinput {
+  margin-left: 30px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.showbuttons {
+  margin-left: 30px;
+  border: solid black 2px;
+  padding: 4px;
+  background: #EBEFF3;
+}
+
+pre.codeoutput {
+  color: gray;
+  font-style: italic;
+}
+pre.error {
+  color: red;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+    </style></head>
+   <body><pre class="codeinput"><span class="comment">% Exercise 4.31: Design of a cantilever beam (non-recursive formulation)</span>
+<span class="comment">% (For a detailed explanation see section 4.5.4, pp. 163-165)</span>
+<span class="comment">% Boyd &amp; Vandenberghe "Convex Optimization"</span>
+<span class="comment">% (a figure is generated)</span>
+<span class="comment">%</span>
+<span class="comment">% We have a segmented cantilever beam with N segments. Each segment</span>
+<span class="comment">% has a unit length and variable width and height (rectangular profile).</span>
+<span class="comment">% The goal is minimize the total volume of the beam, over all segment</span>
+<span class="comment">% widths w_i and heights h_i, subject to constraints on aspect ratios,</span>
+<span class="comment">% maximum allowable stress in the material, vertical deflection y, etc.</span>
+<span class="comment">%</span>
+<span class="comment">% The problem can be posed as a geometric program (posynomial form)</span>
+<span class="comment">%     minimize   sum( w_i* h_i)</span>
+<span class="comment">%         s.t.   w_min &lt;= w_i &lt;= w_max,       for all i = 1,...,N</span>
+<span class="comment">%                h_min &lt;= h_i &lt;= h_max</span>
+<span class="comment">%                S_min &lt;= h_i/w_i &lt;= S_max</span>
+<span class="comment">%                6*i*F/(w_i*h_i^2) &lt;= sigma_max</span>
+<span class="comment">%                6*F/(E*w_i*h_i^3) == d_i</span>
+<span class="comment">%                (2*i - 1)*d_i + v_(i+1) &lt;= v_i</span>
+<span class="comment">%                (i - 1/3)*d_i + v_(i+1) + y_(i+1) &lt;= y_i</span>
+<span class="comment">%                y_1 &lt;= y_max</span>
+<span class="comment">%</span>
+<span class="comment">% with variables w_i, h_i, d_i, (i = 1,...,N) and v_i, y_i (i = 1,...,N+1).</span>
+<span class="comment">% (Consult the book for other definitions and a recursive formulation of</span>
+<span class="comment">% this problem.)</span>
+<span class="comment">%</span>
+<span class="comment">% Almir Mutapcic 01/25/06</span>
+
+<span class="comment">% optimization variables</span>
+N = 8;
+gpvar <span class="string">w(N)</span> <span class="string">h(N)</span> <span class="string">v(N+1)</span> <span class="string">y(N+1)</span>;
+
+<span class="comment">% constants</span>
+wmin = .1; wmax = 100;
+hmin = .1; hmax = 6;
+Smin = 1/5; Smax = 5;
+sigma_max = 1;
+ymax = 10;
+E = 1; F = 1;
+
+<span class="comment">% objective is the total volume of the beam</span>
+<span class="comment">% obj = sum of (widths*heights*lengths) over each section</span>
+<span class="comment">% (recall that the length of each segment is set to be 1)</span>
+obj = w'*h;
+
+<span class="comment">% non-recursive formulation</span>
+d = 6*F*ones(N,1)./(E*ones(N,1).*w.*h.^3);
+constr_v = [];
+constr_y = [];
+<span class="keyword">for</span> i = 1:N
+  constr_v = [constr_v; (2*i-1)*d(i) + v(i+1) &lt;= v(i)];
+  constr_y = [constr_y; (i-1/3)*d(i) + v(i+1) + y(i+1) &lt;= y(i)];
+<span class="keyword">end</span>
+
+<span class="comment">% constraint set</span>
+constr = [ <span class="keyword">...</span>
+  wmin*ones(N,1) &lt;= w; w &lt;= wmax*ones(N,1);
+  hmin*ones(N,1) &lt;= h; h &lt;= hmax*ones(N,1);
+  Smin*ones(N,1) &lt;= h./w; h./w &lt;= Smax*ones(N,1);
+  6*F*[1:N]'./(w.*(h.^2)) &lt;= sigma_max*ones(N,1);
+  constr_v; constr_y;
+  y(1) &lt;= ymax;
+];
+
+<span class="comment">% solve GP and compute the optimal volume</span>
+[obj_value, solution, status] = gpsolve(obj, constr);
+assign(solution);
+
+<span class="comment">% display results</span>
+disp(<span class="string">'The optimal widths and heights are: '</span>);
+w, h
+fprintf(1,<span class="string">'The optimal minimum volume of the beam is %3.4f\n'</span>, sum(w.*h))
+
+<span class="comment">% plot the 3D model of the optimal cantilever beam</span>
+close <span class="string">all</span>;
+plot_cbeam([h; w])
+</pre><pre class="codeoutput"> 
+Iteration     primal obj.         gap        dual residual     previous step.
+ 
+   1         5.51086e+00       1.41000e+02       4.78e+02               Inf
+   2         7.51982e+00       6.05762e+01       7.43e+00       8.68550e-01
+   3         8.54854e+00       2.94849e+01       1.20e-01       8.74857e-01
+   4         6.68816e+00       2.00658e+01       1.62e-02       6.21831e-01
+   5         5.12341e+00       1.50260e+01       4.49e-03       5.00000e-01
+   6         3.73928e+00       9.98356e+00       8.17e-05       1.00000e+00
+   7         1.26815e+00       4.99359e+00       1.33e-06       1.00000e+00
+   8         2.74551e-01       2.49745e+00       5.75e-05       1.00000e+00
+   9         1.13439e-01       1.87348e+00       1.48e-05       5.00000e-01
+  10        -3.31042e-03       1.24953e+00       4.57e-07       1.00000e+00
+ 
+Iteration     primal obj.         gap        dual residual     previous step.
+ 
+   1         6.01601e+00       1.41000e+02       5.80e-01               Inf
+   2         5.99011e+00       7.04860e+01       6.02e-04       1.00000e+00
+   3         5.93268e+00       3.52434e+01       7.50e-04       1.00000e+00
+   4         5.80743e+00       1.76225e+01       6.64e-04       1.00000e+00
+   5         5.51852e+00       8.81364e+00       3.09e-04       1.00000e+00
+   6         4.89586e+00       4.42267e+00       2.99e-05       1.00000e+00
+   7         4.29210e+00       2.21572e+00       5.85e-06       1.00000e+00
+   8         3.99034e+00       1.11031e+00       1.18e-06       1.00000e+00
+   9         3.86425e+00       5.56771e-01       5.11e-07       1.00000e+00
+  10         3.80503e+00       2.79235e-01       1.69e-07       1.00000e+00
+  11         3.77556e+00       1.40061e-01       4.32e-08       1.00000e+00
+  12         3.76101e+00       7.02076e-02       1.69e-08       1.00000e+00
+  13         3.75402e+00       3.51772e-02       5.82e-09       1.00000e+00
+  14         3.75057e+00       1.76216e-02       1.11e-09       1.00000e+00
+  15         3.74882e+00       8.82381e-03       1.88e-10       1.00000e+00
+  16         3.74794e+00       4.41635e-03       2.72e-11       1.00000e+00
+  17         3.74751e+00       2.20954e-03       2.94e-12       1.00000e+00
+  18         3.74729e+00       1.10515e-03       2.40e-13       1.00000e+00
+  19         3.74718e+00       5.52672e-04       1.64e-14       1.00000e+00
+  20         3.74712e+00       2.76361e-04       1.05e-15       1.00000e+00
+  21         3.74709e+00       1.38187e-04       6.95e-17       1.00000e+00
+  22         3.74708e+00       6.90950e-05       5.41e-18       1.00000e+00
+  23         3.74707e+00       3.45479e-05       6.43e-19       1.00000e+00
+  24         3.74707e+00       1.72741e-05       1.24e-19       1.00000e+00
+  25         3.74707e+00       8.63707e-06       3.06e-20       1.00000e+00
+  26         3.74707e+00       4.31855e-06       8.08e-21       1.00000e+00
+  27         3.74707e+00       2.15928e-06       2.16e-21       1.00000e+00
+  28         3.74707e+00       1.07964e-06       5.78e-22       1.00000e+00
+  29         3.74707e+00       5.39821e-07       1.54e-22       1.00000e+00
+  30         3.74707e+00       2.69911e-07       4.11e-23       1.00000e+00
+  31         3.74707e+00       1.34956e-07       1.09e-23       1.00000e+00
+  32         3.74707e+00       6.74779e-08       2.90e-24       1.00000e+00
+  33         3.74707e+00       3.37390e-08       7.68e-25       1.00000e+00
+  34         3.74707e+00       1.68695e-08       2.03e-25       1.00000e+00
+  35         3.74707e+00       8.43477e-09       5.38e-26       1.00000e+00
+Solved
+Problem succesfully solved.
+The optimal widths and heights are: 
+
+w =
+
+    0.6214
+    0.7830
+    0.9060
+    1.0124
+    1.1004
+    1.1762
+    1.2000
+    1.3333
+
+
+h =
+
+    3.1072
+    3.9149
+    4.5298
+    5.0620
+    5.5019
+    5.8812
+    6.0000
+    6.0000
+
+The optimal minimum volume of the beam is 42.3965
+</pre><img vspace="5" hspace="5" src="cantilever_beam_norec_01.png"> <p class="footer"><br>
+         Published with MATLAB&reg; 7.0.4<br></p>
+      <!--
+##### SOURCE BEGIN #####
+% Exercise 4.31: Design of a cantilever beam (non-recursive formulation)
+% (For a detailed explanation see section 4.5.4, pp. 163-165)
+% Boyd & Vandenberghe "Convex Optimization"
+% (a figure is generated)
+%
+% We have a segmented cantilever beam with N segments. Each segment
+% has a unit length and variable width and height (rectangular profile).
+% The goal is minimize the total volume of the beam, over all segment
+% widths w_i and heights h_i, subject to constraints on aspect ratios,
+% maximum allowable stress in the material, vertical deflection y, etc.
+%
+% The problem can be posed as a geometric program (posynomial form)
+%     minimize   sum( w_i* h_i)
+%         s.t.   w_min <= w_i <= w_max,       for all i = 1,...,N
+%                h_min <= h_i <= h_max
+%                S_min <= h_i/w_i <= S_max
+%                6*i*F/(w_i*h_i^2) <= sigma_max
+%                6*F/(E*w_i*h_i^3) == d_i
+%                (2*i - 1)*d_i + v_(i+1) <= v_i
+%                (i - 1/3)*d_i + v_(i+1) + y_(i+1) <= y_i
+%                y_1 <= y_max
+%
+% with variables w_i, h_i, d_i, (i = 1,...,N) and v_i, y_i (i = 1,...,N+1).
+% (Consult the book for other definitions and a recursive formulation of
+% this problem.)
+%
+% Almir Mutapcic 01/25/06
+
+% optimization variables
+N = 8;
+gpvar w(N) h(N) v(N+1) y(N+1);
+
+% constants
+wmin = .1; wmax = 100;
+hmin = .1; hmax = 6;
+Smin = 1/5; Smax = 5;
+sigma_max = 1;
+ymax = 10;
+E = 1; F = 1;
+
+% objective is the total volume of the beam
+% obj = sum of (widths*heights*lengths) over each section
+% (recall that the length of each segment is set to be 1)
+obj = w'*h; 
+
+% non-recursive formulation
+d = 6*F*ones(N,1)./(E*ones(N,1).*w.*h.^3); 
+constr_v = [];
+constr_y = [];
+for i = 1:N
+  constr_v = [constr_v; (2*i-1)*d(i) + v(i+1) <= v(i)];
+  constr_y = [constr_y; (i-1/3)*d(i) + v(i+1) + y(i+1) <= y(i)];
+end
+
+% constraint set
+constr = [ ...
+  wmin*ones(N,1) <= w; w <= wmax*ones(N,1);
+  hmin*ones(N,1) <= h; h <= hmax*ones(N,1);
+  Smin*ones(N,1) <= h./w; h./w <= Smax*ones(N,1);
+  6*F*[1:N]'./(w.*(h.^2)) <= sigma_max*ones(N,1);
+  constr_v; constr_y;
+  y(1) <= ymax;
+];
+
+% solve GP and compute the optimal volume
+[obj_value, solution, status] = gpsolve(obj, constr);
+assign(solution);
+
+% display results
+disp('The optimal widths and heights are: ');
+w, h
+fprintf(1,'The optimal minimum volume of the beam is %3.4f\n', sum(w.*h))
+
+% plot the 3D model of the optimal cantilever beam
+close all;
+plot_cbeam([h; w])
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

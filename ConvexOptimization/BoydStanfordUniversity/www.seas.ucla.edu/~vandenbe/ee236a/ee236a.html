@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="lvdb.css" type="text/css" />
+<title>EE236A - Linear Programming (Fall Quarter 2013-14) </title>
+</head>
+<body>
+<div id="layout-content">
+<div id="toptitle">
+<h1>EE236A - Linear Programming (Fall Quarter 2013-14) </h1>
+<div id="subtitle"><a href="http://www.seas.ucla.edu/~vandenbe/index.html">Prof. L. Vandenberghe</a>,  UCLA</div>
+</div>
+<h2>Lecture notes</h2>
+<ol>
+<li><p><a href="lectures/intro.pdf">Introduction</a></p>
+</li>
+<li><p><a href="lectures/pwl.pdf">Piecewise-linear optimization</a></p>
+</li>
+<li><p><a href="lectures/polyhedra.pdf">Polyhedra</a> </p>
+</li>
+<li><p><a href="lectures/convexity.pdf">Convexity</a></p>
+</li>
+<li><p><a href="lectures/alternatives.pdf">Alternatives</a></p>
+</li>
+<li><p><a href="lectures/duality.pdf">Duality</a></p>
+</li>
+<li><p><a href="lectures/duality2.pdf">Duality, part 2</a>   </p>
+</li>
+<li><p><a href="lectures/lfp.pdf">Linear-fractional optimization</a></p>
+</li>
+<li><p><a href="lectures/struct.pdf">Structural optimization</a></p>
+</li>
+<li><p><a href="lectures/filters.pdf">Filter design</a></p>
+</li>
+<li><p><a href="lectures/control.pdf">Control applications</a></p>
+</li>
+<li><p><a href="lectures/simplex.pdf">Simplex method</a></p>
+</li>
+<li><p><a href="lectures/cpath.pdf">The central path</a></p>
+</li>
+<li><p><a href="lectures/barrier.pdf">Barrier method</a> </p>
+</li>
+<li><p><a href="lectures/mpc.pdf">Primal-dual interior-point method</a>  </p>
+</li>
+<li><p><a href="lectures/hsd.pdf">Self-dual formulations</a> </p>
+</li>
+<li><p><a href="lectures/networks.pdf">Network flow optimization</a> </p>
+</li>
+<li><p><a href="lectures/ilp.pdf">Integer linear programming</a> </p>
+</li>
+</ol>
+<h2>Homework assignments</h2>
+<p>Numbered exercises refer to the collection of <a href="homework/problems.pdf">EE236A Exercises (pdf)</a>.
+The MATLAB files required by some of these exercises are
+<a href="homework/ex7data.m"><tt>ex7data.m</tt></a>, 
+<a href="homework/ex13data.m"><tt>ex13data.m</tt></a>,
+<a href="homework/ex14data.m"><tt>ex14data.m</tt></a>,
+<a href="homework/ex15data.m"><tt>ex15data.m</tt></a>,
+<a href="homework/ex20data.m"><tt>ex20data.m</tt></a>,
+<a href="homework/ex30data.m"><tt>ex30data.m</tt></a>.</p>
+<ul>
+<li><p>Homework 1 (due 10/8): Exercises 2, 4, 5, 6 (b, d, e, f, g, h), 7, 9 (a,c).</p>
+</li>
+<li><p>Homework 2 (due 10/15): Exercises 12, 17, 19 (b), 25, 35.</p>
+</li>
+<li><p>Homework 3 (due 10/22): Exercises 20, 28, 36 (a), 37, 41. 
+You can skip the last part of question 36 (&lsquo;For each <img class="eq" src="eqs/4030995361092090365-130.png" alt="hat x" style="vertical-align: -1px" />, if it is an
+extreme point &hellip;&rsquo;).</p>
+</li>
+<li><p>Homework 4 (due 10/29): Exercises 21, 40, 46, 49, 54. </p>
+</li>
+<li><p>Homework 5 (due 11/5): Exercises 23, 47, 59, 66, 67. </p>
+</li>
+<li><p>Homework 6 (due <b>Thursday</b> 11/14): Exercises 60, 61, 63, 75, 82.</p>
+</li>
+<li><p>Homework 7 (due 11/21): Exercises 78, 83, 88 (b), 91.</p>
+</li>
+<li><p><a href="homework/hw8.pdf">Homework 8</a> (due 12/5).  </p>
+</li>
+</ul>
+<p>Homework is due at 5PM on the due date.  It can be submitted in the 
+lectures or in the submission box in the TA meeting room 
+(67-112 in Engineering 4).
+Late homework will not be accepted.</p>
+<p>Homework solutions and grades are posted on the 
+<a href="http://www.eeweb.ee.ucla.edu/classinfo.php?/ee236A/1/fall/13">EEweb course website</a>.  (Follow the links to &ldquo;Assignments&rdquo; or &ldquo;Grades&rdquo;.)</p>
+<h2>Course information </h2>
+<p><b>Lectures:</b> Kinsey 1200B.  Tue &amp; Thu 10:00-11:50A. </p>
+<p><b>Course material:</b>
+The lecture notes are available from this website and are intended to
+be self-contained. 
+The following books are useful as reference texts. 
+(The links to on-line versions work on the UCLA campus.)</p>
+<ul>
+<li><p>D. Bertsimas and J. N. Tsitsiklis, 
+<i>Introduction to Linear Optimization</i> (Athena Scientific).   </p>
+</li>
+<li><p>M. C. Ferris, O. L. Mangasarian, S. J. Wright,
+<a href="http://dx.doi.org/10.1137/1.9780898718775"><i>Linear Programming with MATLAB</i></a> (SIAM).</p>
+</li>
+<li><p>D. Luenberger and Y. Ye, 
+<a href="http://dx.doi.org/10.1007/978-0-387-74503-9"><i>Linear and Nonlinear Programming</i></a> (Springer).</p>
+</li>
+<li><p>C. H. Papadimitriou and K. Steiglitz, 
+<i>Combinatorial Optimization.  Algorithms and Complexity</i> (Dover).   </p>
+</li>
+<li><p>C. Roos, T. Terlaky, J.-Ph. Vial,
+<a href="http://dx.doi.org/10.1007/b100325"><i>Interior Point Methods for Linear 
+Optimization</i></a> (Springer).
+
+</p>
+</li>
+<li><p>A. Schrijver, <i>Theory of Linear and Integer Programming</i> (Wiley).</p>
+</li>
+<li><p>R. J. Vanderbei, <a href="http://dx.doi.org/10.1007/978-0-387-74388-2"><i>Linear Programming: Foundations and Extensions</i></a> (Springer).</p>
+</li>
+<li><p>S. J. Wright, 
+<a href="http://dx.doi.org/10.1137/1.9781611971453"><i>Primal-dual Interior-Point Methods</i></a> (SIAM).   </p>
+</li>
+</ul>
+<p><b>Course requirements</b></p>
+<ul>
+<li><p>Weekly homework.  </p>
+</li>
+<li><p>Open book final exam on Thursday, December 12, 3:00PM-6:00PM.  </p>
+</li>
+</ul>
+<p><b>Grading</b>. Approximate weights: homework 30%, final exam 70%.</p>
+<p><b>Prerequisites</b>. 
+Basic linear algebra (vectors, matrices, linear equations).
+The essential topics will be reviewed in the first lectures.</p>
+<h2>Software </h2>
+<ul>
+<li><p><b>MATLAB.</b>
+The MATLAB linear programming solver is called <tt>linprog</tt> and is included 
+in the optimization toolbox.  
+Students who don&rsquo;t have the optimization toolbox can request a free 
+semester license of the 
+<a href="http://www.mosek.com">MOSEK</a> optimization tools for MATLAB.
+MOSEK includes an LP solver <tt>linprog</tt> with the same 
+calling sequence as MATLAB&rsquo;s <tt>linprog</tt>. 
+You can also use the routine 
+<a href="src/lp236a_mtlb.m"><tt>lp236a.m</tt></a>,
+a pure MATLAB implementation of a primal-dual method.  This code is
+less efficient and reliable than the MOSEK solver, but should be 
+adequate for the purposes of this course. 
+The following MATLAB packages allow you to specify and solve LPs using 
+a very simple and intuitive description format: 
+<a href="http://cvxr.com">CVX</a> (which includes the necessary solver)  and 
+<a href="http://users.isy.liu.se/johanl/yalmip/">YALMIP</a>.</p>
+</li>
+</ul>
+<ul>
+<li><p><b>Octave.</b>
+Octave users can download the Octave version of 
+<a href="src/lp236a_octv.m"><tt>lp236a.m</tt></a>.</p>
+</li>
+</ul>
+<ul>
+<li><p><b>Python.</b> 
+Python users can download the  
+<a href="http://www.cvxopt.org">CVXOPT</a> package,
+which includes an LP solver and modeling support.</p>
+</li>
+</ul>
+</div>
+</body>
+</html>

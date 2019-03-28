@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<meta content=
+"HTML Tidy for Linux/x86 (vers 1 September 2005), see www.w3.org"
+name="generator">
+<title>GGPLAB: A Simple Matlab Toolbox for Geometric
+Programming</title>
+</head>
+<body>
+<h2>GGPLAB: A Simple Matlab Toolbox for Geometric Programming</h2>
+<h3>Version 1.00 (May 22, 2006)</h3>
+GGPLAB is a Matlab-based toolbox for specifying and solving
+geometric programs (GPs) and generalized geometric programs (GGPs).
+It is intended to complement the survey paper <a href=
+"http://www.stanford.edu/%7Eboyd/gp_tutorial.html">A Tutorial on
+Geometric Programming</a>, and the book <a href=
+"http://www.stanford.edu/%7Eboyd/cvxbook">Convex Optimization</a>.
+<p>GGPLAB consists of</p>
+<ul>
+<li>GPCVX, a primal-dual interior-point solver for GP (in convex
+form) and a wrapper, GPPOSY, that accepts GPs in posynomial
+form.</li>
+<li>A library of objects, such as monomials, posynomials, and
+generalized posynomials, to support the specification of GPs and
+GGPs.</li>
+<li>A variety of <a href="examples/index.html">examples</a>.</li>
+</ul>
+<p>Some caveats:</p>
+<ul>
+<li>The convex optimization toolbox <a href=
+"http://www.stanford.edu/%7Eboyd/cvx/">CVX</a> now supports GP. We
+recommend CVX for large or complex problems; we recommend GGPLAB,
+on the other hand, for learning the basics of GP.</li>
+<li>The solver GPCVX supports sparse problems, but is not designed
+for very large scale problems.</li>
+<li>Object manipulation overhead can make GGPLAB slow on larger
+problems.</li>
+<li>GGPLAB does not support dual variables. (The solver GPCVX,
+however, does.)</li>
+<li>To use GGPLAB you need Matlab 6.1 or later.</li>
+</ul>
+<p>The GGPLAB toolbox includes a variety of worked-out examples to
+help you get started and learn about geometric programming and its
+applications. Some examples reproduce figures from the book Convex
+Optimization or referenced papers. All of these examples can also
+be found in the <a href=
+"http://www.stanford.edu/~boyd/cvx/examples/index.html">CVX
+library</a>.</p>
+<p>You can browse through the <a href=
+"examples/index.html">examples library</a> now without having to
+download and install GGPLAB. Of course, if you wish to run any of
+the examples, you will have to download the GGPLAB toolbox.</p>
+<p>GGPLAB was designed and implemented by <a href=
+"mailto:almirm@gmail.com">Almir Mutapcic</a> (object
+library), <a href="http://www.stanford.edu/%7Edeneb1">Kwangmoo
+Koh</a> (solver), <a href=
+"http://www.stanford.edu/%7Esjkim">Seungjean Kim</a> (solver),
+<a href="http://www.ee.ucla.edu/%7Evandenbe">Lieven
+Vandenberghe</a> (original version of solver), and <a href=
+"http://www.stanford.edu/%7Eboyd">Stephen Boyd</a> (general trouble
+maker). Please report any bugs to <a href=
+"mailto:almirm@gmail.com">almirm@gmail.com</a> (objects) or
+<a href="mailto:deneb1@stanford.edu">deneb1@stanford.edu</a>
+(solver).</p>
+<p>GGPLAB is distributed under the <a href=
+"http://www.gnu.org/copyleft/gpl.html">GNU General Public
+License</a>.</p>
+<hr>
+<ul>
+<li>GGPLAB toolbox: (<a href="ggplab.zip">zip file</a>) or
+(<a href="ggplab.tar.gz">gzipped tar file</a>)</li>
+<li><a href="ggplab.pdf">GGPLAB user guide</a></li>
+<li><a href="gpcvx.pdf">GPCVX user guide</a></li>
+<li><a href="gpposy.pdf">GPPOSY user guide</a></li>
+<li><a href="examples/index.html">GGPLAB examples library</a></li>
+</ul>
+The user guides are included in the toolbox, so you don't have to
+download them separately.
+<hr>
+<p><a href="http://www.stanford.edu/%7Eboyd/research.html">Back to
+Boyd's research group page.</a></p>
+</body>
+</html>

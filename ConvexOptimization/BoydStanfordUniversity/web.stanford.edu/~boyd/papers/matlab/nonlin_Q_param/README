@@ -1,0 +1,16 @@
+Matlab scripts to generate example in paper
+"Nonlinear Q-Design for Convex Stochastic Control",
+J. Skaf and S. Boyd, 
+to appear, IEEE Transactions on Automatic Control, 2009.
+For fuller version of paper (including figures and plots)
+see Boyd's website.
+
+tracking_ex.m  -- generates example data, designs the controllers,
+verifies them on an independent set of sample, reports results.
+	requires CVX to run.
+tracking_ex_plot.m -- plots histograms and other plots in longer 
+	technical report.  must run tracking_ex first.
+
+the script tracking_ex.m runs everything, which will take a long time
+(many minutes, at least).   you might want to comment out bits of it 
+(especially, the testing of the CE-MPC controller) to reduce run time.

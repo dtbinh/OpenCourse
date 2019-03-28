@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>A Convex Optimization Approach to Radiation Treatment Planning with Dose Constraints</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>A Convex Optimization Approach to Radiation Treatment Planning with Dose Constraints</h1>
+<div id="subtitle">A. Fu, B. Ungun, L. Xing, and S. Boyd</div>
+</div>
+<p><i>Optimization and Engineering</i>, vol. 20 (1): 277-300, March 2019.</p>
+<ul>
+<li><p><a href="pdf/conrad.pdf">Manuscript</a></p>
+</li>
+<li><p><a href="http://github.com/bungun/conrad/">ConRad</a></p>
+</li>
+</ul>
+<p>We present a method for handling dose constraints as part of a convex 
+programming framework for inverse treatment planning. Our method uniformly handles mean dose, maximum dose, minimum dose, and dose 
+volume (i.e., percentile) constraints as part of a convex formulation. 
+Since dose-volume constraints are non-convex, we replace them with a convex 
+restriction. 
+This restriction is, by definition, conservative; to mitigate its 
+impact on the clinical objectives, we develop a two-pass planning algorithm 
+that allows each dose-volume constraint to be met exactly on a second pass by the solver if its corresponding restriction is feasible on the first pass. 
+In another variant, we add slack variables to each dose constraint to 
+prevent the problem from becoming infeasible when the user specifies an 
+incompatible set of constraints or when the constraints are made 
+infeasible by our restriction.
+Finally, we introduce <tt>ConRad</tt>, a Python-embedded open-source software package for 
+convex radiation treatment planning. <tt>ConRad</tt> implements the methods described 
+above and allows users to construct and plan cases through a simple interface. It is available on <a href="http://github.com/bungun/conrad/">Github</a> along with documentation and examples.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:25 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

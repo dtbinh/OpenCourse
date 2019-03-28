@@ -1,0 +1,241 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>total_variation_example</title>
+      <meta name="generator" content="MATLAB 7.7">
+      <meta name="date" content="2011-02-16">
+      <meta name="m-file" content="total_variation_example"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#2">Generate problem data</a></li>
+               <li><a href="#3">Solve problem</a></li>
+               <li><a href="#4">Reporting</a></li>
+            </ul>
+         </div><pre class="codeinput"><span class="comment">% Total variation denoising with random data</span>
+</pre><h2>Generate problem data<a name="2"></a></h2><pre class="codeinput">rand(<span class="string">'seed'</span>, 0);
+randn(<span class="string">'seed'</span>, 0);
+
+n = 100;
+
+x0 = ones(n,1);
+<span class="keyword">for</span> j = 1:3
+    idx = randsample(n,1);
+    k = randsample(1:10,1);
+    x0(ceil(idx/2):idx) = k*x0(ceil(idx/2):idx);
+<span class="keyword">end</span>
+b = x0 + randn(n,1);
+
+lambda = 5;
+
+e = ones(n,1);
+D = spdiags([e -e], 0:1, n,n);
+</pre><h2>Solve problem<a name="3"></a></h2><pre class="codeinput">[x history] = total_variation(b, lambda, 1.0, 1.0);
+</pre><pre class="codeoutput">iter	    r norm	   eps pri	    s norm	  eps dual	 objective
+  1	    7.1216	    0.0722	    0.0000	    0.0793	     30.67
+  2	    4.6035	    0.0470	    0.0000	    0.1067	     55.88
+  3	    3.7430	    0.0389	    0.2524	    0.1187	     70.97
+  4	    3.1490	    0.0352	    1.5080	    0.1216	     86.77
+  5	    2.6064	    0.0365	    1.7122	    0.1226	     98.74
+  6	    2.1441	    0.0416	    1.7540	    0.1219	    110.68
+  7	    1.7400	    0.0481	    1.4449	    0.1204	    120.07
+  8	    1.4723	    0.0539	    1.0310	    0.1190	    126.85
+  9	    1.2828	    0.0580	    0.6746	    0.1180	    130.75
+ 10	    1.0672	    0.0608	    0.5517	    0.1171	    134.95
+ 11	    0.8766	    0.0627	    0.4416	    0.1166	    138.06
+ 12	    0.7446	    0.0641	    0.2934	    0.1163	    140.18
+ 13	    0.6625	    0.0652	    0.1945	    0.1162	    141.69
+ 14	    0.6064	    0.0661	    0.1368	    0.1161	    142.79
+ 15	    0.5644	    0.0668	    0.1054	    0.1160	    143.65
+ 16	    0.5295	    0.0674	    0.0874	    0.1159	    144.51
+ 17	    0.4973	    0.0678	    0.0823	    0.1158	    145.23
+ 18	    0.4693	    0.0682	    0.0795	    0.1157	    145.83
+ 19	    0.4444	    0.0686	    0.0765	    0.1157	    146.33
+ 20	    0.4217	    0.0689	    0.0736	    0.1157	    146.76
+ 21	    0.4011	    0.0692	    0.0701	    0.1157	    147.14
+ 22	    0.3822	    0.0695	    0.0662	    0.1157	    147.49
+ 23	    0.3648	    0.0697	    0.0622	    0.1156	    147.82
+ 24	    0.3488	    0.0699	    0.0582	    0.1156	    148.13
+ 25	    0.3332	    0.0701	    0.0555	    0.1156	    148.46
+ 26	    0.3080	    0.0704	    0.1110	    0.1154	    149.21
+ 27	    0.2800	    0.0705	    0.1294	    0.1153	    149.88
+ 28	    0.2582	    0.0707	    0.1098	    0.1153	    150.40
+ 29	    0.2429	    0.0709	    0.0833	    0.1152	    150.78
+ 30	    0.2306	    0.0710	    0.0606	    0.1152	    151.05
+ 31	    0.2199	    0.0712	    0.0451	    0.1152	    151.24
+ 32	    0.2103	    0.0713	    0.0359	    0.1152	    151.38
+ 33	    0.2018	    0.0715	    0.0307	    0.1152	    151.50
+ 34	    0.1942	    0.0716	    0.0276	    0.1151	    151.61
+ 35	    0.1872	    0.0717	    0.0255	    0.1151	    151.71
+ 36	    0.1808	    0.0718	    0.0239	    0.1151	    151.81
+ 37	    0.1749	    0.0719	    0.0227	    0.1151	    151.91
+ 38	    0.1694	    0.0720	    0.0215	    0.1150	    152.01
+ 39	    0.1643	    0.0721	    0.0204	    0.1150	    152.10
+ 40	    0.1595	    0.0722	    0.0194	    0.1150	    152.19
+ 41	    0.1550	    0.0723	    0.0183	    0.1150	    152.27
+ 42	    0.1508	    0.0724	    0.0173	    0.1150	    152.35
+ 43	    0.1468	    0.0725	    0.0164	    0.1149	    152.43
+ 44	    0.1431	    0.0726	    0.0155	    0.1149	    152.50
+ 45	    0.1396	    0.0726	    0.0147	    0.1149	    152.56
+ 46	    0.1362	    0.0727	    0.0140	    0.1149	    152.63
+ 47	    0.1331	    0.0728	    0.0133	    0.1149	    152.69
+ 48	    0.1301	    0.0728	    0.0126	    0.1149	    152.74
+ 49	    0.1272	    0.0729	    0.0120	    0.1149	    152.80
+ 50	    0.1244	    0.0729	    0.0115	    0.1149	    152.85
+ 51	    0.1218	    0.0730	    0.0109	    0.1148	    152.90
+ 52	    0.1193	    0.0730	    0.0105	    0.1148	    152.95
+ 53	    0.1169	    0.0731	    0.0100	    0.1148	    152.99
+ 54	    0.1146	    0.0731	    0.0096	    0.1148	    153.03
+ 55	    0.1124	    0.0732	    0.0092	    0.1148	    153.07
+ 56	    0.1103	    0.0732	    0.0088	    0.1148	    153.11
+ 57	    0.1083	    0.0733	    0.0084	    0.1148	    153.15
+ 58	    0.1063	    0.0733	    0.0081	    0.1148	    153.19
+ 59	    0.1044	    0.0733	    0.0078	    0.1148	    153.22
+ 60	    0.1021	    0.0734	    0.0084	    0.1148	    153.27
+ 61	    0.0989	    0.0734	    0.0250	    0.1147	    153.38
+ 62	    0.0947	    0.0735	    0.0262	    0.1147	    153.47
+ 63	    0.0912	    0.0735	    0.0235	    0.1147	    153.55
+ 64	    0.0883	    0.0735	    0.0196	    0.1146	    153.62
+ 65	    0.0857	    0.0735	    0.0158	    0.1146	    153.67
+ 66	    0.0833	    0.0735	    0.0127	    0.1146	    153.72
+ 67	    0.0812	    0.0736	    0.0103	    0.1146	    153.76
+ 68	    0.0791	    0.0736	    0.0087	    0.1146	    153.79
+ 69	    0.0772	    0.0736	    0.0076	    0.1146	    153.82
+ 70	    0.0754	    0.0736	    0.0068	    0.1146	    153.84
+ 71	    0.0737	    0.0736	    0.0064	    0.1146	    153.86
+ 72	    0.0720	    0.0736	    0.0060	    0.1146	    153.88
+Elapsed time is 0.028766 seconds.
+</pre><h2>Reporting<a name="4"></a></h2><pre class="codeinput">K = length(history.objval);
+
+h = figure;
+plot(1:K, history.objval, <span class="string">'k'</span>, <span class="string">'MarkerSize'</span>, 10, <span class="string">'LineWidth'</span>, 2);
+ylabel(<span class="string">'f(x^k) + g(z^k)'</span>); xlabel(<span class="string">'iter (k)'</span>);
+
+g = figure;
+subplot(2,1,1);
+semilogy(1:K, max(1e-8, history.r_norm), <span class="string">'k'</span>, <span class="keyword">...</span>
+    1:K, history.eps_pri, <span class="string">'k--'</span>,  <span class="string">'LineWidth'</span>, 2);
+ylabel(<span class="string">'||r||_2'</span>);
+
+subplot(2,1,2);
+semilogy(1:K, max(1e-8, history.s_norm), <span class="string">'k'</span>, <span class="keyword">...</span>
+    1:K, history.eps_dual, <span class="string">'k--'</span>, <span class="string">'LineWidth'</span>, 2);
+ylabel(<span class="string">'||s||_2'</span>); xlabel(<span class="string">'iter (k)'</span>);
+</pre><img vspace="5" hspace="5" src="total_variation_example_01.png" alt=""> <img vspace="5" hspace="5" src="total_variation_example_02.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.7<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+% Total variation denoising with random data
+
+%% Generate problem data
+rand('seed', 0);
+randn('seed', 0);
+
+n = 100;
+
+x0 = ones(n,1);
+for j = 1:3
+    idx = randsample(n,1);
+    k = randsample(1:10,1);
+    x0(ceil(idx/2):idx) = k*x0(ceil(idx/2):idx);
+end
+b = x0 + randn(n,1);
+
+lambda = 5;
+
+e = ones(n,1);
+D = spdiags([e -e], 0:1, n,n);
+
+%% Solve problem
+
+[x history] = total_variation(b, lambda, 1.0, 1.0);
+
+%% Reporting
+K = length(history.objval);                                                                                                        
+
+h = figure;
+plot(1:K, history.objval, 'k', 'MarkerSize', 10, 'LineWidth', 2); 
+ylabel('f(x^k) + g(z^k)'); xlabel('iter (k)');
+
+g = figure;
+subplot(2,1,1);                                                                                                                    
+semilogy(1:K, max(1e-8, history.r_norm), 'k', ...
+    1:K, history.eps_pri, 'kREPLACE_WITH_DASH_DASH',  'LineWidth', 2); 
+ylabel('||r||_2'); 
+
+subplot(2,1,2);                                                                                                                    
+semilogy(1:K, max(1e-8, history.s_norm), 'k', ...
+    1:K, history.eps_dual, 'kREPLACE_WITH_DASH_DASH', 'LineWidth', 2);   
+ylabel('||s||_2'); xlabel('iter (k)'); 
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Least-Squares Covariance Matrix Adjustment</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Least-Squares Covariance Matrix Adjustment</h1>
+<div id="subtitle">S. Boyd and L. Xiao</div>
+</div>
+<p><i>SIAM Journal on Matrix Analysis and Applications</i>, 27(2): 532-546, 2005.</p>
+<ul>
+<li><p><a href="pdf/psd_cone_proj.pdf">psd_cone_proj.pdf</a></p>
+</li>
+</ul>
+<p>We consider the problem of finding the smallest adjustment to a given symmetric 
+<i>n</i> by <i>n</i> matrix, as measured by the Euclidean or Frobenius norm, so that it 
+satisfies some given linear equalities and inequalities, and in addition is 
+positive semidefinite. This least-squares covariance adjustment problem is a 
+convex optimization problem, and can be efficiently solved using standard 
+methods when the number of variables (<i>i.e.</i>, entries in the matrix) is modest, 
+say, under 1000. Since the number of variables is <i>n(n+1)/2</i>,
+this corresponds to 
+a limit around <i>n</i>=45. 
+Malik [2005] studies a closely related problem, and calls 
+it the semidefinite least-squares problem. In this paper we formulate a dual 
+problem that has no matrix inequality or variables, and a number of (scalar) 
+variables equal to the number of equality and inequality constraints in the 
+original least-squares covariance adjustment problem. This dual problem allows 
+us to solve far larger least-squares covariance adjustment problems than would 
+be possible using standard methods. Assuming a modest number of constraints, 
+problems with <i>n</i>=1000 are readily solved by the dual method. The dual method 
+coincides with the dual method proposed by Malik when there are no inequality 
+constraints, and can be obtained as an extension of his dual method when there 
+are inequality constraints. Using the dual problem, we show that in many cases 
+the optimal solution is a low rank update of the original matrix. When the 
+original matrix has structure, such as sparsity, this observation allows us to 
+solve very large least-squares covariance adjustment problems.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:29 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

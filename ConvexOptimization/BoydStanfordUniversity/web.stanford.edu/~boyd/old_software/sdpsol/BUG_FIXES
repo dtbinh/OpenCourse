@@ -1,0 +1,6 @@
+sdpsol beta version bug fixes:
+
+07/05/96 -- fixed the problem that the equality constraints can sometimes be
+            imposed incorrectly by sdpsol.
+
+09/03/96 -- fixed the "./" (entry-wise division) operation

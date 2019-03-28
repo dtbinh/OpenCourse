@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quiz</title>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Sans|Alike' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="quiz.css" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+      //close all the content divs on page load
+      $('.response').hide();
+
+      // toggle slide
+      $('.selection').click(function(){
+        // by calling sibling, we can use same div for all demos
+        $(this).siblings('.response').slideToggle('fast');
+      });
+
+      $('button').click(function(event){
+        var $target = $(event.target);
+        var $checkboxes = $target.parent('.mcq').find('input');
+        for (var i = 0; i < $checkboxes.length; i++) {
+          var $checkbox = $checkboxes.eq(i);
+          a = $checkbox;
+          if ($checkbox[0].checked && $checkbox.nextAll('.response').hasClass('right')) {
+            $checkbox.nextAll('.correct-checkbox').show();
+          } else if ($checkbox[0].checked &&
+              $checkbox.nextAll('.response').hasClass('wrong')) {
+            $checkbox.nextAll('.incorrect-checkbox').show();
+          } else if (!$checkbox[0].checked &&
+              $checkbox.nextAll('.response').hasClass('right')) {
+            $checkbox.nextAll('.incorrect-checkbox').show();
+          } else {
+            $checkbox.nextAll('.correct-checkbox').show();
+          }
+        }
+        $target.parent('.mcq').find('.response').slideToggle('fast');
+        if ($target.text() == 'Submit') {
+          $target.text('Hide');
+        } else {
+          $checkboxes.nextAll('.incorrect-checkbox').hide();
+          $checkboxes.nextAll('.correct-checkbox').hide();
+          $target.text('Submit');
+        }
+      });
+    });
+    </script>
+  </head>
+
+<body>
+  $\newcommand{\ones}{\mathbf 1}$
+  <div>
+	<h1>Statistical estimation</h1>
+	<fieldset>
+		<div class="intro">Let $x^{(1)}, \ldots, x^{(N)}$ be independent samples from an
+$\mathcal N(\mu,\Sigma)$ distribution, where it is known that
+$\Sigma^\mathrm{min} \preceq \Sigma \preceq \Sigma^\mathrm{max}$,
+where $\Sigma^\mathrm{min},~ \Sigma^\mathrm{max}$
+are given positive definite matrices.</div>
+		<hr/>
+		<div>
+			<div class="description">
+The associated log-likelihood function $\ell(\mu,\Sigma)$ (including
+the constraint on $\Sigma$) is concave.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False. </div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						 The log-likelihood function is not concave as a function of
+$\mu$ and $\Sigma$. However, it is concave with the change of variables $S =
+\Sigma^{-1}$ and $r = \Sigma^{-1}\mu$.
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+We can find the maximum-likelihood estimates of $\mu$ and $\Sigma$ by
+solving a convex optimization problem.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True. </div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						 The trick is to use the variables $S=\Sigma^{-1}$ and
+$r = \Sigma^{-1}\mu$.
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+</div>
+
+  <footer>
+  Page generated using <a href="https://github.com/karanveerm/quizgen">Quizgen</a>
+  </footer>
+</body>
+</html>

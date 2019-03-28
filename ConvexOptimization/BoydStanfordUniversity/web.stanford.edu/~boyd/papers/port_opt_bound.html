@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Performance Bounds and Suboptimal Policies for Multi-Period Investment</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Performance Bounds and Suboptimal Policies for Multi-Period Investment</h1>
+<div id="subtitle">S. Boyd, M. Mueller, B. O'Donoghue, and Y. Wang</div>
+</div>
+<p><i>Foundations and Trends in Optimization</i>, 1(1):1-69, January 2014.  
+Original version February 1 2012.</p>
+<ul>
+<li><p><a href="pdf/port_opt_bound.pdf">Final FnT article</a></p>
+</li>
+<li><p><a href="pdf/port_opt_slides.pdf">Talk slides</a></p>
+</li>
+<li><p><a href="matlab/port_opt_bound/port_opt_code.tgz">Source code (matlab/C) and data
+(9Mb)</a></p>
+</li>
+</ul>
+<p>We consider dynamic trading of a portfolio of assets in discrete periods
+over a finite time horizon, with arbitrary time-varying distribution of 
+asset returns.  The goal is to maximize the total expected revenue 
+from the portfolio, while respecting
+constraints on the portfolio such as a required terminal portfolio and leverage
+and risk limits.  The revenue takes into account the gross cash generated in
+trades, transaction costs, and costs associated with the positions, such as
+fees for holding short positions.  Our model has the form of a stochastic
+control problem with linear dynamics and convex cost function and constraints.
+While this problem can be tractably solved in several special cases, 
+such as when all costs are convex quadratic, or when there are no transaction 
+costs, our focus is on the more general case, with nonquadratic cost terms
+and transaction costs.</p>
+<p>We show how to use linear matrix inequality techniques and semidefinite
+programming to produce a quadratic bound on the value function, which in turn
+gives a bound on the optimal performance.  This performance bound can be used
+to judge the performance obtained by any suboptimal policy.  As a by-product of
+the performance bound computation, we obtain an approximate dynamic programming
+policy that requires the solution of a convex optimization problem, often a
+quadratic program, to determine the trades to carry out in each step.  While we
+have no theoretical guarantee that the performance of our suboptimal policy is
+always near the performance bound (which would imply that it is nearly optimal)
+we observe that in numerical examples the two values are typically close.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:29 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

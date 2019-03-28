@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<title>fast_mpc: code for fast model predictive control</title>
+</head>
+<body>
+<div id="layout-content">
+<div id="toptitle">
+<h1><tt>fast_mpc</tt>: code for fast model predictive control</h1>
+</div>
+<p>Version Alpha (Sep 2008)<br />
+<a href="http://www.stanford.edu/~yw224">Yang Wang</a> and
+<a href="http://www.stanford.edu/~boyd">Stephen Boyd</a></p>
+<h2>Purpose</h2>
+<p><tt>fast_mpc</tt> contains two C functions, with MATLAB mex interface,
+that implement the fast model predictive control methods described in the
+paper
+<a href="http://stanford.edu/~boyd/papers/fast_mpc.html"><i>Fast Model Predictive 
+Control Using Online Optimization</i></a>.  See this paper for the precise
+problem formulation and meanings of the algorithm parameters.</p>
+<h2>Download and install</h2>
+<p>Get and unpack the package files from either of </p>
+<ul>
+<li><p><a href="fast_mpc-0.0.1.tar.gz">fast_mpc-0.0.1.tar.gz</a></p>
+</li>
+<li><p><a href="fast_mpc-0.0.1.zip">fast_mpc-0.0.1.zip</a></p>
+</li>
+</ul>
+<p>This will create a directory that contains all source, as well as
+this documentation.</p>
+<p>See the file <a href="INSTALL">INSTALL</a> for installation instructions.</p>
+<h2>What <tt>fast_mpc</tt> does</h2>
+<p>We consider the control of a time-invariant linear dynamical system</p>
+
+<div class="eqwl"><img class="eqwl" src="eqs/5961801872148055350-130.png" alt=" x(t+1) = Ax(t)+Bu(t)+w(t),quad t=0,1,ldots, " />
+<br /></div><p>where <img class="eq" src="eqs/485565670462933553-130.png" alt="x(t)" style="vertical-align: -5px" />, <img class="eq" src="eqs/6468681352962664798-130.png" alt="u(t)" style="vertical-align: -5px" />, and <img class="eq" src="eqs/3668982460020340140-130.png" alt="w(t)" style="vertical-align: -5px" /> are the state, input, and disturbance
+at time <img class="eq" src="eqs/14848044661-130.png" alt="t" style="vertical-align: -1px" />, and <img class="eq" src="eqs/8320025024-130.png" alt="A" style="vertical-align: -0px" /> and <img class="eq" src="eqs/8448025411-130.png" alt="B" style="vertical-align: -0px" /> are the dynamics and input matrices.</p>
+<p>In model predictive control (MPC), at each time <img class="eq" src="eqs/14848044661-130.png" alt="t" style="vertical-align: -1px" /> we solve the QP</p>
+
+<div class="eqwl"><img class="eqwl" src="eqs/7557052705737368140-130.png" alt=" begin{array}{ll} mbox{minimize} &amp; x(t+T)^TQ_fx(t+T) +displaystylesum_{tau = 0}^{t+T-1} x(tau)^TQx(tau)+u(tau)^TRu(tau)  mbox{subject to} &amp; x_{mbox{scriptsize min}} leq x(tau) leq x_{mbox{scriptsize max}}, quad tau = t+1,ldots,t+T,  &amp; u_{mbox{scriptsize min}} leq u(tau) leq u_{mbox{scriptsize max}}, quad tau= t,ldots,t+T-1,  &amp; x(tau+1) = Ax(tau) + Bu(tau),quad tau = t,ldots,t+T-1, end{array} " />
+<br /></div><p>with variables</p>
+
+<div class="eqwl"><img class="eqwl" src="eqs/8558844124276665569-130.png" alt=" x(t+1),ldots,x(t+T),quad u(t),ldots,u(t+T-1), " />
+<br /></div><p>and data</p>
+
+<div class="eqwl"><img class="eqwl" src="eqs/177696295028752785-130.png" alt=" x(t),A,B,Q,Q_f,R,x_{mbox{scriptsize min}},x_{mbox{scriptsize max}}, u_{mbox{scriptsize min}},u_{mbox{scriptsize max}},T. " />
+<br /></div><p>The MPC input is <img class="eq" src="eqs/455160062700464006-130.png" alt="u^star(t)" style="vertical-align: -5px" />. We repeat this at the next time step.</p>
+<p><tt>fast_mpc</tt> is a software package for solving this optimization problem
+fast by exploiting its special structure, and by solving the problem 
+approximately.
+The function <tt>fmpc_step</tt> solves the problem above, starting from a given
+initial state and input trajectory.
+The function <tt>fmpc_sim</tt> carries out a full MPC simulation of a dynamical
+system with MPC control.</p>
+<h2>Using <tt>fmpc_step</tt></h2>
+<p>The function <tt>fmpc_step</tt> solves the above optimization problem and returns the
+approximately optimal <img class="eq" src="eqs/15360046201-130.png" alt="x" style="vertical-align: -1px" /> and <img class="eq" src="eqs/14976045044-130.png" alt="u" style="vertical-align: -1px" /> trajectories.  (In this case, you must 
+implement the MPC control loop yourself.)   The calling procedure is as
+follows.</p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+[X,U,telapsed] = fmpc_step(sys,params,X0,U0,x0);
+</pre></div></div>
+<div class="codeblock">
+<div class="blocktitle">Inputs</div>
+<div class="blockcontent"><pre>
+System description (sys structure):
+
+    sys.A       :   dynamics matrix A
+    sys.B       :   input matrix B
+    sys.Q       :   state cost matrix Q
+    sys.R       :   input cost matrix R
+    sys.xmax    :   state upper limits x_{max}
+    sys.xmin    :   state lower limits x_{min}
+    sys.umax    :   input upper limits u_{max}
+    sys.umin    :   input lower limits u_{min}
+    sys.n       :   number of states
+    sys.m       :   number of inputs
+
+MPC parameters (params structure):
+
+    params.T        :   MPC horizon T
+    params.Qf       :   MPC final cost Q_f
+    params.kappa    :   Barrier parameter
+    params.niters   :   number of newton iterations
+    params.quiet    :   no output to display if true
+
+Other inputs
+    X0   :   warm start X trajectory (n by T matrix)
+    U0   :   warm start U trajectory (m by T matrix)
+    x0   :   initial state
+
+The inputs X0 and U0 need not satisfy the constraints; they are first
+projected into the bounding box before the fast algorithm is applied.
+</pre></div></div>
+<div class="codeblock">
+<div class="blocktitle">Outputs</div>
+<div class="blockcontent"><pre>
+X        :  optimal X trajectory (n by T matrix)
+U        :  optimal U trajectory (m by T matrix)
+telapsed :  time taken to solve the problem
+</pre></div></div>
+<h2>Using <tt>fmpc_sim</tt></h2>
+<p>The function <tt>fmpc_sim</tt> handles the entire MPC simulation.
+For <img class="eq" src="eqs/5615638958306111871-130.png" alt="t=1,ldots, n_mathrm{steps}" style="vertical-align: -6px" />,
+<tt>fmpc_sim</tt> solves the above optimization problem, then applies the MPC input 
+and updates the state according to the dynamics equations. 
+The state and control trajectories are initialized with those from the
+previous step, shifted in time, and
+appending <img class="eq" src="eqs/4030995361092090352-130.png" alt="hat u" style="vertical-align: -1px" /> and <img class="eq" src="eqs/4030995361092090365-130.png" alt="hat x" style="vertical-align: -1px" />, where</p>
+
+<div class="eqwl"><img class="eqwl" src="eqs/2708451078732515122-130.png" alt=" hat u = Kx(T) , qquad hat x = Ax(T)+BKx(T). " />
+<br /></div><p>(As with <tt>fmpc_step</tt>, these trajectories are then projected into the
+constraint box.)
+Here <img class="eq" src="eqs/9600028874-130.png" alt="K" style="vertical-align: -0px" /> is the terminal control gain,</p>
+
+<div class="eqwl"><img class="eqwl" src="eqs/8557170861950527599-130.png" alt=" K = -(R+B^TQ_fB)^{-1}B^TQ_fA. " />
+<br /></div><p>The calling procedure is</p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+[Xhist,Uhist,telapsed] = fmpc_sim(sys,params,X0,U0,x0,w);
+</pre></div></div>
+<div class="codeblock">
+<div class="blocktitle">Inputs</div>
+<div class="blockcontent"><pre>
+System description (sys structure):
+
+    sys.A       :   dynamics matrix A
+    sys.B       :   input matrix B
+    sys.Q       :   state cost matrix Q
+    sys.R       :   input cost matrix R
+    sys.xmax    :   state upper limits x_{max}
+    sys.xmin    :   state lower limits x_{min}
+    sys.umax    :   input upper limits u_{max}
+    sys.umin    :   input lower limits u_{min}
+    sys.n       :   number of states
+    sys.m       :   number of inputs
+
+MPC parameters (params structure):
+
+    params.T        :   MPC horizon T
+    params.Qf       :   MPC final cost Q_f
+    params.kappa    :   Barrier parameter
+    params.niters   :   number of newton iterations
+    params.quiet    :   no output to display if true
+    params.nsteps   :   number of steps to run the MPC simulation
+
+Other inputs
+    X0   :   warm start X trajectory (n by T matrix)
+    U0   :   warm start U trajectory (m by T matrix)
+    x0   :   initial state
+    w    :   disturbance trajectory (n by nsteps matrix)
+
+The inputs X0 and U0 need not satisfy the constraints; they are first
+projected into the bounding box before the fast algorithm is applied.
+</pre></div></div>
+<div class="codeblock">
+<div class="blocktitle">Outputs</div>
+<div class="blockcontent"><pre>
+Xhist        :  state history (n by nsteps matrix)
+Uhist        :  input history (m by nsteps matrix)
+telapsed     :  time taken to solve the problem
+</pre></div></div>
+<h2>Examples</h2>
+<p>We have provided two examples that illustrate usage:</p>
+<ul>
+<li><p><a href="masses_example.m"><tt>masses_example.m</tt></a> 
+uses <tt>fmpc_step</tt> to control a system of oscillating masses.</p>
+</li>
+<li><p><a href="randsys_example.m"><tt>randsys_example.m</tt></a> uses <tt>fmpc_sim</tt> to simulate
+MPC on a randomly generated system.</p>
+</li>
+</ul>
+<h2>Feedback</h2>
+<p>Please report any bugs to Yang Wang <a href="mailto:yw224@stanford.edu">&lt;yw224@stanford.edu&gt;</a>. </p>
+<h2>License</h2>
+<p><tt>fast_mpc</tt> is under Apache license, version 2.0, January 2004.</p>
+<h2></h2>
+<p><a href="http://www.stanford.edu/~boyd/research.html">Boyd's research group page.</a></p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2017-09-01 17:36:39 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</div>
+</body>
+</html>

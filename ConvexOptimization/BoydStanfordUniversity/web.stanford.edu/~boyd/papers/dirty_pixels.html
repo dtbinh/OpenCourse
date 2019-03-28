@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Dirty Pixels: Optimizing Image Classification Architectures for Raw Sensor Data</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Dirty Pixels: Optimizing Image Classification Architectures for Raw Sensor Data</h1>
+<div id="subtitle">S. Diamond, V. Sitzmann, S. Boyd, G. Wetzstein, and F. Heide</div>
+</div>
+<p>Manuscript, posted November 2018.</p>
+<ul>
+<li><p><a href="pdf/dirty_pixels.pdf">Manuscript</a></p>
+</li>
+<li><p><a href="https://arxiv.org/src/1701.06487v1/anc/supplement.pdf">Supplement</a></p>
+</li>
+</ul>
+<p>Real-world sensors suffer from noise, blur, and other imperfections that make 
+high-level computer vision tasks like scene segmentation, tracking, and scene 
+understanding difficult. Making high-level computer vision networks robust is 
+imperative for real-world applications like autonomous driving, robotics, and 
+surveillance. We propose a novel end-to-end differentiable architecture for 
+joint denoising, deblurring, and classification that makes classification robust 
+to realistic noise and blur. The proposed architecture dramatically improves the 
+accuracy of a classification network in low light and other challenging conditions, 
+outperforming alternative approaches such as retraining the network on noisy and 
+blurry images and preprocessing raw sensor inputs with conventional denoising and 
+deblurring algorithms. The architecture learns denoising and deblurring pipelines 
+optimized for classification whose outputs differ markedly from those of 
+state-of-the-art denoising and deblurring methods, preserving fine detail at the 
+cost of more noise and artifacts. Our results suggest that the best low-level 
+image processing for computer vision is different from existing algorithms designed 
+to produce visually pleasing images. The principles used to design the proposed 
+architecture easily extend to other high-level computer vision tasks and image 
+formation models, providing a general framework for integrating low-level and 
+high-level image processing.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:26 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

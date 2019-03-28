@@ -1,0 +1,238 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>log_regression</title>
+      <meta name="generator" content="MATLAB 7.0.4">
+      <meta name="date" content="2006-03-28">
+      <meta name="m-file" content="log_regression"><style>
+body {
+  background-color: white;
+  margin:10px;
+}
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+pre.codeinput {
+  margin-left: 30px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.showbuttons {
+  margin-left: 30px;
+  border: solid black 2px;
+  padding: 4px;
+  background: #EBEFF3;
+}
+
+pre.codeoutput {
+  color: gray;
+  font-style: italic;
+}
+pre.error {
+  color: red;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+    </style></head>
+   <body><pre class="codeinput"><span class="comment">% Logistic regression modeling via geometric programming (GP).</span>
+<span class="comment">% (a figure is generated)</span>
+<span class="comment">%</span>
+<span class="comment">% This examples solves a logistic regression example presented</span>
+<span class="comment">% in the book "Convex Optimization" by Boyd and Vandenberghe</span>
+<span class="comment">% (see pages 354-355). More info can be found in the attached report:</span>
+<span class="comment">%</span>
+<span class="comment">%   Logistic regression via Geometric Programming</span>
+<span class="comment">%   by Seung Jean Kim and Almir Mutapcic</span>
+<span class="comment">%   (Will be available soon.)</span>
+<span class="comment">%</span>
+<span class="comment">% Solves the logistic regression problem re-formulated as a GP.</span>
+<span class="comment">% The original log regression problem is:</span>
+<span class="comment">%</span>
+<span class="comment">%   minimize   sum_i(theta'*x_i) + sum_i( log(1 + exp(-theta'*x_i)) )</span>
+<span class="comment">%</span>
+<span class="comment">% where x are explanatory variables and theta are model parameters.</span>
+<span class="comment">% The equivalent GP is obtained by the following change of variables:</span>
+<span class="comment">% z_i = exp(theta_i). The log regression problem is then a GP:</span>
+<span class="comment">%</span>
+<span class="comment">%   minimize   prod( prod(z_j^x_j) ) * (prod( 1 + prod(z_j^(-x_j)) ))</span>
+<span class="comment">%</span>
+<span class="comment">% with variables z and data x (explanatory variables).</span>
+<span class="comment">%</span>
+<span class="comment">% Almir Mutapcic, 11/05</span>
+
+<span class="comment">% load problem data from the Convex Optimization book</span>
+load_log_reg_data;
+
+<span class="comment">% order the observation data</span>
+ind_false = find( y == 0 );
+ind_true  = find( y == 1 );
+
+<span class="comment">% X is the sorted design matrix</span>
+<span class="comment">% first have true than false observations followed by the bias term</span>
+X = [u(ind_true); u(ind_false)];
+X = [X ones(size(u,1),1)];
+[m,n] = size(X);
+q = length(ind_true);
+
+<span class="comment">% optimization variables</span>
+gpvar <span class="string">z(n)</span> <span class="string">t(q)</span> <span class="string">s(m)</span>
+
+<span class="comment">% objective function</span>
+obj = prod(t)*prod(s);
+
+constr = gpconstraint;
+<span class="comment">% constraints</span>
+<span class="keyword">for</span> k = 1:q
+  constr(k) = prod( z.^(X(k,:)') ) &lt;= t(k);
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> k = 1:m
+  constr(end+1) = 1 + prod( z.^(-X(k,:)') ) &lt;= s(k);
+<span class="keyword">end</span>
+
+<span class="comment">% solve the GP problem</span>
+[obj_value, solution, status] = gpsolve(obj, constr)
+assign(solution)
+
+<span class="comment">% retrieve the optimal values and plot the result</span>
+theta = log(z);
+aml = -theta(1);
+bml = -theta(2);
+
+us = linspace(-1,11,1000)';
+ps = exp(aml*us + bml)./(1+exp(aml*us+bml));
+
+plot(us,ps,<span class="string">'-'</span>, u(ind_true),y(ind_true),<span class="string">'o'</span>, <span class="keyword">...</span>
+                u(ind_false),y(ind_false),<span class="string">'o'</span>);
+axis([-1, 11,-0.1,1.1]);
+</pre><pre class="codeoutput">Problem succesfully solved.
+
+obj_value =
+
+   2.1033e+14
+
+
+solution = 
+
+    's'    [100x1 double]
+    't'    [ 53x1 double]
+    'z'    [  2x1 double]
+
+
+status =
+
+Solved
+
+</pre><img vspace="5" hspace="5" src="log_regression_01.png"> <p class="footer"><br>
+         Published with MATLAB&reg; 7.0.4<br></p>
+      <!--
+##### SOURCE BEGIN #####
+% Logistic regression modeling via geometric programming (GP).
+% (a figure is generated)
+%
+% This examples solves a logistic regression example presented
+% in the book "Convex Optimization" by Boyd and Vandenberghe
+% (see pages 354-355). More info can be found in the attached report:
+%
+%   Logistic regression via Geometric Programming
+%   by Seung Jean Kim and Almir Mutapcic
+%   (Will be available soon.)
+%
+% Solves the logistic regression problem re-formulated as a GP.
+% The original log regression problem is:
+%
+%   minimize   sum_i(theta'*x_i) + sum_i( log(1 + exp(-theta'*x_i)) )
+%
+% where x are explanatory variables and theta are model parameters.
+% The equivalent GP is obtained by the following change of variables:
+% z_i = exp(theta_i). The log regression problem is then a GP:
+%
+%   minimize   prod( prod(z_j^x_j) ) * (prod( 1 + prod(z_j^(-x_j)) ))
+%
+% with variables z and data x (explanatory variables).
+%
+% Almir Mutapcic, 11/05
+
+% load problem data from the Convex Optimization book
+load_log_reg_data;
+
+% order the observation data
+ind_false = find( y == 0 );
+ind_true  = find( y == 1 );
+
+% X is the sorted design matrix
+% first have true than false observations followed by the bias term
+X = [u(ind_true); u(ind_false)];
+X = [X ones(size(u,1),1)];
+[m,n] = size(X);
+q = length(ind_true);
+
+% optimization variables
+gpvar z(n) t(q) s(m)
+
+% objective function
+obj = prod(t)*prod(s);
+
+constr = gpconstraint;
+% constraints
+for k = 1:q
+  constr(k) = prod( z.^(X(k,:)') ) <= t(k);
+end
+
+for k = 1:m
+  constr(end+1) = 1 + prod( z.^(-X(k,:)') ) <= s(k);
+end
+
+% solve the GP problem
+[obj_value, solution, status] = gpsolve(obj, constr)
+assign(solution)
+
+% retrieve the optimal values and plot the result
+theta = log(z);
+aml = -theta(1);
+bml = -theta(2);
+
+us = linspace(-1,11,1000)';
+ps = exp(aml*us + bml)./(1+exp(aml*us+bml));
+
+plot(us,ps,'-', u(ind_true),y(ind_true),'o', ...
+                u(ind_false),y(ind_false),'o');
+axis([-1, 11,-0.1,1.1]);
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

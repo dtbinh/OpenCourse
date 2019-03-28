@@ -1,0 +1,523 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>elmore_interconnect</title>
+      <meta name="generator" content="MATLAB 7.0.4">
+      <meta name="date" content="2006-03-28">
+      <meta name="m-file" content="elmore_interconnect"><style>
+body {
+  background-color: white;
+  margin:10px;
+}
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+pre.codeinput {
+  margin-left: 30px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.showbuttons {
+  margin-left: 30px;
+  border: solid black 2px;
+  padding: 4px;
+  background: #EBEFF3;
+}
+
+pre.codeoutput {
+  color: gray;
+  font-style: italic;
+}
+pre.error {
+  color: red;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+    </style></head>
+   <body><pre class="codeinput"><span class="comment">% Elmore delay sizing for an interconnect network.</span>
+<span class="comment">% (a figure is generated)</span>
+<span class="comment">%</span>
+<span class="comment">% This is an example taken directly from papers:</span>
+<span class="comment">%</span>
+<span class="comment">%   A Tutorial on Geometric Programming (see pages 31-34)</span>
+<span class="comment">%   by Boyd, Kim, Vandenberghe, and Hassibi.</span>
+<span class="comment">%</span>
+<span class="comment">%   Digital circuit optimization via geometrical programming</span>
+<span class="comment">%   by Boyd, Kim, Patil, and Horowitz</span>
+<span class="comment">%   Operations Research 53(6): 899-932, 2005.</span>
+<span class="comment">%</span>
+<span class="comment">% We consider the problem of finding optimal wire widths w_i</span>
+<span class="comment">% of N wire segments in an interconnect network, which will</span>
+<span class="comment">% minimize the critical Elmore delay, subject to limits on</span>
+<span class="comment">% wire widths and the total circuit area. We use a pi-model</span>
+<span class="comment">% for each wire segment. Problem can be formulated as GP:</span>
+<span class="comment">%</span>
+<span class="comment">%   minimize   D</span>
+<span class="comment">%       s.t.   w_min &lt;= w &lt;= w_max</span>
+<span class="comment">%              area  &lt;= Amax</span>
+<span class="comment">%</span>
+<span class="comment">% where variables are widths w (and arrival times T that are used</span>
+<span class="comment">% to formulate the overall delay D expression).</span>
+<span class="comment">%</span>
+<span class="comment">% Important: We label root node as 1, and all the other nodes as</span>
+<span class="comment">%            node_label_in_the_paper + 1 (due to Matlab's convention).</span>
+<span class="comment">%            Also label nodes with increasing numbers downstream.</span>
+<span class="comment">%</span>
+<span class="comment">% Almir Mutapcic 02/01/2006</span>
+clear <span class="string">all</span>; close <span class="string">all</span>;
+PLOT_TRADEOFF = 1; <span class="comment">% to disable set PLOT_TRADEOFF = 0;</span>
+
+<span class="comment">%********************************************************************</span>
+<span class="comment">% user supplied data (problem constants and tree topology)</span>
+<span class="comment">%********************************************************************</span>
+N = 6; <span class="comment">% number of nodes (including the root node which is labeled as 1)</span>
+
+<span class="comment">% parent node array</span>
+<span class="comment">% specifies which node is a unique parent for node i (always have a tree)</span>
+parent(1) = 0; <span class="comment">% root node does not have a valid parent</span>
+parent(2) = 1;
+parent(3) = 2;
+parent(4) = 3;
+parent(5) = 2;
+parent(6) = 5;
+
+<span class="comment">% problem constants</span>
+Rsource = 0.1;
+l = 1*ones(N-1,1);
+alpha = 1*ones(N-1,1);
+beta  = 1*ones(N-1,1);
+gamma = 1*ones(N-1,1);
+
+<span class="comment">% load capacitance at each node</span>
+C1 = 10; C2 = 10; C3 = 10; C4 = 10; C5 = 10;
+Cload = [0 C1 C2 C3 C4 C5];
+
+<span class="comment">% minimum and maximum width and area specification</span>
+Wmin = 1;
+Wmax = 10;
+Amax = 15;
+
+<span class="comment">%********************************************************************</span>
+<span class="comment">% derived data (computed from user's data)</span>
+<span class="comment">%********************************************************************</span>
+<span class="comment">% compute children cell array (evaluate who are children for each node)</span>
+children = cell(N,1);
+leafs = [];
+<span class="keyword">for</span> node = [1:N]
+  children{node} = find(parent == node);
+  <span class="keyword">if</span> isempty(children{node})
+    leafs(end+1) = node; <span class="comment">% leafs have no children</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">%********************************************************************</span>
+<span class="comment">% optimization</span>
+<span class="comment">%********************************************************************</span>
+<span class="comment">% optimization variables</span>
+gpvar <span class="string">w(N-1)</span>     <span class="comment">% wire width</span>
+gpvar <span class="string">T(N)</span>       <span class="comment">% arrival time (Elmore delay to node i)</span>
+
+<span class="comment">% wire segment resistance is inversely proportional to widths</span>
+R = alpha.*l./w;
+R = [Rsource; R];
+
+<span class="comment">% wire segment capacitance is an affine function of widths</span>
+C_bar = beta.*l.*w + gamma.*l;
+C_bar = [0; C_bar];
+
+<span class="comment">% compute common capacitances for each node (C_tilde in GP tutorial)</span>
+C_tilde = posynomial; <span class="comment">% create empty posynomial</span>
+<span class="keyword">for</span> node = [1:N]
+  C_tilde(node,1) = Cload(node);
+  <span class="keyword">for</span> k = parent(node)
+    <span class="keyword">if</span> k &gt; 0; C_tilde(node,1) = C_tilde(node,1) + C_bar(k); <span class="keyword">end</span>;
+  <span class="keyword">end</span>
+  <span class="keyword">for</span> k = children{node}
+    C_tilde(node,1) = C_tilde(node,1) + C_bar(k);
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% now compute total downstream capacitances</span>
+C_total = posynomial; <span class="comment">% create empty posynomial</span>
+<span class="keyword">for</span> node = N:-1:1
+  C_total(node,1) = C_tilde(node);
+  <span class="keyword">for</span> k = children{node}
+    C_total(node,1) = C_total(node,1) + C_total(k,1);
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% generate Elmore delay constraints</span>
+elm_delay_constr = [R(1)*C_total(1) &lt;= T(1,1)];
+<span class="keyword">for</span> node = 2:N
+  elm_delay_constr = [elm_delay_constr; <span class="keyword">...</span>
+                      R(node)*C_total(node) + T(parent(node),1) &lt;= T(node,1)];
+<span class="keyword">end</span>
+
+<span class="comment">% collect all the constraints</span>
+area = sum(w.*l);
+constr(1) = area &lt;= Amax;
+constr = [constr; Wmin*ones(N-1,1) &lt;= w; w &lt;= Wmax*ones(N-1,1)];
+constr = [constr; elm_delay_constr];
+
+<span class="comment">% objective is the critical Elmore delay</span>
+D = max( T(leafs) );
+
+<span class="comment">% solve the problem</span>
+[D_value, solution, status] = gpsolve(D, constr);
+assign(solution);
+
+<span class="comment">% save for plotting</span>
+ckt_delay_plot = D_value;
+Amax_plot = Amax;
+
+fprintf(1,<span class="string">'\nOptimal Elmore delay for Amax = %d is %3.4f.\n'</span>, <span class="keyword">...</span>
+        Amax, D_value)
+disp(<span class="string">'Optimal wire widths are: '</span>), w
+
+<span class="comment">%********************************************************************</span>
+<span class="comment">% tradeoff curve code</span>
+<span class="comment">%********************************************************************</span>
+<span class="keyword">if</span>( PLOT_TRADEOFF )
+
+<span class="comment">% set the quiet flag (no solver reporting)</span>
+<span class="keyword">global</span> QUIET; QUIET = 1;
+
+disp(<span class="string">'generating the tradeoff curve'</span>)
+Darray = []; Duniform = [];
+<span class="keyword">for</span> Amax = [5.05 5.25 5.5 5.75 6:25]
+  <span class="comment">% formulate the GP problem and solve it</span>
+  constr(1) = area &lt;= Amax;
+  [D_value, solution, status] = gpsolve(D, constr);
+  Darray = [Darray D_value];
+
+  <span class="comment">% evaluate delay to leaf 4 (or 3 in the papers) with uniform sizing</span>
+  D_to_3 = C_tilde(4)*(R(1) + R(2) + R(3) + R(4)) + <span class="keyword">...</span>
+           C_tilde(3)*(R(1) + R(2) + R(3)) + C_tilde(1)*R(1) + <span class="keyword">...</span>
+           (C_tilde(2) + C_tilde(5) + C_tilde(6))*(R(1) + R(2));
+  D_to_5 = C_tilde(6)*(R(1) + R(2) + R(5) + R(6)) + <span class="keyword">...</span>
+           C_tilde(5)*(R(1) + R(2) + R(5)) + C_tilde(1)*R(1) + <span class="keyword">...</span>
+           (C_tilde(2) + C_tilde(3) + C_tilde(4))*(R(1) + R(2));
+  D_3_5 = max(D_to_3,D_to_5);
+  Duniform = [Duniform eval(D_3_5, {<span class="string">'w'</span> Amax/(N-1)*ones(N-1,1)}) ];
+<span class="keyword">end</span>
+
+<span class="comment">% enable solver reporting again</span>
+<span class="keyword">global</span> QUIET; QUIET = 0;
+
+<span class="comment">% plot the tradeoff curve</span>
+Amax = [5.05 5.25 5.5 5.75 6:25];
+plot(Darray,Amax,Duniform,Amax,<span class="string">'--'</span>,ckt_delay_plot,Amax_plot,<span class="string">'bo'</span>);
+xlabel(<span class="string">'Elmore delay D'</span>); ylabel(<span class="string">'Amax'</span>);
+legend(<span class="string">'optimal'</span>,<span class="string">'uniform'</span>)
+
+<span class="keyword">end</span>
+<span class="comment">% end tradeoff curve code</span>
+</pre><pre class="codeoutput"> 
+Iteration     primal obj.         gap        dual residual     previous step.
+ 
+   1         5.20469e+00       4.30000e+01       2.24e+01               Inf
+   2         5.26444e+00       1.79498e+01       6.76e-03       9.90311e-01
+   3         2.13759e+00       9.81860e+00       4.80e-04       7.95102e-01
+   4         1.81684e-01       4.50566e+00       5.37e-06       1.00000e+00
+   5        -2.58233e-01       2.23499e+00       3.75e-06       1.00000e+00
+ 
+Iteration     primal obj.         gap        dual residual     previous step.
+ 
+   1         1.92704e+02       4.30000e+01       1.00e+00               Inf
+   2         1.56156e+02       4.10528e+01       9.36e-01       3.36318e-02
+   3         6.53202e+01       3.78461e+01       8.81e-01       3.00259e-02
+   4         2.36201e+01       3.45175e+01       7.77e-01       6.05599e-02
+   5         9.13300e+00       3.12913e+01       6.01e-01       1.25000e-01
+   6         6.68741e+00       2.54784e+01       1.67e-01       5.00000e-01
+   7         8.28682e+00       2.20511e+01       1.12e-03       1.00000e+00
+   8         5.89151e+00       1.10608e+01       7.15e-04       1.00000e+00
+   9         4.89862e+00       5.56656e+00       1.17e-04       1.00000e+00
+  10         4.34698e+00       2.79801e+00       2.33e-05       1.00000e+00
+  11         4.05803e+00       1.40475e+00       2.75e-06       1.00000e+00
+  12         3.91054e+00       7.04238e-01       2.87e-07       1.00000e+00
+  13         3.83696e+00       3.52660e-01       2.48e-08       1.00000e+00
+  14         3.80014e+00       1.76474e-01       1.81e-09       1.00000e+00
+  15         3.78170e+00       8.82735e-02       1.20e-10       1.00000e+00
+  16         3.77247e+00       4.41459e-02       7.65e-12       1.00000e+00
+  17         3.76785e+00       2.20752e-02       4.83e-13       1.00000e+00
+  18         3.76554e+00       1.10382e-02       3.03e-14       1.00000e+00
+  19         3.76439e+00       5.51924e-03       1.90e-15       1.00000e+00
+  20         3.76381e+00       2.75966e-03       1.19e-16       1.00000e+00
+  21         3.76352e+00       1.37984e-03       7.42e-18       1.00000e+00
+  22         3.76338e+00       6.89921e-04       4.64e-19       1.00000e+00
+  23         3.76331e+00       3.44961e-04       2.90e-20       1.00000e+00
+  24         3.76327e+00       1.72481e-04       1.81e-21       1.00000e+00
+  25         3.76325e+00       8.62404e-05       1.13e-22       1.00000e+00
+  26         3.76324e+00       4.31202e-05       7.08e-24       1.00000e+00
+  27         3.76324e+00       2.15601e-05       4.43e-25       1.00000e+00
+  28         3.76324e+00       1.07800e-05       2.77e-26       1.00000e+00
+  29         3.76324e+00       5.39002e-06       1.74e-27       1.00000e+00
+  30         3.76324e+00       2.69501e-06       1.09e-28       1.00000e+00
+  31         3.76323e+00       1.34751e-06       5.93e-30       1.00000e+00
+  32         3.76323e+00       6.73753e-07       1.79e-30       1.00000e+00
+  33         3.76323e+00       3.36877e-07       1.99e-31       1.00000e+00
+  34         3.76323e+00       1.68438e-07       3.99e-31       1.00000e+00
+  35         3.76323e+00       8.42191e-08       3.88e-31       1.00000e+00
+  36         3.76323e+00       4.21096e-08       3.35e-31       1.00000e+00
+  37         3.76323e+00       2.10548e-08       1.93e-31       1.00000e+00
+  38         3.76323e+00       1.05274e-08       5.81e-32       1.00000e+00
+  39         3.76323e+00       5.26370e-09       2.92e-31       1.00000e+00
+Solved
+Problem succesfully solved.
+
+Optimal Elmore delay for Amax = 15 is 43.0876.
+Optimal wire widths are: 
+
+w =
+
+    5.8924
+    2.6416
+    1.9122
+    2.6416
+    1.9122
+
+generating the tradeoff curve
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+</pre><img vspace="5" hspace="5" src="elmore_interconnect_01.png"> <p class="footer"><br>
+         Published with MATLAB&reg; 7.0.4<br></p>
+      <!--
+##### SOURCE BEGIN #####
+% Elmore delay sizing for an interconnect network.
+% (a figure is generated)
+%
+% This is an example taken directly from papers:
+%
+%   A Tutorial on Geometric Programming (see pages 31-34)
+%   by Boyd, Kim, Vandenberghe, and Hassibi.
+% 
+%   Digital circuit optimization via geometrical programming
+%   by Boyd, Kim, Patil, and Horowitz
+%   Operations Research 53(6): 899-932, 2005.
+%
+% We consider the problem of finding optimal wire widths w_i
+% of N wire segments in an interconnect network, which will
+% minimize the critical Elmore delay, subject to limits on
+% wire widths and the total circuit area. We use a pi-model
+% for each wire segment. Problem can be formulated as GP:
+%
+%   minimize   D
+%       s.t.   w_min <= w <= w_max
+%              area  <= Amax 
+%
+% where variables are widths w (and arrival times T that are used
+% to formulate the overall delay D expression).
+%
+% Important: We label root node as 1, and all the other nodes as
+%            node_label_in_the_paper + 1 (due to Matlab's convention).
+%            Also label nodes with increasing numbers downstream.
+%
+% Almir Mutapcic 02/01/2006
+clear all; close all;
+PLOT_TRADEOFF = 1; % to disable set PLOT_TRADEOFF = 0;
+
+%********************************************************************
+% user supplied data (problem constants and tree topology)
+%********************************************************************
+N = 6; % number of nodes (including the root node which is labeled as 1)
+
+% parent node array
+% specifies which node is a unique parent for node i (always have a tree)
+parent(1) = 0; % root node does not have a valid parent
+parent(2) = 1;
+parent(3) = 2;
+parent(4) = 3;
+parent(5) = 2;
+parent(6) = 5;
+
+% problem constants
+Rsource = 0.1;
+l = 1*ones(N-1,1);
+alpha = 1*ones(N-1,1);
+beta  = 1*ones(N-1,1);
+gamma = 1*ones(N-1,1);
+
+% load capacitance at each node
+C1 = 10; C2 = 10; C3 = 10; C4 = 10; C5 = 10;
+Cload = [0 C1 C2 C3 C4 C5]; 
+
+% minimum and maximum width and area specification 
+Wmin = 1;
+Wmax = 10;
+Amax = 15;
+
+%********************************************************************
+% derived data (computed from user's data)
+%********************************************************************
+% compute children cell array (evaluate who are children for each node)
+children = cell(N,1);
+leafs = [];
+for node = [1:N]
+  children{node} = find(parent == node);
+  if isempty(children{node})
+    leafs(end+1) = node; % leafs have no children
+  end
+end
+
+%********************************************************************
+% optimization
+%********************************************************************
+% optimization variables
+gpvar w(N-1)     % wire width
+gpvar T(N)       % arrival time (Elmore delay to node i)
+
+% wire segment resistance is inversely proportional to widths
+R = alpha.*l./w;
+R = [Rsource; R];
+
+% wire segment capacitance is an affine function of widths
+C_bar = beta.*l.*w + gamma.*l;
+C_bar = [0; C_bar];
+
+% compute common capacitances for each node (C_tilde in GP tutorial)
+C_tilde = posynomial; % create empty posynomial
+for node = [1:N]
+  C_tilde(node,1) = Cload(node);
+  for k = parent(node)
+    if k > 0; C_tilde(node,1) = C_tilde(node,1) + C_bar(k); end;
+  end
+  for k = children{node}
+    C_tilde(node,1) = C_tilde(node,1) + C_bar(k);
+  end
+end
+
+% now compute total downstream capacitances
+C_total = posynomial; % create empty posynomial
+for node = N:-1:1
+  C_total(node,1) = C_tilde(node);
+  for k = children{node}
+    C_total(node,1) = C_total(node,1) + C_total(k,1);
+  end
+end
+
+% generate Elmore delay constraints
+elm_delay_constr = [R(1)*C_total(1) <= T(1,1)];
+for node = 2:N
+  elm_delay_constr = [elm_delay_constr; ...
+                      R(node)*C_total(node) + T(parent(node),1) <= T(node,1)];
+end
+
+% collect all the constraints
+area = sum(w.*l);
+constr(1) = area <= Amax;
+constr = [constr; Wmin*ones(N-1,1) <= w; w <= Wmax*ones(N-1,1)];
+constr = [constr; elm_delay_constr];
+
+% objective is the critical Elmore delay
+D = max( T(leafs) );
+
+% solve the problem
+[D_value, solution, status] = gpsolve(D, constr);
+assign(solution);
+
+% save for plotting
+ckt_delay_plot = D_value;
+Amax_plot = Amax;
+
+fprintf(1,'\nOptimal Elmore delay for Amax = %d is %3.4f.\n', ...
+        Amax, D_value)
+disp('Optimal wire widths are: '), w
+
+%********************************************************************
+% tradeoff curve code
+%********************************************************************
+if( PLOT_TRADEOFF )
+
+% set the quiet flag (no solver reporting)
+global QUIET; QUIET = 1;
+
+disp('generating the tradeoff curve')
+Darray = []; Duniform = [];
+for Amax = [5.05 5.25 5.5 5.75 6:25]
+  % formulate the GP problem and solve it
+  constr(1) = area <= Amax;
+  [D_value, solution, status] = gpsolve(D, constr);
+  Darray = [Darray D_value];
+
+  % evaluate delay to leaf 4 (or 3 in the papers) with uniform sizing
+  D_to_3 = C_tilde(4)*(R(1) + R(2) + R(3) + R(4)) + ...
+           C_tilde(3)*(R(1) + R(2) + R(3)) + C_tilde(1)*R(1) + ...
+           (C_tilde(2) + C_tilde(5) + C_tilde(6))*(R(1) + R(2));
+  D_to_5 = C_tilde(6)*(R(1) + R(2) + R(5) + R(6)) + ...
+           C_tilde(5)*(R(1) + R(2) + R(5)) + C_tilde(1)*R(1) + ...
+           (C_tilde(2) + C_tilde(3) + C_tilde(4))*(R(1) + R(2));
+  D_3_5 = max(D_to_3,D_to_5);
+  Duniform = [Duniform eval(D_3_5, {'w' Amax/(N-1)*ones(N-1,1)}) ];
+end
+
+% enable solver reporting again
+global QUIET; QUIET = 0;
+
+% plot the tradeoff curve
+Amax = [5.05 5.25 5.5 5.75 6:25];
+plot(Darray,Amax,Duniform,Amax,'REPLACE_WITH_DASH_DASH',ckt_delay_plot,Amax_plot,'bo');
+xlabel('Elmore delay D'); ylabel('Amax');
+legend('optimal','uniform')
+
+end
+% end tradeoff curve code
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

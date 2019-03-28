@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Sdpsol: A Parser/Solver for Semidefinite Programs with Matrix Structure</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Sdpsol: A Parser/Solver for Semidefinite Programs with Matrix Structure</h1>
+<div id="subtitle">S.-P. Wu and S. Boyd</div>
+</div>
+<p>Chapter 4 of <i>Recent Advances in LMI Methods for Control</i>, 
+L. El Ghaoui and S.-I. Niculescu, 
+editors, SIAM, pages 79-91, 2000.<br />
+Shorter version: <i>Design and 
+implementation of a parser</i>solver for SDPs with matrix structure<i>, </i>Proceedings 
+of the 1996 IEEE International Symposium on Computer-Aided Control System 
+Design (CACSD)/, pp.240-245, 1996.</p>
+<ul>
+<li><p>Book chapter: <a href="pdf/sdpsol.pdf">sdpsol.pdf</a></p>
+</li>
+<li><p>CACSD 96 paper: <a href="pdf/sdpsol_cacsd96.pdf">sdpsol_cacsd96.pdf</a> </p>
+</li>
+</ul>
+<p>A variety of analysis and design problems in control, communication and 
+information theory, statistics, combinatorial optimization, computational 
+geometry, circuit design, and other fields can be expressed as semidefinite 
+programming problems (SDPs) or determinant maximization problems (max-det 
+problems). These problems often have matrix structure, <i>i.e.</i>, some of the 
+optimization variables are matrices. This matrix structure has two important 
+practical ramifications: first, it makes the job of translating the problem 
+into a standard SDP or max-det format tedious, and, second, it opens the 
+possibility of exploiting the structure to speed up the computation. In this 
+paper we describe the design and implementation of sdpsol, a parser/solver for 
+SDPs and max-det problems. sdpsol allows problems with matrix structure to be 
+described in a simple, natural, and convenient way. Moreover, it allows 
+algorithms to exploit problem structure to gain efficiency. Although the 
+current implementation of sdpsol exploits only block-diagonal structure in the 
+solution algorithm, the language and parser were designed with exploiting 
+general matrix structure in mind.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:30 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

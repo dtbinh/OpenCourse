@@ -1,0 +1,26 @@
+Boyd and Barratt, Linear Controller Design: Limits of Performance
+Prentice-Hall 1991, ISBN 0-13-538687-X
+
+Errors in first printing:
+
+p8   last line: "could" should be "might"
+p55  bottom fig 3.3 caption "specs and on" --> "specs are on"
+p87  3rd line: "(c.f. (4.4)))." should be "(c.f. (4.4)).)"
+p173 top equation should be \lim_{t \rightarrow \infty}
+p242 2nd par "matrix, and assuming ... to" -->
+	"matrix. Assuming $T$ is stable, (10.82) is equivalent to"
+p278 middle [W^1/2 ; V^1/2] should be block diag (W^1/2, V^1/2)
+p346 middle: "only as fast a polynomial" (2nd "as" missing)
+p347 section 14.6.4 "often" occurs > once per sentence!: rewrite
+p359 bottom of caption: "contraints" (should be "constraints")
+     and: "repsectively" (should be "respectively")
+     (This caption got missed by spell because of a delatex bug.
+      I fixed the bug and re-ran spell on all the figures.  No other errors.)
+p370 last line of text should say "$\Ka$ and $\Kd$".
+p376 bottom line: "constrain the its size"
+
+*******above errors corrected for second printing, sent to PH sept 91;
+in stock at PH nov 1991.
+
+p404 both zames refs: "on" should be "of". also, in TAC citations,
+     we have sometimes vol AC-44 and sometimes vol 44...

@@ -1,0 +1,454 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>lasso</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2013-05-07"><meta name="m-file" content="lasso"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Problem data</a></li><li><a href="#4">Global constants and defaults</a></li><li><a href="#5">CVX</a></li><li><a href="#6">Proximal gradient</a></li><li><a href="#7">Fast proximal gradient</a></li><li><a href="#8">ADMM</a></li><li><a href="#9">Timing</a></li><li><a href="#10">Plots</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> h = lasso
+</pre><h2>Problem data<a name="3"></a></h2><pre class="codeinput">s = RandStream.create(<span class="string">'mt19937ar'</span>,<span class="string">'seed'</span>,0);
+RandStream.setDefaultStream(s);
+
+m = 500;       <span class="comment">% number of examples</span>
+n = 2500;      <span class="comment">% number of features</span>
+
+x0 = sprandn(n,1,0.05);
+A = randn(m,n);
+A = A*spdiags(1./sqrt(sum(A.^2))',0,n,n); <span class="comment">% normalize columns</span>
+v = sqrt(0.001)*randn(m,1);
+b = A*x0 + v;
+
+fprintf(<span class="string">'solving instance with %d examples, %d variables\n'</span>, m, n);
+fprintf(<span class="string">'nnz(x0) = %d; signal-to-noise ratio: %.2f\n'</span>, nnz(x0), norm(A*x0)^2/norm(v)^2);
+
+gamma_max = norm(A'*b,<span class="string">'inf'</span>);
+gamma = 0.1*gamma_max;
+
+<span class="comment">% cached computations for all methods</span>
+AtA = A'*A;
+Atb = A'*b;
+</pre><pre class="codeoutput">solving instance with 500 examples, 2500 variables
+nnz(x0) = 122; signal-to-noise ratio: 265.50
+</pre><h2>Global constants and defaults<a name="4"></a></h2><pre class="codeinput">MAX_ITER = 100;
+ABSTOL   = 1e-4;
+RELTOL   = 1e-2;
+</pre><h2>CVX<a name="5"></a></h2><pre class="codeinput">tic
+
+cvx_begin <span class="string">quiet</span>
+    cvx_precision <span class="string">low</span>
+    variable <span class="string">x(n)</span>
+    minimize(0.5*sum_square(A*x - b) + gamma*norm(x,1))
+cvx_end
+
+h.x_cvx = x;
+h.p_cvx = cvx_optval;
+h.cvx_toc = toc;
+</pre><h2>Proximal gradient<a name="6"></a></h2><pre class="codeinput">f = @(u) 0.5*sum_square(A*u-b);
+lambda = 1;
+beta = 0.5;
+
+tic;
+
+x = zeros(n,1);
+xprev = x;
+
+<span class="keyword">for</span> k = 1:MAX_ITER
+    <span class="keyword">while</span> 1
+        grad_x = AtA*x - Atb;
+        z = prox_l1(x - lambda*grad_x, lambda*gamma);
+        <span class="keyword">if</span> f(z) &lt;= f(x) + grad_x'*(z - x) + (1/(2*lambda))*sum_square(z - x)
+            <span class="keyword">break</span>;
+        <span class="keyword">end</span>
+        lambda = beta*lambda;
+    <span class="keyword">end</span>
+    xprev = x;
+    x = z;
+
+    h.prox_optval(k) = objective(A, b, gamma, x, x);
+    <span class="keyword">if</span> k &gt; 1 &amp;&amp; abs(h.prox_optval(k) - h.prox_optval(k-1)) &lt; ABSTOL
+        <span class="keyword">break</span>;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+h.x_prox = x;
+h.p_prox = h.prox_optval(end);
+h.prox_grad_toc = toc;
+</pre><h2>Fast proximal gradient<a name="7"></a></h2><pre class="codeinput">lambda = 1;
+
+tic;
+
+x = zeros(n,1);
+xprev = x;
+<span class="keyword">for</span> k = 1:MAX_ITER
+    y = x + (k/(k+3))*(x - xprev);
+    <span class="keyword">while</span> 1
+        grad_y = AtA*y - Atb;
+        z = prox_l1(y - lambda*grad_y, lambda*gamma);
+        <span class="keyword">if</span> f(z) &lt;= f(y) + grad_y'*(z - y) + (1/(2*lambda))*sum_square(z - y)
+            <span class="keyword">break</span>;
+        <span class="keyword">end</span>
+        lambda = beta*lambda;
+    <span class="keyword">end</span>
+    xprev = x;
+    x = z;
+
+    h.fast_optval(k) = objective(A, b, gamma, x, x);
+    <span class="keyword">if</span> k &gt; 1 &amp;&amp; abs(h.fast_optval(k) - h.fast_optval(k-1)) &lt; ABSTOL
+        <span class="keyword">break</span>;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+h.x_fast = x;
+h.p_fast = h.fast_optval(end);
+h.fast_toc = toc;
+</pre><h2>ADMM<a name="8"></a></h2><pre class="codeinput">lambda = 1;
+rho = 1/lambda;
+
+tic;
+
+x = zeros(n,1);
+z = zeros(n,1);
+u = zeros(n,1);
+
+[L U] = factor(A, rho);
+
+<span class="keyword">for</span> k = 1:MAX_ITER
+
+    <span class="comment">% x-update</span>
+    q = Atb + rho*(z - u);
+    <span class="keyword">if</span> m &gt;= n
+       x = U \ (L \ q);
+    <span class="keyword">else</span>
+       x = lambda*(q - lambda*(A'*(U \ ( L \ (A*q) ))));
+    <span class="keyword">end</span>
+
+    <span class="comment">% z-update</span>
+    zold = z;
+    z = prox_l1(x + u, lambda*gamma);
+
+    <span class="comment">% u-update</span>
+    u = u + x - z;
+
+    <span class="comment">% diagnostics, reporting, termination checks</span>
+    h.admm_optval(k)   = objective(A, b, gamma, x, z);
+    h.r_norm(k)   = norm(x - z);
+    h.s_norm(k)   = norm(-rho*(z - zold));
+    h.eps_pri(k)  = sqrt(n)*ABSTOL + RELTOL*max(norm(x), norm(-z));
+    h.eps_dual(k) = sqrt(n)*ABSTOL + RELTOL*norm(rho*u);
+
+    <span class="keyword">if</span> h.r_norm(k) &lt; h.eps_pri(k) &amp;&amp; h.s_norm(k) &lt; h.eps_dual(k)
+         <span class="keyword">break</span>;
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+h.x_admm = z;
+h.p_admm = h.admm_optval(end);
+h.admm_toc = toc;
+</pre><h2>Timing<a name="9"></a></h2><pre class="codeinput">fprintf(<span class="string">'CVX time elapsed: %.2f seconds.\n'</span>, h.cvx_toc);
+fprintf(<span class="string">'Proximal gradient time elapsed: %.2f seconds.\n'</span>, h.prox_grad_toc);
+fprintf(<span class="string">'Fast prox gradient time elapsed: %.2f seconds.\n'</span>, h.fast_toc);
+fprintf(<span class="string">'ADMM time elapsed: %.2f seconds.\n'</span>, h.admm_toc);
+</pre><pre class="codeoutput">CVX time elapsed: 28.93 seconds.
+Proximal gradient time elapsed: 0.47 seconds.
+Fast prox gradient time elapsed: 0.22 seconds.
+ADMM time elapsed: 0.06 seconds.
+</pre><h2>Plots<a name="10"></a></h2><pre class="codeinput">h.prox_iter = length(h.prox_optval);
+h.fast_iter = length(h.fast_optval);
+h.admm_iter = length(h.admm_optval);
+K = max([h.prox_iter h.fast_iter h.admm_iter]);
+h.cvx_optval  = h.p_cvx*ones(K,1);
+h.prox_optval = padarray(h.prox_optval', K-h.prox_iter, h.p_prox, <span class="string">'post'</span>);
+h.fast_optval = padarray(h.fast_optval', K-h.fast_iter, h.p_fast, <span class="string">'post'</span>);
+h.admm_optval = padarray(h.admm_optval', K-h.admm_iter, h.p_admm, <span class="string">'post'</span>);
+fig = figure;
+
+plot(1:K, h.cvx_optval,  <span class="string">'k--'</span>, <span class="keyword">...</span>
+     1:K, h.prox_optval, <span class="string">'r-'</span>, <span class="keyword">...</span>
+     1:K, h.fast_optval, <span class="string">'g-'</span>, <span class="keyword">...</span>
+     1:K, h.admm_optval, <span class="string">'b-'</span>);
+
+xlim([0 75]);
+legend(<span class="string">'True'</span>, <span class="string">'Proximal gradient'</span>, <span class="string">'Accelerated'</span>, <span class="string">'ADMM'</span>);
+print <span class="string">-depsc</span> <span class="string">lasso_comp.eps</span>;
+</pre><img vspace="5" hspace="5" src="lasso_01.png" alt=""> <pre class="codeinput"><span class="keyword">end</span>
+
+<span class="keyword">function</span> p = objective(A, b, gamma, x, z)
+    p = 0.5*sum_square(A*x - b) + gamma*norm(z,1);
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> [L U] = factor(A, rho)
+    [m, n] = size(A);
+    <span class="keyword">if</span> m &gt;= n
+       L = chol(A'*A + rho*speye(n), <span class="string">'lower'</span>);
+    <span class="keyword">else</span>
+       L = chol(speye(m) + 1/rho*(A*A'), <span class="string">'lower'</span>);
+    <span class="keyword">end</span>
+    L = sparse(L);
+    U = sparse(L');
+<span class="keyword">end</span>
+</pre>
+<p class="footer"><br>
+      Published with MATLAB&reg; 7.10<br></p></div><!--
+##### SOURCE BEGIN #####
+function h = lasso
+
+%% Problem data
+
+s = RandStream.create('mt19937ar','seed',0);
+RandStream.setDefaultStream(s);
+
+m = 500;       % number of examples
+n = 2500;      % number of features
+
+x0 = sprandn(n,1,0.05);
+A = randn(m,n);
+A = A*spdiags(1./sqrt(sum(A.^2))',0,n,n); % normalize columns
+v = sqrt(0.001)*randn(m,1);
+b = A*x0 + v;
+
+fprintf('solving instance with %d examples, %d variables\n', m, n);
+fprintf('nnz(x0) = %d; signal-to-noise ratio: %.2f\n', nnz(x0), norm(A*x0)^2/norm(v)^2);
+
+gamma_max = norm(A'*b,'inf');
+gamma = 0.1*gamma_max;
+
+% cached computations for all methods
+AtA = A'*A;
+Atb = A'*b;
+
+%% Global constants and defaults
+
+MAX_ITER = 100;
+ABSTOL   = 1e-4;
+RELTOL   = 1e-2;
+
+%% CVX
+
+tic
+
+cvx_begin quiet
+    cvx_precision low
+    variable x(n)
+    minimize(0.5*sum_square(A*x - b) + gamma*norm(x,1))
+cvx_end
+
+h.x_cvx = x;
+h.p_cvx = cvx_optval;
+h.cvx_toc = toc;
+
+%% Proximal gradient
+
+f = @(u) 0.5*sum_square(A*u-b);
+lambda = 1;
+beta = 0.5;
+
+tic;
+
+x = zeros(n,1);
+xprev = x;
+
+for k = 1:MAX_ITER
+    while 1
+        grad_x = AtA*x - Atb;
+        z = prox_l1(x - lambda*grad_x, lambda*gamma);
+        if f(z) <= f(x) + grad_x'*(z - x) + (1/(2*lambda))*sum_square(z - x)
+            break;
+        end
+        lambda = beta*lambda;
+    end
+    xprev = x;
+    x = z;
+
+    h.prox_optval(k) = objective(A, b, gamma, x, x);
+    if k > 1 && abs(h.prox_optval(k) - h.prox_optval(k-1)) < ABSTOL
+        break;
+    end
+end
+
+h.x_prox = x;
+h.p_prox = h.prox_optval(end);
+h.prox_grad_toc = toc;
+
+%% Fast proximal gradient
+
+lambda = 1;
+
+tic;
+
+x = zeros(n,1);
+xprev = x;
+for k = 1:MAX_ITER
+    y = x + (k/(k+3))*(x - xprev);
+    while 1
+        grad_y = AtA*y - Atb;
+        z = prox_l1(y - lambda*grad_y, lambda*gamma);
+        if f(z) <= f(y) + grad_y'*(z - y) + (1/(2*lambda))*sum_square(z - y)
+            break;
+        end
+        lambda = beta*lambda;
+    end
+    xprev = x;
+    x = z;
+
+    h.fast_optval(k) = objective(A, b, gamma, x, x);
+    if k > 1 && abs(h.fast_optval(k) - h.fast_optval(k-1)) < ABSTOL
+        break;
+    end
+end
+
+h.x_fast = x;
+h.p_fast = h.fast_optval(end);
+h.fast_toc = toc;
+
+%% ADMM
+
+lambda = 1;
+rho = 1/lambda;
+
+tic;
+
+x = zeros(n,1);
+z = zeros(n,1);
+u = zeros(n,1);
+
+[L U] = factor(A, rho);
+
+for k = 1:MAX_ITER
+
+    % x-update
+    q = Atb + rho*(z - u);
+    if m >= n
+       x = U \ (L \ q);
+    else
+       x = lambda*(q - lambda*(A'*(U \ ( L \ (A*q) ))));
+    end
+
+    % z-update
+    zold = z;
+    z = prox_l1(x + u, lambda*gamma);
+
+    % u-update
+    u = u + x - z;
+
+    % diagnostics, reporting, termination checks
+    h.admm_optval(k)   = objective(A, b, gamma, x, z);
+    h.r_norm(k)   = norm(x - z);
+    h.s_norm(k)   = norm(-rho*(z - zold));
+    h.eps_pri(k)  = sqrt(n)*ABSTOL + RELTOL*max(norm(x), norm(-z));
+    h.eps_dual(k) = sqrt(n)*ABSTOL + RELTOL*norm(rho*u);
+
+    if h.r_norm(k) < h.eps_pri(k) && h.s_norm(k) < h.eps_dual(k)
+         break;
+    end
+
+end
+
+h.x_admm = z;
+h.p_admm = h.admm_optval(end);
+h.admm_toc = toc;
+
+%% Timing
+
+fprintf('CVX time elapsed: %.2f seconds.\n', h.cvx_toc);
+fprintf('Proximal gradient time elapsed: %.2f seconds.\n', h.prox_grad_toc);
+fprintf('Fast prox gradient time elapsed: %.2f seconds.\n', h.fast_toc);
+fprintf('ADMM time elapsed: %.2f seconds.\n', h.admm_toc);
+
+%% Plots
+
+h.prox_iter = length(h.prox_optval);
+h.fast_iter = length(h.fast_optval);
+h.admm_iter = length(h.admm_optval);
+K = max([h.prox_iter h.fast_iter h.admm_iter]);
+h.cvx_optval  = h.p_cvx*ones(K,1);
+h.prox_optval = padarray(h.prox_optval', K-h.prox_iter, h.p_prox, 'post');
+h.fast_optval = padarray(h.fast_optval', K-h.fast_iter, h.p_fast, 'post');
+h.admm_optval = padarray(h.admm_optval', K-h.admm_iter, h.p_admm, 'post');
+fig = figure;
+
+plot(1:K, h.cvx_optval,  'kREPLACE_WITH_DASH_DASH', ...
+     1:K, h.prox_optval, 'r-', ...
+     1:K, h.fast_optval, 'g-', ...
+     1:K, h.admm_optval, 'b-');
+
+xlim([0 75]);
+legend('True', 'Proximal gradient', 'Accelerated', 'ADMM');
+print -depsc lasso_comp.eps;
+
+end
+
+function p = objective(A, b, gamma, x, z)
+    p = 0.5*sum_square(A*x - b) + gamma*norm(z,1);
+end
+
+function [L U] = factor(A, rho)
+    [m, n] = size(A);
+    if m >= n
+       L = chol(A'*A + rho*speye(n), 'lower');
+    else
+       L = chol(speye(m) + 1/rho*(A*A'), 'lower');
+    end
+    L = sparse(L);
+    U = sparse(L');
+end
+
+##### SOURCE END #####
+--></body></html>

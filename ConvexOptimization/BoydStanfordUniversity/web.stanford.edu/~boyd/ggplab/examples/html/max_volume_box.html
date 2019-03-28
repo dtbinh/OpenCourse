@@ -1,0 +1,336 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>max_volume_box</title>
+      <meta name="generator" content="MATLAB 7.0.4">
+      <meta name="date" content="2006-03-28">
+      <meta name="m-file" content="max_volume_box"><style>
+body {
+  background-color: white;
+  margin:10px;
+}
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+pre.codeinput {
+  margin-left: 30px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.showbuttons {
+  margin-left: 30px;
+  border: solid black 2px;
+  padding: 4px;
+  background: #EBEFF3;
+}
+
+pre.codeoutput {
+  color: gray;
+  font-style: italic;
+}
+pre.error {
+  color: red;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+    </style></head>
+   <body><pre class="codeinput"><span class="comment">% Box volume maximization example.</span>
+<span class="comment">% (a figure is generated if the tradeoff flag is turned on)</span>
+<span class="comment">%</span>
+<span class="comment">% This is an example taken directly from the paper:</span>
+<span class="comment">%</span>
+<span class="comment">%   A Tutorial on Geometric Programming (see pages 8 and 13)</span>
+<span class="comment">%   by Boyd, Kim, Vandenberghe, and Hassibi.</span>
+<span class="comment">%</span>
+<span class="comment">% Maximizes volume of a box-shaped structure which has constraints</span>
+<span class="comment">% on its total wall area, its total floor area, and which has lower</span>
+<span class="comment">% and upper bounds on the aspect ratios. This leads to a GP:</span>
+<span class="comment">%</span>
+<span class="comment">%   maximize   h*w*d</span>
+<span class="comment">%       s.t.   2(h*w + h*d) &lt;= Awall, w*d &lt;= Afloor</span>
+<span class="comment">%              alpha &lt;= h/w &lt;= beta</span>
+<span class="comment">%              gamma &lt;= d/w &lt;= delta</span>
+<span class="comment">%</span>
+<span class="comment">% where variables are the box height h, width w, and depth d.</span>
+<span class="comment">%</span>
+<span class="comment">% Almir Mutapcic 02/01/2006</span>
+clear <span class="string">all</span>; close <span class="string">all</span>;
+PLOT_TRADEOFF = 1; <span class="comment">% to disable tradeoff plot, set PLOT_TRADEOFF = 0</span>
+
+<span class="comment">% problem constants</span>
+Awall  = 10000; Afloor = 1000;
+alpha = 0.5; beta = 2; gamma = 0.5; delta = 2;
+
+<span class="comment">% GP variables</span>
+gpvar <span class="string">h</span> <span class="string">w</span> <span class="string">d</span>
+
+<span class="comment">% objective function is the box volume</span>
+volume = h*w*d;
+
+<span class="comment">% set of constraints expressed as an array</span>
+constr = [ 2*(h*w + h*d) &lt;= Awall; w*d &lt;= Afloor;
+           alpha &lt;= h/w; h/w &lt;= beta;
+           gamma &lt;= d/w; d/w &lt;= delta;];
+
+<span class="comment">% solve the given GP problem</span>
+[max_volume solution status] = gpsolve(volume, constr, <span class="string">'max'</span>);
+assign(solution);
+
+<span class="comment">% display results</span>
+fprintf(1,<span class="string">'\nMaximum volume is %2.2f.\n'</span>, max_volume)
+fprintf(1,[<span class="string">'Optimal solution is height h = %3.4f, width w = %3.4f, '</span><span class="keyword">...</span>
+           <span class="string">'depth d = %3.4f.\n\n'</span>], h, w, d);
+
+<span class="comment">%*********************************************************************</span>
+<span class="comment">% tradeoff curve code</span>
+<span class="comment">%*********************************************************************</span>
+<span class="keyword">if</span>( PLOT_TRADEOFF )
+
+<span class="comment">% set the quiet flag (no solver reporting)</span>
+<span class="keyword">global</span> QUIET; QUIET = 1;
+
+<span class="comment">% reintroduce the optimization variables</span>
+gpvar <span class="string">h</span> <span class="string">w</span> <span class="string">d</span>
+
+<span class="comment">% varying parameters for an optimal trade-off curve</span>
+N = 10;
+Aflr = logspace(1,3,N);
+Awall = [100 1000 10000];
+opt_volumes = zeros(length(Awall),N);
+
+<span class="comment">% setup various GP problems with varying parameters</span>
+<span class="keyword">for</span> k = 1:length(Awall)
+  <span class="keyword">for</span> n = 1:N
+    <span class="comment">% change constraints with varying parameters</span>
+    constr(1) = 2*h*w + 2*h*d &lt;= Awall(k);
+    constr(2) = w*d &lt;= Aflr(n);
+
+    <span class="comment">% solve the GP problem and compute the optimal volume</span>
+    [max_volume solution status] = gpsolve(volume, constr, <span class="string">'max'</span>);
+    opt_volumes(k,n) = max_volume;
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% enable solver reporting again</span>
+<span class="keyword">global</span> QUIET; QUIET = 0;
+
+<span class="comment">% plot the tradeoff curve</span>
+loglog(Aflr,opt_volumes(1,:), Aflr,opt_volumes(2,:), Aflr,opt_volumes(3,:));
+xlabel(<span class="string">'Aflr'</span>); ylabel(<span class="string">'V'</span>);
+
+<span class="keyword">end</span>
+<span class="comment">% end tradeoff curve code</span>
+</pre><pre class="codeoutput"> 
+Iteration     primal obj.         gap        dual residual     previous step.
+ 
+   1         1.00000e+00       1.20000e+01       2.73e+00               Inf
+   2         1.13450e+00       5.09520e+00       3.18e-03       9.65862e-01
+   3         7.84658e-01       4.08972e+00       1.25e-03       3.74018e-01
+   4         4.86635e-01       3.25002e+00       3.24e-04       4.90589e-01
+   5         2.84603e-01       2.69975e+00       4.39e-05       6.31798e-01
+   6        -2.39995e-01       1.30243e+00       6.13e-13       1.00000e+00
+ 
+Iteration     primal obj.         gap        dual residual     previous step.
+ 
+   1         2.66126e+02       1.20000e+01       2.98e+00               Inf
+   2         5.79616e+01       9.95483e+00       2.92e+00       9.58011e-03
+   3         2.03729e+01       9.65217e+00       2.88e+00       7.37105e-03
+   4         2.25731e+00       9.39954e+00       2.81e+00       1.18031e-02
+   5        -1.01030e+01       8.91928e+00       2.64e+00       3.12500e-02
+   6        -5.82528e+00       9.46552e+00       6.60e-01       5.00000e-01
+   7        -9.57242e+00       6.85383e+00       1.65e-01       5.00000e-01
+   8        -1.00194e+01       5.89507e+00       6.05e-06       1.00000e+00
+   9        -1.04901e+01       2.94793e+00       8.35e-07       1.00000e+00
+  10        -1.08661e+01       1.47474e+00       6.53e-07       1.00000e+00
+  11        -1.10901e+01       7.37986e-01       1.67e-06       1.00000e+00
+  12        -1.11902e+01       3.69166e-01       4.82e-06       1.00000e+00
+  13        -1.12187e+01       1.84575e-01       1.35e-07       1.00000e+00
+  14        -1.12350e+01       9.23682e-02       7.62e-07       1.00000e+00
+  15        -1.12461e+01       4.62892e-02       1.05e-07       1.00000e+00
+  16        -1.12517e+01       2.31810e-02       1.04e-08       1.00000e+00
+  17        -1.12546e+01       1.16008e-02       7.80e-10       1.00000e+00
+  18        -1.12561e+01       5.80299e-03       5.12e-11       1.00000e+00
+  19        -1.12568e+01       2.90215e-03       3.23e-12       1.00000e+00
+  20        -1.12571e+01       1.45124e-03       2.03e-13       1.00000e+00
+  21        -1.12573e+01       7.25658e-04       1.27e-14       1.00000e+00
+  22        -1.12574e+01       3.62839e-04       7.94e-16       1.00000e+00
+  23        -1.12575e+01       1.81422e-04       4.96e-17       1.00000e+00
+  24        -1.12575e+01       9.07117e-05       3.10e-18       1.00000e+00
+  25        -1.12575e+01       4.53560e-05       1.94e-19       1.00000e+00
+  26        -1.12575e+01       2.26780e-05       1.21e-20       1.00000e+00
+  27        -1.12575e+01       1.13390e-05       7.58e-22       1.00000e+00
+  28        -1.12575e+01       5.66952e-06       4.74e-23       1.00000e+00
+  29        -1.12575e+01       2.83476e-06       2.96e-24       1.00000e+00
+  30        -1.12575e+01       1.41738e-06       1.85e-25       1.00000e+00
+  31        -1.12575e+01       7.08690e-07       1.15e-26       1.00000e+00
+  32        -1.12575e+01       3.54345e-07       7.35e-28       1.00000e+00
+  33        -1.12575e+01       1.77172e-07       5.39e-29       1.00000e+00
+  34        -1.12575e+01       8.85862e-08       2.55e-30       1.00000e+00
+  35        -1.12575e+01       4.42931e-08       6.98e-31       1.00000e+00
+  36        -1.12575e+01       2.21466e-08       2.16e-31       1.00000e+00
+  37        -1.12575e+01       1.10733e-08       2.75e-31       1.00000e+00
+  38        -1.12575e+01       5.53664e-09       1.32e-31       1.00000e+00
+Solved
+Problem succesfully solved.
+
+Maximum volume is 77459.67.
+Optimal solution is height h = 77.4597, width w = 38.7298, depth d = 25.8199.
+
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+</pre><img vspace="5" hspace="5" src="max_volume_box_01.png"> <p class="footer"><br>
+         Published with MATLAB&reg; 7.0.4<br></p>
+      <!--
+##### SOURCE BEGIN #####
+% Box volume maximization example.
+% (a figure is generated if the tradeoff flag is turned on)
+%
+% This is an example taken directly from the paper:
+%
+%   A Tutorial on Geometric Programming (see pages 8 and 13)
+%   by Boyd, Kim, Vandenberghe, and Hassibi.
+%
+% Maximizes volume of a box-shaped structure which has constraints
+% on its total wall area, its total floor area, and which has lower
+% and upper bounds on the aspect ratios. This leads to a GP:
+%
+%   maximize   h*w*d
+%       s.t.   2(h*w + h*d) <= Awall, w*d <= Afloor
+%              alpha <= h/w <= beta
+%              gamma <= d/w <= delta
+%
+% where variables are the box height h, width w, and depth d.
+%
+% Almir Mutapcic 02/01/2006
+clear all; close all;
+PLOT_TRADEOFF = 1; % to disable tradeoff plot, set PLOT_TRADEOFF = 0
+
+% problem constants
+Awall  = 10000; Afloor = 1000;
+alpha = 0.5; beta = 2; gamma = 0.5; delta = 2;
+
+% GP variables
+gpvar h w d
+
+% objective function is the box volume
+volume = h*w*d;
+
+% set of constraints expressed as an array
+constr = [ 2*(h*w + h*d) <= Awall; w*d <= Afloor;
+           alpha <= h/w; h/w <= beta;
+           gamma <= d/w; d/w <= delta;];
+
+% solve the given GP problem
+[max_volume solution status] = gpsolve(volume, constr, 'max');
+assign(solution);
+
+% display results
+fprintf(1,'\nMaximum volume is %2.2f.\n', max_volume)
+fprintf(1,['Optimal solution is height h = %3.4f, width w = %3.4f, '...
+           'depth d = %3.4f.\n\n'], h, w, d);
+
+%*********************************************************************
+% tradeoff curve code
+%*********************************************************************
+if( PLOT_TRADEOFF )
+
+% set the quiet flag (no solver reporting)
+global QUIET; QUIET = 1;
+
+% reintroduce the optimization variables
+gpvar h w d
+
+% varying parameters for an optimal trade-off curve
+N = 10;
+Aflr = logspace(1,3,N);
+Awall = [100 1000 10000];
+opt_volumes = zeros(length(Awall),N);
+
+% setup various GP problems with varying parameters
+for k = 1:length(Awall)
+  for n = 1:N
+    % change constraints with varying parameters
+    constr(1) = 2*h*w + 2*h*d <= Awall(k);
+    constr(2) = w*d <= Aflr(n);
+
+    % solve the GP problem and compute the optimal volume
+    [max_volume solution status] = gpsolve(volume, constr, 'max');
+    opt_volumes(k,n) = max_volume;
+  end
+end
+
+% enable solver reporting again
+global QUIET; QUIET = 0;
+
+% plot the tradeoff curve
+loglog(Aflr,opt_volumes(1,:), Aflr,opt_volumes(2,:), Aflr,opt_volumes(3,:));
+xlabel('Aflr'); ylabel('V');
+
+end
+% end tradeoff curve code
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

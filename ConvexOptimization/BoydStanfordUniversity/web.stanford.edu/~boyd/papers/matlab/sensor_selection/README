@@ -1,0 +1,7 @@
+MATLAB files that provide an implementation of the 
+sensor selection method descibed in the paper
+
+Sensor Selection via Convex Optimization
+www.stanford.edu/~boyd/papers/sensor_selection.html
+
+Nov 2007 Siddharth Joshi & Stephen Boyd

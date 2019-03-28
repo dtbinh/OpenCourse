@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Fast Computation of Optimal Contact Forces</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Fast Computation of Optimal Contact Forces</h1>
+<div id="subtitle">S. Boyd and B. Wegbreit</div>
+</div>
+<p><i>IEEE Transactions on Robotics</i>, 23(6):1117-1132, December 2007.</p>
+<ul>
+<li><p><a href="pdf/fast_opt_force.pdf">fast_opt_force.pdf</a></p>
+</li>
+</ul>
+<p>We consider the problem of computing the smallest contact forces, with 
+point-contact friction model, that can hold an object in equilibrium against a 
+known external applied force and torque. It is known that the force 
+optimization problem (FOP) can be formulated as a semidefinite programming 
+problem (SDP), or a second-order cone problem (SOCP), and so can be solved 
+using several standard algorithms for these problem classes. In this paper we 
+describe a custom interior-point algorithm for solving the FOP that exploits 
+the specific structure of the problem, and is much faster than these standard 
+methods. Our method has a complexity that is linear in the number of contact 
+forces, whereas methods based on generic SDP or SOCP algorithms have complexity 
+that is cubic in the number of forces. Our method is also much faster for 
+smaller problems. We derive a compact dual problem for the FOP, which allows us 
+to rapidly compute lower bounds on the minimum contact force, and to certify 
+infeasibility of a FOP. We use this dual problem to terminate our optimization 
+method with a guaranteed accuracy. Finally, we consider the problem of solving 
+a family of FOPs that are related. This occurs, for example, in determining 
+whether force closure occurs, in analyzing the worst-case contact force 
+required over a set of external forces and torques, and in the problem of 
+choosing contact points on an object so as to minimize the required contact 
+force. Using dual bounds, and a warm-start version of our FOP method, we show 
+how such families of FOPs can be solved very efficiently.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:27 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

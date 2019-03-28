@@ -1,0 +1,165 @@
+
+--- This is the beta version of SOCP ---
+
+COPYRIGHT (c) 1997 Miguel Sousa Lobo, Lieven Vandenberge, Stephen Boyd,
+Herve Lebret.
+Permission to use, copy, modify, and distribute this software for 
+any purpose without fee is hereby granted, provided that this entire 
+notice is included in all copies of any software which is or includes
+a copy or modification of this software and in all copies of the 
+supporting documentation for such software.
+This software is being provided "as is", without any express or 
+implied warranty.  In particular, the authors do not make any
+representation or warranty of any kind concerning the merchantability
+of this software or its fitness for any particular purpose.
+
+
+I.	INTRO
+II.	FILES
+III.	KNOWN PROBLEMS
+IV.	FOR MORE INFO
+
+
+--- I. INTRO ---
+
+To get started:
+ 1. get the file socp.tar.Z (in binary mode!)
+ 2. use uncompress or zcat
+ 3. use tar x
+
+Included is: documentation, c source, source for the cmex interface
+that makes SOCP usable from matlab, matlab .m functions to simplify
+interfacing to the code, makefiles and compiled versions for some
+unix platforms.
+
+To use the mex files, you should set your matlab path to include the
+socpfun/ subdirectory.  For example, you can use a .m script file
+that includes something like:
+  path(path, '/home/boyd/src/socp/socpfun/');
+
+
+--- II. FILES ---
+
+Files in each subdirectory of socp:
+
+in socpfun/
+
+	Contents.m	contents file for matlab
+			(type "help socpfun" in matlab to display)
+
+	socp.m		matlab interface to socp
+
+	socp1.m		analytic solution of socp with a single
+			constraint
+
+	socp.h		header file for socp.c and socp_mex.c
+	socp.c		c source code
+	socp_mex.c	cmex interface, calls fcts in socp.c
+
+	Makefile.*	makefiles for different systems to make socp0.mex*,
+			read the files for more info.
+	socp_mex.mex*	compiled mex-functions for matlab on different
+			platforms, matlab will automatically recognize
+			and use the appropriate version
+
+in doc/
+
+	doc.ps		documentation (in post-script format)
+
+	socp.ps		the associated survey paper (in post-script format)
+
+in examples/
+
+(NOTE: Not all the examples described next are in the current
+distribution package.)
+
+in examples/lp/
+
+	lp.m		generate and solve random LPs of different dimensions
+			plot statistics
+
+in examples/other/
+
+	example.m	very simple example
+
+	analytic	solve SOCP with single constraint,
+			compare numerical with analytic solution
+
+in examples/antenna/
+
+	test97		data file with antenna response
+
+	run.m		compute tradeoff curve, beamwidth vs. sidelobe level
+			for an antenna array with response measured
+			empirically
+
+	graphs.m	plot results from run.m
+
+in examples/array-xy/
+
+	run.m		antenna array weigth design, theoretical model for
+			response, omnidirectional elements placed randomly,
+			increasing in number
+
+in examples/grasp/
+
+	grasp_polyhedron.m	compute max. scaling of set of forces/torques
+				such that there is a stable grasp for all
+
+	grasp_1.m	example, maximize torque for a range of attrition
+			coefficients
+
+	grasp_robust.m	example, robust grasping for forces in a ball
+			(aproximated by a random polyhedron)
+
+in examples/matrix-frac/
+
+	mf.m		example of matrix-fractional programing with socp
+
+in examples/random/
+
+	random_socp.m	generate and solve random socp
+
+	range_r_s.m	calls r.m for a range of sizes
+
+	run_short.m	sequence of calls to test.m
+	run.m		sequence of calls to test.m, up to large problems
+
+in examples/robust-ls/
+
+	rnmat.m		generate random matrix
+
+	robust1.m	robust linear least-squares problem, one instance
+
+	robustn.m	robust linear least-squares problems, over a range
+			of sizes
+
+
+--- III. KNOWN PROBLEMS ---
+
+Bad behavior with some problems that have many constraints of very
+small dimension (eg. linear) AND constraints of large dimension.
+Using a small Nu the code still works acceptably, with number of
+iterations O(sqrt(L)).
+
+Also some numerical difficulties may be encountered if problem matrix
+is close to square (i.e. number of variables close to total rows in A
+and C), in which case you should consider using the dual problem as
+the primal.
+
+
+--- IV. FOR MORE INFO ---
+
+The header of socp.m contains a quick problem description (in matlab,
+type "help socp").  The main reference for this software is:
+
+	"Second-Order Cone Programming"
+	M. Lobo, L. Vandenberge, S. Boyd, H. Lebret
+
+	submitted for publication, available from
+		ftp://isl.stanford.edu/pub/boyd/reports/
+	or
+		http://www-ISL.Stanford.EDU/people/boyd/socp.html
+
+
+--- END ---

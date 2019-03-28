@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Computing Optimal Uncertainty Models from Frequency Domain Data</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Computing Optimal Uncertainty Models from Frequency Domain Data</h1>
+<div id="subtitle">H. Hindi, C.-Y. Seong, and S. Boyd</div>
+</div>
+<p><i>Proceedings of the IEEE Conference on Decision and Control</i>,
+3:2898-2905, December 2002</p>
+<ul>
+<li><p><a href="pdf/CDC02-REG0795.pdf">CDC02-REG0795.pdf</a></p>
+</li>
+</ul>
+<p>Uncertainty models are an essential ingredient in robust control design. In 
+addition, because of the tradeoff between uncertainty and performance, the 
+uncertainty model should be as &lsquo;tight&rsquo; as possible. Given a set of 
+multivariable frequency response measurements, we show that the computation of 
+multivariable nonparametric uncertainty models which are consistent with the 
+data (<i></i>i.e.<i></i> not invalidated), reduces to a linear matrix inequality (LMI) 
+feasibility problem. Our method simultaneously searches for the responses of 
+both the nominal system and the uncertainty weights that give an optimal 
+uncertainty model. We then show that computing the optimal or least 
+conservative model for the data can be done using semidefinite programming 
+(SDP). Noise and fitting errors are explicitly factored into the computation 
+using a bounded set approach. A state space uncertainty model can then be 
+obtained from the optimal nonparametric model using frequency domain subspace 
+identification techniques. The proposed technique is demonstrated on a generic 
+MIMO example, where it outperforms the average-based approach by almost a 
+factor of two (5dB), in the frequency range with largest uncertainty.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:31 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

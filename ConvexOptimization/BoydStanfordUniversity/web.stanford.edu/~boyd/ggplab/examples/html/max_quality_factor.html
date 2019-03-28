@@ -1,0 +1,307 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>max_quality_factor</title>
+      <meta name="generator" content="MATLAB 7.0.4">
+      <meta name="date" content="2006-03-28">
+      <meta name="m-file" content="max_quality_factor"><style>
+body {
+  background-color: white;
+  margin:10px;
+}
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+pre.codeinput {
+  margin-left: 30px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.showbuttons {
+  margin-left: 30px;
+  border: solid black 2px;
+  padding: 4px;
+  background: #EBEFF3;
+}
+
+pre.codeoutput {
+  color: gray;
+  font-style: italic;
+}
+pre.error {
+  color: red;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+    </style></head>
+   <body><pre class="codeinput"><span class="comment">% Optimization of inductor circuits via geometric programming (GP).</span>
+<span class="comment">%</span>
+<span class="comment">% TODO: This example is not complete, it still does not reproduce</span>
+<span class="comment">%       plots shown in the reference paper.</span>
+<span class="comment">% FIX:  The problem is primal infeasible as reported by Mosek.</span>
+<span class="comment">%       We are missing some constants necessary for the solution,</span>
+<span class="comment">%       which were not fully specified in the paper.</span>
+<span class="comment">%</span>
+<span class="comment">% This example is taken directly from the paper:</span>
+<span class="comment">%</span>
+<span class="comment">%   Optimization of inductor circuits via geometric programming</span>
+<span class="comment">%   Proceedings of the 36th {ACM/IEEE} Conference on Design Automation</span>
+<span class="comment">%   New Orleans, June 1999 (pages 994-998)</span>
+<span class="comment">%   by M. Hershenson, S. Mohan, S. Boyd, and T. Lee</span>
+<span class="comment">%   (see pages 995-996 for problem details)</span>
+<span class="comment">%</span>
+<span class="comment">% Designs a sprial inductor that maximizes the quality factor for a given</span>
+<span class="comment">% inductance value and for given constraints on the maximum area, minimum</span>
+<span class="comment">% spacing and turn width, etc. The problem can be posed as a GP:</span>
+<span class="comment">%</span>
+<span class="comment">%   maximize   Q_L,min</span>
+<span class="comment">%       s.t.   Q_L &gt;= Q_L,min</span>
+<span class="comment">%              L == Lreq, etc...</span>
+<span class="comment">%</span>
+<span class="comment">% where variables are number of turns n, the turn width w, the turn spacing s,</span>
+<span class="comment">% the outer diameter d_out, the average diameter d_avg, and min quality factor.</span>
+<span class="comment">%</span>
+<span class="comment">% Almir Mutapcic 12/05</span>
+
+<span class="comment">% problem constants</span>
+A_min = 400; <span class="comment">% 400 micro m^2</span>
+w_min= 1.9;
+s_min = 1.9;
+freq = 2.5; <span class="comment">% 2.5 GHz</span>
+w_sr_min = 7;
+
+<span class="comment">% optimization variables</span>
+gpvar <span class="string">n</span> <span class="string">w</span> <span class="string">s</span> <span class="string">d_out</span> <span class="string">d_avg</span> <span class="string">QL_min</span>
+
+<span class="comment">% inductor area</span>
+A = d_out^2;
+
+<span class="comment">% inductor length</span>
+l = 4*n*d_avg;
+
+<span class="comment">% series resistance Rs</span>
+sigma = 3*10^5;
+t_M5 = 0.9;
+mu = 4*pi*10^-7;
+<span class="comment">%%% delta = sqrt(2/(freq*mu*sigma));        % skin depth</span>
+<span class="comment">%%% k1 = 1/(sigma*delta*(1-exp(-t_M5/delta)));</span>
+k1 = 0.001;
+Rs = k1*l/w;
+
+<span class="comment">% series inductance</span>
+beta = 1.66*10^-3;
+alpha1 = -1.33;
+alpha2 = -0.125;
+alpha3 = 2.5;
+alpha4 = 1.83;
+alpha5 = -0.022;
+Ls = beta*d_out^(alpha1)*w^(alpha2)*d_avg^(alpha3)*n^(alpha4)*s^(alpha5);
+
+<span class="comment">% minimum self-resonance constraint</span>
+<span class="comment">% (will consider the unconstrained case)</span>
+
+<span class="comment">% quality factor constraint</span>
+QL = freq*Ls/Rs;
+
+<span class="comment">% problem constraints</span>
+constr = [ w_min &lt;= w; s_min &lt;= s; A_min &lt;= A; QL_min &lt;= QL ];
+
+<span class="comment">% maximum constraints (adding on my own)</span>
+<span class="comment">% constr = [ constr; w &lt;= 2*w_min; s &lt;= 2*s_min; A &lt;= 2*A_min ];</span>
+
+<span class="comment">% create the changing constraint</span>
+L_req = 0;
+constr(end+1) = Ls == L_req;
+
+<span class="comment">% sweep the inductance L_req</span>
+Qarray = [];
+<span class="comment">% for L_req = 2:0.5:20</span>
+<span class="keyword">for</span> L_req = 2:0.5:3
+  constr(end) = Ls == L_req;
+  show(constr)
+  <span class="comment">% maximize the minimim quality factor QL_min</span>
+  [opt_val sol status] = gpsolve(QL_min, constr, <span class="string">'max'</span>);
+  Qarray = [Qarray opt_val];
+<span class="keyword">end</span>
+
+<span class="comment">% FIX: will also need to round to quarter sizes</span>
+
+<span class="comment">% plot the optimal trade-off curve</span>
+<span class="comment">% L_req = 2:0.5:20;</span>
+<span class="comment">% plot(L_req,Qarray);</span>
+</pre><pre class="codeoutput">Display for a column vector with 5 elements: 
+
+row 1: 1.9 &lt;= 1*w^(1)
+
+row 2: 1.9 &lt;= 1*s^(1)
+
+row 3: 400 &lt;= 1*d_out^(2)
+
+row 4: 1*QL_min^(1) &lt;= 1.0375*d_out^(-1.33)*w^(0.875)*d_avg^(1.5)*n^(0.83)*s^(-0.022)
+
+row 5: 0.00166*d_out^(-1.33)*w^(-0.125)*d_avg^(2.5)*n^(1.83)*s^(-0.022) == 2
+
+Problem succesfully solved.
+Display for a column vector with 5 elements: 
+
+row 1: 1.9 &lt;= 1*w^(1)
+
+row 2: 1.9 &lt;= 1*s^(1)
+
+row 3: 400 &lt;= 1*d_out^(2)
+
+row 4: 1*QL_min^(1) &lt;= 1.0375*d_out^(-1.33)*w^(0.875)*d_avg^(1.5)*n^(0.83)*s^(-0.022)
+
+row 5: 0.00166*d_out^(-1.33)*w^(-0.125)*d_avg^(2.5)*n^(1.83)*s^(-0.022) == 2.5
+
+Problem succesfully solved.
+Display for a column vector with 5 elements: 
+
+row 1: 1.9 &lt;= 1*w^(1)
+
+row 2: 1.9 &lt;= 1*s^(1)
+
+row 3: 400 &lt;= 1*d_out^(2)
+
+row 4: 1*QL_min^(1) &lt;= 1.0375*d_out^(-1.33)*w^(0.875)*d_avg^(1.5)*n^(0.83)*s^(-0.022)
+
+row 5: 0.00166*d_out^(-1.33)*w^(-0.125)*d_avg^(2.5)*n^(1.83)*s^(-0.022) == 3
+
+Problem succesfully solved.
+</pre><p class="footer"><br>
+         Published with MATLAB&reg; 7.0.4<br></p>
+      <!--
+##### SOURCE BEGIN #####
+% Optimization of inductor circuits via geometric programming (GP).
+%
+% TODO: This example is not complete, it still does not reproduce
+%       plots shown in the reference paper.
+% FIX:  The problem is primal infeasible as reported by Mosek.
+%       We are missing some constants necessary for the solution,
+%       which were not fully specified in the paper.
+%
+% This example is taken directly from the paper:
+%
+%   Optimization of inductor circuits via geometric programming
+%   Proceedings of the 36th {ACM/IEEE} Conference on Design Automation
+%   New Orleans, June 1999 (pages 994-998)
+%   by M. Hershenson, S. Mohan, S. Boyd, and T. Lee 
+%   (see pages 995-996 for problem details)
+%
+% Designs a sprial inductor that maximizes the quality factor for a given
+% inductance value and for given constraints on the maximum area, minimum
+% spacing and turn width, etc. The problem can be posed as a GP:
+%
+%   maximize   Q_L,min
+%       s.t.   Q_L >= Q_L,min
+%              L == Lreq, etc...
+%
+% where variables are number of turns n, the turn width w, the turn spacing s,
+% the outer diameter d_out, the average diameter d_avg, and min quality factor.
+%
+% Almir Mutapcic 12/05
+
+% problem constants
+A_min = 400; % 400 micro m^2
+w_min= 1.9;
+s_min = 1.9;
+freq = 2.5; % 2.5 GHz
+w_sr_min = 7;
+
+% optimization variables
+gpvar n w s d_out d_avg QL_min
+
+% inductor area
+A = d_out^2;
+
+% inductor length
+l = 4*n*d_avg;
+
+% series resistance Rs
+sigma = 3*10^5;
+t_M5 = 0.9;
+mu = 4*pi*10^-7;
+%%% delta = sqrt(2/(freq*mu*sigma));        % skin depth
+%%% k1 = 1/(sigma*delta*(1-exp(-t_M5/delta)));
+k1 = 0.001;
+Rs = k1*l/w;
+
+% series inductance
+beta = 1.66*10^-3;
+alpha1 = -1.33;
+alpha2 = -0.125;
+alpha3 = 2.5;
+alpha4 = 1.83;
+alpha5 = -0.022;
+Ls = beta*d_out^(alpha1)*w^(alpha2)*d_avg^(alpha3)*n^(alpha4)*s^(alpha5);
+
+% minimum self-resonance constraint
+% (will consider the unconstrained case)
+
+% quality factor constraint
+QL = freq*Ls/Rs;
+
+% problem constraints
+constr = [ w_min <= w; s_min <= s; A_min <= A; QL_min <= QL ];
+
+% maximum constraints (adding on my own)
+% constr = [ constr; w <= 2*w_min; s <= 2*s_min; A <= 2*A_min ];
+
+% create the changing constraint
+L_req = 0;
+constr(end+1) = Ls == L_req;
+
+% sweep the inductance L_req
+Qarray = [];
+% for L_req = 2:0.5:20
+for L_req = 2:0.5:3
+  constr(end) = Ls == L_req;
+  show(constr)
+  % maximize the minimim quality factor QL_min 
+  [opt_val sol status] = gpsolve(QL_min, constr, 'max');
+  Qarray = [Qarray opt_val];
+end
+
+% FIX: will also need to round to quarter sizes
+
+% plot the optimal trade-off curve
+% L_req = 2:0.5:20;
+% plot(L_req,Qarray);
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

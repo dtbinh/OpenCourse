@@ -1,0 +1,118 @@
+########################################################################
+#
+# SOCP Makefile, with defaults for alpha axp.
+#
+# To install the mex-interface, edit the first part of this 
+# file as indicated, and type make -f Makefile.axp
+# (or rename this file to Makefile, and type make).
+#
+# The details of compiling the code are very platform dependent,
+# and our own experience is limited to the three platforms for which 
+# we provide executable mex-files.  It is quite likely that this 
+# makefile is incomplete, and we welcome all comments and suggestions.
+# 
+# (hacked from SP Makefile -- mlobo@isl.stanford.edu -- 96/97)
+#
+########################################################################
+
+
+# Specify the name of the ansi C compiler on your machine with the 
+# desired options.
+# 
+# Examples: 
+# - on DEC and SUN:
+#   CC = cc -O 
+#   (-O for full optimization)
+# - on HP 9000/700:
+#   CC = cc -Aa -O +z 
+#   (-Aa for ansi C; -O for full optimization; +z because object files 
+#    linked to MEX-files must not contain position independent code)
+# - to use the GNU C compiler:
+#   CC = gcc -O
+#   (-O for full optimization)
+
+CC = gcc -O
+
+
+# Matlab interfaces to C-routines are compiled using a special compiler
+# cmex.  On some machines cmex invokes a non-ANSI C compiler by default.
+# The Matlab External Interface Guide and the man page for cmex
+# explain how you can change this default.  
+#
+# If cmex has a different name on your machine, then change the 
+# following line.
+
+CMEX = cmex -O
+
+
+# SOCP is based on BLAS and LAPACK routines.  
+# BLAS stands for Basic Linear Algebra Subroutines, and many
+# computer manufacturers supply an optimized version.
+# If you do not have access to an optimized BLAS library or if it is 
+# incomplete, you can obtain a non-optimized Fortran version from 
+# Netlib (http://www.netlib.org or anonymous ftp at ftp.netlib.org).
+# LAPACK is a package with linear algebra routines.  It can also be
+# obtained from Netlib (http://www.netlib.org or anonymous ftp at 
+# ftp.netlib.org).
+#
+# Specify the location of those two libraries here, either as
+# an option to the linker (e.g., -lblas) or by providing the
+# full name of the library (e.g., blas.a).   
+
+BLAS = 
+LAPACK = 
+
+
+
+# Specify the standard Fortran libraries.  This is very platform
+# dependent.  
+# The end of the man page for f77 provides some information on the 
+# various Fortran libraries.
+
+#FLIBS = -lfl -llapack_alpha -lblas_alpha -lfor -lots -lm
+FLIBS = -lfl -ldxml -lfor -lots -lm  
+# assumes there is an archive file
+# libdxml.a in standard library directories
+# such as /usr/lib or /usr/local/lib 
+# with lapack, blas and fortrand functions
+
+# Specify directories to be searched for libraries requested with -l
+
+#DIR = -L/home/vandenbe/src/C/lib
+DIR = 
+
+
+# We have tried to use only standard ANSI C.  There are two exceptions, 
+# which may cause portability problems. 
+# 
+# 1. On many platforms, Fortran routines are called from C by
+#    appending an underscore to the routine name.  For instance
+#    the BLAS routine daxpy() is called as daxpy_().  This is our
+#    default assumption.  On other platforms (e.g., HP), the 
+#    underscore is not needed.  If you have an HP, or you find out 
+#    that the linker does not find the correct routines because of the 
+#    underscore, then change the following line to 
+#    UNDERSC = -Dnounderscores. 
+
+UNDERSC = 
+
+# 2. Most Unix systems provide a function getrusage to determine,
+#    among other things, the CPU time consumed by a process.
+#    If getrusage is not provided on your system, then delete
+#    -Duserusage in the following line.
+
+USERUSG = -Duserusage
+
+####################### end of first part ##############################
+
+all: socp_mex.mex clean
+
+socp_mex.mex: socp.o socp_mex.c
+	$(CMEX) $(UNDERSC) $(USERUSG) socp_mex.c socp.o \
+		$(DIR) $(FLIBS) $(BLAS) $(LAPACK)
+
+socp.o: socp.h socp.c
+	$(CC) $(UNDERSC) $(USERUSG) socp.c -c 
+
+clean:
+	-rm *.o;

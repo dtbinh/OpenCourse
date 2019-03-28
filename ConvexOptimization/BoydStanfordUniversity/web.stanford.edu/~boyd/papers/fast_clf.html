@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Fast Evaluation of Quadratic Control-Lyapunov Policy</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Fast Evaluation of Quadratic Control-Lyapunov Policy</h1>
+<div id="subtitle">Y. Wang and S. Boyd</div>
+</div>
+<p><i>IEEE Transactions on Control Systems Technology</i>, 19(4):939&ndash;946, July 2011.</p>
+<ul>
+<li><p><a href="pdf/fast_clf.pdf">fast_clf.pdf</a></p>
+</li>
+<li><p><a href="http://www.stanford.edu/~boyd/papers/matlab/fast_clf/">Source code (C with mex file interface)</a></p>
+</li>
+</ul>
+<p>The evaluation of a control-Lyapunov policy, with quadratic Lyapunov
+function, requires the solution of a quadratic program (QP) at each time
+step.  For small problems this QP can be solved explicitly; for larger
+problems an on-line optimization method can be used.  For this reason the
+control-Lyapunov control policy is considered a computationally intensive
+control law, as opposed to an &lsquo;analytical&rsquo; control law, such as
+conventional linear state feedback, LQG, or <img class="eq" src="eqs/7801319137946381717-130.png" alt="H_infty" style="vertical-align: -4px" />, too complex or slow
+to be used in high speed control applications.  In this note we show that
+by pre-computing certain quantities, the control-Lyapunov policy can be
+evaluated extremely efficiently.  We will show that when the number of
+inputs is on the order of the square-root of the state dimension, the cost
+of evaluating a control-Lyapunov policy is on the same order as the cost of
+evaluating a simple linear state feedback policy, and less (in order) than
+the cost of updating a Kalman filter state estimate.  To give an idea of
+the speeds involved, for a problem with 100 states and 10 inputs, the
+control-Lyapunov policy can be evaluated in around 67<img class="eq" src="eqs/7083357291911388125-130.png" alt="mu" style="vertical-align: -4px" />s, on a 2GHz AMD
+processor; the same processor requires 44<img class="eq" src="eqs/7083357291911388125-130.png" alt="mu" style="vertical-align: -4px" />s to carry out a Kalman
+filter update.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:27 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

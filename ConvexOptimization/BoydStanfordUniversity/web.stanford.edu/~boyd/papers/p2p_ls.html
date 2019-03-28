@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>A Space-Time Diffusion Scheme for Peer-to-Peer Least-Squares Estimation</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>A Space-Time Diffusion Scheme for Peer-to-Peer Least-Squares Estimation</h1>
+<div id="subtitle">L. Xiao, S. Boyd, and S. Lall</div>
+</div>
+<p><i>Proceedings of Fifth International Conference on Information Processing in 
+Sensor Networks (IPSN 2006)</i>, p168-176, Nashville, TN, April 2006.</p>
+<ul>
+<li><p><a href="pdf/p2p_ls_ipsn06.pdf">p2p_ls_ipsn06.pdf</a></p>
+</li>
+</ul>
+<p>We consider a sensor network in which each sensor takes measurements, at 
+various times, of some unknown parameters, corrupted by independent Gaussian 
+noises. Each node can take a finite or infinite number of measurements, at 
+arbitrary times (<i>i.e.</i>, asynchronously). We propose a space-time diffusion 
+scheme, that relies only on peer-to-peer communication, and allows every node 
+to asymptotically compute the global maximum-likelihood estimate of the unknown 
+parameters. At each iteration, information is diffused across the network by a 
+temporal update step and a spatial update step. Both steps update each node's 
+state by a weighted average of its current value and locally available data: 
+new measurements for the time update, and neighbors&rsquo; data for the spatial 
+update. At any time, any node can compute a local weighted least-squares 
+estimate of the unknown parameters, which converges to the global 
+maximum-likelihood solution. With an infinite number of measurements, these 
+estimates converge to the true parameter values in mean square sense. We show 
+that this scheme is robust to unreliable communication links, and works in a 
+network with dynamically changing topology.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:29 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Obstacle Collision Detection Using Best Ellipsoid Fit</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Obstacle Collision Detection Using Best Ellipsoid Fit</h1>
+<div id="subtitle">E. Rimon and S. Boyd</div>
+</div>
+<p><i>Journal of Intelligent and Robotic Systems</i>, Kluwer, 18(2):105-126, 1997.<br />
+Earlier versions, with title 
+<i>Efficient Distance Computation using Best Ellipsoid Fit</i>, appeared in
+<i>IEEE International Symposium on Intelligent Control</i>, Glasgow, UK, pp. 
+360-365, August 1992.</p>
+<ul>
+<li><p>Journal paper: <a href="pdf/obst-coll-det.pdf">obst-coll-det.pdf</a></p>
+</li>
+<li><p>Technical report: <a href="pdf/dist_comp.pdf">dist_comp.pdf</a></p>
+</li>
+<li><p>Conference paper: <a href="pdf/dist-comp-conf.pdf">dist-comp-conf.pdf</a></p>
+</li>
+</ul>
+<p>This paper describes a method for estimating the distance between a robot and
+its surrounding environment using best ellipsoid fit. The method consists of
+the following two stages. First we approximate the detailed geometry of the
+robot and its environment by minimum-volume enclosing ellipsoids. The
+computation of these ellipsoids is a convex optimization problem, for which
+efficient algorithms are known. Then we compute a conservative distance
+estimate using an important but little known formula for the distance of a
+point from and n-dimensional ellipse. The computation of the distance estimate
+(and its gradient vector) is shown to be an eigenvalue problem, whose solution
+can be rapidly found using standard techniques. We also present an incremental
+version of the distance computation, which takes place along a continuous
+trajectory taken by the robot. We have implemented the proposed approach and
+present some preliminary results.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:26 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

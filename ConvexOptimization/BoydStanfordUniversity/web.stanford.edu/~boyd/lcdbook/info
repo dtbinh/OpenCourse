@@ -1,0 +1,45 @@
+From e-letter on systems & control:
+
+******** New book available ********
+
+Linear Controller Design: Limits of Performance
+by Stephen Boyd and Craig Barratt (Stanford EE Dept.)
+is now available.
+
+Ordering information:
+  Title:       Linear Controller Design: Limits of Performance
+               (428 pages, 216 figures, bibliography, index).
+  Publisher:   Prentice-Hall Inc.
+  ISBN:        0-13-538687-X, Title Code: 538-686.
+  phone:       1-800-223-1360 in the USA.
+
+************************************
+
+The main topic of the book is closed-loop design and the computation
+of performance limits using convexity.  The book introduces a standard
+framework for the control design problem and describes many practical
+design specifications in this framework.  It is shown that many of
+these specifications are closed-loop convex; the corresponding control
+design problems can therefore be cast as infinite-dimensional
+nondifferentiable convex optimization problems.  The book shows how
+these problems can be solved using the ellipsoid and cutting-plane
+algorithms, using a Ritz approximation.
+
+The book describes how the achievable performance can be computed
+numerically for any family of closed-loop convex specifications.
+Closed-loop convex specifications include, for example, H-two,
+H-infinity, or l-one norm bounds, entropy bounds, step response
+envelopes and asymptotic command decoupling.
+
+The book contains many previously unpublished results.  The clear
+exposition and numerous examples make the material accessible to a
+wide audience, including researchers, graduate students and industrial
+control engineers.  The book includes standalone chapters covering
+norms of signals and systems, and their computation, as well as
+standalone chapters covering convex analysis and nondifferentiable
+convex optimization.
+
+Over 27000 lines of matlab source were written to generate the
+numerical examples and 216 plots and figures. To the authors'
+knowledge, the extent of the numerical computation in this book is
+unprecedented in a book on control systems.

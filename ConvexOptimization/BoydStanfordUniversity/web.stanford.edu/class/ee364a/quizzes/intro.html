@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quiz</title>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Sans|Alike' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="quiz.css" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+      //close all the content divs on page load
+      $('.response').hide();
+
+      // toggle slide
+      $('.selection').click(function(){
+        // by calling sibling, we can use same div for all demos
+        $(this).siblings('.response').slideToggle('fast');
+      });
+
+      $('button').click(function(event){
+        var $target = $(event.target);
+        var $checkboxes = $target.parent('.mcq').find('input');
+        for (var i = 0; i < $checkboxes.length; i++) {
+          var $checkbox = $checkboxes.eq(i);
+          a = $checkbox;
+          if ($checkbox[0].checked && $checkbox.nextAll('.response').hasClass('right')) {
+            $checkbox.nextAll('.correct-checkbox').show();
+          } else if ($checkbox[0].checked &&
+              $checkbox.nextAll('.response').hasClass('wrong')) {
+            $checkbox.nextAll('.incorrect-checkbox').show();
+          } else if (!$checkbox[0].checked &&
+              $checkbox.nextAll('.response').hasClass('right')) {
+            $checkbox.nextAll('.incorrect-checkbox').show();
+          } else {
+            $checkbox.nextAll('.correct-checkbox').show();
+          }
+        }
+        $target.parent('.mcq').find('.response').slideToggle('fast');
+        if ($target.text() == 'Submit') {
+          $target.text('Hide');
+        } else {
+          $checkboxes.nextAll('.incorrect-checkbox').hide();
+          $checkboxes.nextAll('.correct-checkbox').hide();
+          $target.text('Submit');
+        }
+      });
+    });
+    </script>
+  </head>
+
+<body>
+  $\newcommand{\ones}{\mathbf 1}$
+  <div>
+	<h1>Introduction to convex optimization</h1>
+	<fieldset>
+		<div>
+			<div class="description">
+Least squares is a special case of convex optimization.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+By and large, convex optimization problems can be solved efficiently.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+Almost any problem you'd like to solve in practice is convex.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True. </div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						 Most convex optimization problems are not convex. Nevertheless,
+many problems of interest can be solved via convex optimization.
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+Convex optimization problems are attractive because they always have a unique
+solution.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True. </div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						 They do not always have a unique solution, and even when they do,
+this is not of primary importance.
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div class="intro">In a device sizing problem the goal is to minimize power consumption subject
+to the total area not exceeding 50, as well as some timing and manufacturing
+constraints. Four candidate designs meet the timing and manufacturing
+constraints, and have power and area listed in the table below.
+\[
+\begin{array}{lll}
+{\rm Design} &amp; {\rm Power} &amp; {\rm Area} \\ \hline
+{\rm A} &amp; 10 &amp; 50 \\ \hline
+{\rm B} &amp; 8  &amp; 55 \\ \hline
+{\rm C} &amp; 10 &amp; 45 \\ \hline
+{\rm D} &amp; 11 &amp; 50 \\ \hline
+\end{array}
+\]</div>
+		<hr/>
+		<div>
+			<div class="description">
+Design B is better than design A.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True. </div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						 Device B is infeasible and device A is feasible.
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+Design C is better than design A.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True. </div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						 Both are feasible and achieve the same objective value, so they are
+equally good.
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+		<hr/>
+		<div>
+			<div class="description">
+Design D cannot be optimal.</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">True.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">False. </div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						 Design A is also feasible and achieves a better objective value
+(lower power consumption).
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div>
+			<div class="description">
+Very roughly, how long would it take to solve a linear program with 100
+variables and 1000 constraints on a computer capable of carrying out a billion
+floating point operations per second (1 gigaflop)?</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">Microseconds.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">Milliseconds.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">Seconds.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">Minutes.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+	<fieldset>
+		<div>
+			<div class="description">
+Local optimization</div>
+			<ol type="a">
+				<li class="choice">
+					<div class="selection">can be quite useful in some contexts, and therefore is widely used.</div>
+					<div class="response right">
+						<span class="right">Correct! </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">is currently illegal in 17 states.</div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+					</div>
+				</li>
+				<li class="choice">
+					<div class="selection">can't guarantee finding a (global) solution, and so is not widely used. </div>
+					<div class="response wrong">
+						<span class="wrong">Incorrect. </span>
+						
+Though they can't guarantee finding a global solution, they are nevertheless
+useful and widely used.
+					</div>
+				</li>
+			</ol>
+		</div>
+	</fieldset>
+	<br/>
+</div>
+
+  <footer>
+  Page generated using <a href="https://github.com/karanveerm/quizgen">Quizgen</a>
+  </footer>
+</body>
+</html>

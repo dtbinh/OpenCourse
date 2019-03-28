@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Optimal Scaling of a Gradient Method for Distributed Resource Allocation</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Optimal Scaling of a Gradient Method for Distributed Resource Allocation</h1>
+<div id="subtitle">L. Xiao and S. Boyd</div>
+</div>
+<p>(Original title: <i>Fast Distributed Algorithms for Optimal Redistribution</i>.)</p>
+<p><i>Journal of Optimization Theory and Applications (JOTA)</i>, 
+129(3):469-488, June 2006.</p>
+<ul>
+<li><p><a href="pdf/fast_redstb.pdf">fast_redstb.pdf</a></p>
+</li>
+</ul>
+<p>We consider a class of weighted gradient methods for distributed resource 
+allocation over a network. Each node of the network is associated with a local 
+variable and a convex cost function; the sum of the variables (resources) 
+across the network is fixed. Starting with a feasible allocation, each node 
+updates its local variable in proportion to the differences between the 
+marginal costs of itself and its neighbors. We focus on how to choose the 
+proportional weights on the edges (scaling factors for the gradient method) to 
+make this distributed algorithm converge, and how to make the convergence as 
+fast as possible. We give sufficient conditions on the edge weights for the 
+algorithm to converge monotonically to the optimal solution; these conditions 
+have the form of a linear matrix inequality. We give some simple, explicit 
+methods to choose the weights that satisfy these sufficient conditions. We also 
+derive a guaranteed convergence rate for the algorithm, and find the weights 
+that minimize this rate by solving a semidefinite program. Finally, we extend 
+the main results to problems with general equality constraints, and problems 
+with block separable objective function.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:27 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

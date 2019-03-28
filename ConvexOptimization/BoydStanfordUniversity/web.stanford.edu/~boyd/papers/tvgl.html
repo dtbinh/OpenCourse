@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Network Inference via the Time-Varying Graphical Lasso</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Network Inference via the Time-Varying Graphical Lasso</h1>
+<div id="subtitle">D. Hallac, Y. Park, S. Boyd, and J. Leskovec</div>
+</div>
+<p><i>Proceedings ACM SIGKDD International Conference on Knowledge Discovery 
+and Data Mining (KDD)</i>, 2017.</p>
+<ul>
+<li><p><a href="pdf/tvgl.pdf">tvgl.pdf</a></p>
+</li>
+<li><p><a href="https://github.com/davidhallac/TVGL">Code</a></p>
+</li>
+</ul>
+<p>Many important problems can be modeled as a system of interconnected
+entities, where each entity is recording time-dependent observations or
+measurements. In order to spot trends, detect anomalies, and interpret the
+temporal dynamics of such data, it is essential to understand the
+relationships between the di erent entities and how these relationships evolve
+over time. In this paper, we introduce the time-varying graphical lasso (TVGL),
+a method of inferring time-varying networks from raw time series data. We cast
+the problem in terms of estimating a sparse time-varying inverse covariance
+matrix, which reveals a dynamic network of interdependencies between the
+entities. Since dynamic network inference is a computationally expensive task,
+we derive a scalable message-passing algorithm based on the Alternating
+Direction Method of Multipliers (ADMM) to solve this problem in an efficient way.
+We also discuss several extensions, including a streaming algorithm to update
+the model and incorporate new observations in real time. Finally, we evaluate
+our TVGL algorithm on both real and synthetic datasets, obtaining
+interpretable results and outperforming state-of-the-art baselines in terms of
+both accuracy and scalability.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:31 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

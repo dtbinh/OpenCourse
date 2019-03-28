@@ -1,0 +1,53 @@
+Installation instructions for fast_mpc
+-----------------------------------------------------------------------
+
+fast_mpc is written in C with a mex interface to MATLAB.  Before 
+installation, make sure that BLAS and LAPACK libraries are installed
+in your machine. 
+
+
+1. Unpack the fast_mpc files, or get them individually.
+
+2. Start MATLAB and cd to the directory containing the source files.
+
+3. At the MATLAB command prompt type
+
+        >> mex -setup
+
+   and enter the number corresponding to the template option gccopts.sh.
+
+4. Compile fmpc_sim.c using
+
+        >> mex fmpc_sim.c
+
+   On some machines you may need to specify the libraries
+
+        >> mex fmpc_sim.c -lblas -llapack
+    
+   If you want to link your own libraries, you can. For example,
+   to link the libraries libacml.a, libacml_mv.a, and libgfortran.a 
+   in the directory /opt/acml/lib, use the option '-L' to specify the 
+   library search path and the option '-l' to specify the individual 
+   libraries, as in
+
+       >> mex fmpc_sim.c -L/opt/acml/lib -lacml -lacml_mv -lgfortran
+
+5. If fmpc_sim.c compiles successfully, do the same with fmpc_step.c.
+
+6. Test the installation by running the masses_example script
+
+       >> masses_example
+
+   which will run MPC, for 100 iterations, on the masses example in the paper,
+   using mpc_step.  You should see reports from each iteration printed to your 
+   screen. The last one, for example, should look like
+
+ iteration       step            rd                      rp
+    0            0.3874          1.09294e+01             1.27108e+00
+    1            1.0000          1.54052e+00             1.39748e-14
+    2            1.0000          2.98332e-01             1.40216e-15
+    3            1.0000          1.16741e-02             1.02482e-15
+
+The average cost is: 5.683200
+
+   Test mpc_sim by running the script randsys_example.

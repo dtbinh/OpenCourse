@@ -1,0 +1,97 @@
+The book "Linear Controller Design: Limits of Performance", by
+Boyd and Barratt, Prentice-Hall 1991, ISBN 0-13-538687-X
+describes the theory behind QDES.  
+
+This directory contains files for qdes version 1.5.
+
+To install qdes on your system you should get the compressed tar file
+qdes_dist.tar.Z.  Don't forget to set ftp mode to binary.
+
+- Make a new directory where you want the release to live.  For example:
+
+	cd a_good_place
+	mkdir qdes
+	cd qdes
+
+- After you get qdes_dist.tar.Z, there should be the following file in
+the current directory:
+
+	-rw-rw-r--  1 craig     1860803 Jul 27 12:11 qdes_dist.tar.Z
+
+- Uncompress this file by typing:
+
+	uncompress qdes_dist.tar
+
+- The current directory will now look like:
+
+	-rw-rw-r--  1 craig     3686400 Jul 27 12:11 qdes_dist.tar
+
+- Use tar to extract the qdes files from qdes_dist.tar:
+
+	tar xvf qdes_dist.tar
+
+  This will list out the files as they are extracted.  After this is done
+  you can remove the file qdes_dist.tar.  You will now have a directory
+  tree that should look identical to the directory tree under
+  /pub/boyd/qdes on isl.stanford.edu.   The various subdirectories
+  are:  
+
+doc:	qdes documentation.  In particular it contains a troff source for
+	the qdes Unix manual page and two postscript files describing the
+	use of some supporting matlab source code.
+
+bin:
+	qdes executables for sun3, sun4.  You might have problems running
+	these executables because of incompatibilities with the shared
+	libraries.  If so, run the qdes.static version instead (this
+	was compiled with -Bstatic).
+
+	If your machine is not a sun3 or sun4, you will need qdes
+	executables compiled specially for your machine; please
+	contact Stephen Boyd at boyd@isl.stanford.edu.
+
+matlab:
+	matlab scripts for qdes, and source for mat2qdes, which is a
+	program that reads the impulse responses in a matlab format
+	save file and spits out ascii files for qdes to read.
+
+examples:
+	some useful examples to demonstrate the capabilities of qdes,
+	including:
+	- unconstrained and constrained LQR;
+	- unconstrained LQG;
+	- LQG with guaranteed margins;
+	- H infinity;
+	- a detailed example of a "two mass" system controller design problem.
+	- the example that appears in the 1988 TAC paper
+
+	The LQR and LQG problems are described in the 1988 ACC Workshop 
+	notes.  The "two-mass" problem is described in the report
+	"Two Mass Q Design Example".
+
+To complete installation:
+
+1.	You should first do a quick test to make sure everything works:
+   	Change directory to examples/test, and type
+
+		make test_sun3 <RETURN>
+	    	or 
+	    	make test_sun4 <RETURN>
+
+	This will run the program on a test example.
+	We also suggest running the program on the other examples in the
+	examples directory, and checking the results with the ones provided.
+
+2.	You may also want to do the following:
+	-   install the manual page by copying the nroff source doc/qdes.l
+	    to the local manual page directory on your machine, which
+	    is usually /usr/man/manl. Alternatively, type "make manpage"
+	    in the doc directory. This will use nroff to create the "catable"
+	    file doc/qdes.cat. This file could be moved into
+	    /usr/man/catl/qdes.l, or the place on your machine where the
+	    "catable" forms of the manual pages reside.
+	-   move the executables in "bin/sun3" (and/or "bin/sun4") to
+	    a more accessible directory, such as your "bin" directory
+	    or /usr/local/bin. 
+
+Craig Barratt

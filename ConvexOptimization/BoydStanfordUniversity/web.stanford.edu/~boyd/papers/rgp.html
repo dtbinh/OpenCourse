@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Tractable Approximate Robust Geometric Programming</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Tractable Approximate Robust Geometric Programming</h1>
+<div id="subtitle">K.-L. Hsiung, S.-J. Kim, and S. Boyd</div>
+</div>
+<p><i>Optimization and Engineering</i>, 9(2):95-118, June 2008.
+</p>
+<ul>
+<li><p><a href="pdf/rgp-full.pdf">rgp-full.pdf</a></p>
+</li>
+<li><p><a href="pdf/rgp.pdf">rgp.pdf</a></p>
+</li>
+<li><p><a href="matlab/rgp/">Matlab function</a> for best approximation of 
+two-term log-sum-exp function.</p>
+</li>
+</ul>
+<p>The optimal solution of a geometric program (GP) can be sensitive to variations 
+in the problem data. Robust geometric programming can systematically alleviate 
+the sensitivity problem by explicitly incorporating a model of data uncertainty 
+in a GP and optimizing for the worst-case scenario under this model. However, 
+it is not known whether a general robust GP can be reformulated as a tractable 
+optimization problem that interior-point or other algorithms can efficiently 
+solve. In this paper we propose an approximation method that seeks a compromise 
+between solution accuracy and computational efficiency.  The method is based on 
+approximating the robust GP as a robust linear program (LP), by replacing each 
+nonlinear constraint function with a piecewise linear (PWL) convex 
+approximation. With a polyhedral or ellipsoidal description of the uncertain 
+data, the resulting robust LP can be formulated as a standard convex 
+optimization problem that interior-point methods can solve. The drawback of 
+this basic method is that the number of terms in the PWL approximations 
+required to obtain an acceptable approximation error can be very large. To 
+overcome the curse of dimensionality that arises in directly approximating 
+the nonlinear constraint functions in the original robust GP, we form a 
+conservative approximation of the original robust GP, which contains only 
+bivariate constraint functions. We show how to find globally optimal PWL 
+approximations of these bivariate constraint functions.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:29 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

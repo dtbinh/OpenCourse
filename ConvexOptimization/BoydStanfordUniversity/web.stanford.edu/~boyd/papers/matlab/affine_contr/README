@@ -1,0 +1,13 @@
+Matlab scripts that generate examples from paper "Design of Affine 
+Controllers via Convex Optimization", Joelle Skaf and Stephen Boyd, 
+available at www.stanford.edu/~boyd/papers/affine_contr.html.
+Requires CVX package, available at www.stanford.edu/~boyd/cvx/.
+Some scripts can take a long time and/or much memory to run; see 
+comment headers. Scripts have smaller number of Monte Carlo samples 
+than used in paper, to run in reasonable time (e.g., tens of minutes).
+Actual numbers used are in scripts, but commented out.
+
+dyn_portfolio_example.m  -- dynamic portfolio optimization.
+supply_chain_example.m -- supply chain example.
+supply_chain_AR.m  -- function called in supply chain example.
+supply_chain_ARMPC.m -- supply chain via MPC.

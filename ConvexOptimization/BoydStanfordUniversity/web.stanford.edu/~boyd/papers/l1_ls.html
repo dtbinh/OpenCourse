@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>An Interior-Point Method for Large-Scale l1-Regularized Least Squares</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>An Interior-Point Method for Large-Scale l1-Regularized Least Squares</h1>
+<div id="subtitle">S.-J. Kim, K. Koh, M. Lustig, S. Boyd, and D. Gorinevsky</div>
+</div>
+<p><i>IEEE Journal on Selected Topics in Signal Processing</i>, 1(4):606-617,
+December 2007.<br />
+Shorter version appeared as <i>An Efficient Method for Compressed Sensing</i> in
+<i>Proceedings International Conference on Image Processing (ICIP)</i>,
+vol. 3, pages III-117 &ndash; III-120, Sept. 2007.</p>
+<p><b>2012 IEEE Signal Processing Society Best Paper Award.</b></p>
+<ul>
+<li><p><a href="pdf/l1_ls.pdf">l1_ls.pdf</a></p>
+</li>
+<li><p><a href="pdf/icip07.pdf">icip07.pdf</a></p>
+</li>
+<li><p><a href="../l1_ls/">l1_ls package</a></p>
+</li>
+</ul>
+<p>Recently, a lot of attention has been paid to l1 regularization based methods 
+for sparse signal reconstruction (<i>e.g.</i>, basis pursuit denoising and 
+compressed sensing) and feature selection (<i>e.g.</i>, the Lasso algorithm) in 
+signal processing, statistics, and related fields. These problems can be cast 
+as l1-regularized least squares programs (LSPs), which can be reformulated as 
+convex quadratic programs (QPs), and then solved by several standard methods 
+such as interior-point methods, at least for small and medium size problems. In 
+this paper we describe a specialized interior-point method for solving 
+large-scale l1-regularized LSPs that uses the preconditioned conjugate 
+gradients (PCG) algorithm to compute the search direction. The interior-point 
+method can solve large sparse problems with a million variables with high 
+accuracy in a few tens of minutes on a PC. It can efficiently solve very large 
+dense problems, that arise in sparse signal recovery with orthogonal 
+transforms, by exploiting fast algorithms for those transforms. The performance 
+of the method is demonstrated with real medical resonance imaging (MRI) data. 
+Roughly speaking, we can compute an adequately accurate solution within around 
+a hundred PCG steps, which amounts to performing a few hundred fast Fourier 
+transform operations on the object of interest.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:28 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

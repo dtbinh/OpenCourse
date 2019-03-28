@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>FIR Filter Design via Spectral Factorization and Convex Optimization</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>FIR Filter Design via Spectral Factorization and Convex Optimization</h1>
+<div id="subtitle">S.-P. Wu, S. Boyd, and L. Vandenberghe</div>
+</div>
+<p>Chapter 5 in <i>Applied and Computational Control, Signals and Circuits</i>,
+Biswa Datta, editor, 1:215-245, 1998.<br />
+A shorter, and somewhat different 
+version appeared as <i>FIR filter design via semidefinite 
+programming and spectral 
+factorization</i>, <i>IEEE Conference on Decision and Control</i>, 1:271-276, 
+December 1996.</p>
+<ul>
+<li><p>Book chapter: <a href="pdf/magdes.pdf">magdes.pdf</a></p>
+</li>
+<li><p>CDC 96 paper: <a href="pdf/magdes_cdc96.pdf">magdes_cdc96.pdf</a></p>
+</li>
+<li><p>CDC talk: <a href="pdf/magdes_talk.pdf">magdes_talk.pdf</a></p>
+</li>
+</ul>
+<p>We consider the design of finite impulse response (FIR) filters subject to 
+upper and lower bounds on the frequency response magnitude. The associated 
+optimization problems, with the filter coefficients as the variables and the 
+frequency response bounds as constraints, are in general nonconvex. Using a 
+change of variables and spectral factorization, we can pose such problems as 
+linear or nonlinear convex optimization problems. As a result we can solve them 
+efficiently (and globally) by recently developed interior-point methods. We 
+describe applications to filter and equalizer design, and the related problem 
+of antenna array weight design.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:28 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

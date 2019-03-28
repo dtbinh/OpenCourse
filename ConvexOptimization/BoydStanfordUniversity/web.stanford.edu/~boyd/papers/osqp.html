@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>OSQP: An Operator Splitting Solver for Quadratic Programs</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>OSQP: An Operator Splitting Solver for Quadratic Programs</h1>
+<div id="subtitle">B. Stellato, G. Banjac, P. Goulart, A. Bemporad, and S. Boyd</div>
+</div>
+<p>Working draft, January 2018.
+Abstract appears in <i>Proceedings of International Symposium of Mathematical Programming (ISMP) 2018</i>, Bordeaux, 2018.</p>
+<ul>
+<li><p><a href="pdf/osqp.pdf">Manuscript</a> </p>
+</li>
+<li><p><a href="https://github.com/oxfordcontrol/osqp"><tt>OSQP</tt> software package</a></p>
+</li>
+<li><p><a href="http://osqp.org/"><tt>OSQP</tt> documentation</a></p>
+</li>
+</ul>
+<p>We present a general purpose solver for quadratic programs based 
+on the alternating direction method of multipliers, employing a 
+novel operator splitting technique that requires the solution of 
+a quasi-definite linear system with the same coefficient matrix 
+in each iteration. Our algorithm is very robust, placing no 
+requirements on the problem data such as positive definiteness 
+of the objective function or linear independence of the constraint 
+functions. It is division-free once an initial matrix factorization 
+is carried out, making it suitable for real-time applications in 
+embedded systems. In addition, our technique is the first operator 
+splitting method for quadratic programs able to reliably detect 
+primal and dual infeasible problems from the algorithm iterates. 
+The method also supports factorization caching and warm starting, 
+making it particularly efficient when solving parametrized problems 
+arising in finance, control, and machine learning. Our open-source 
+C implementation OSQP has a small footprint, is library-free, and 
+has been extensively tested on many problem instances from a wide 
+variety of application areas. It is typically ten times faster than 
+competing interior point methods, and sometimes much more when 
+factorization caching or warm start is used.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:29 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

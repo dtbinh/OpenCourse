@@ -1,0 +1,24 @@
+Matlab code for paper "Processor speed control with thermal constraints"
+by Mutapcic, Boyd, Murali, Atienza, De Micheli, Gupta
+-----------------------------------------------------------------------
+Written by Almir Mutapcic and Stephen Boyd, Sept. 27, 2007
+
+
+Scripts:
+create_example.m       - creates problem data for numerical example in the paper
+example_run_cvx.m      - solves the problem using CVX (for comparison purposes)
+example_run_distr.m    - simulation driver for the distributed method (see paper)
+example_run_primdual.m - simulation driver for the primal-dual method (see paper)
+
+
+Functions:
+pd_thr_speed.m         - infeasible-start primal-dual interior-point method
+opt_equal_speed.m      - computes optimal equal processor speeds that meet constr.
+
+
+Note: Make sure that create_example.m is always run before the simulation scripts.
+
+Also: For comparison purposes, these scripts require the CVX Matlab software for
+      disciplined convex programming, which is freely available from
+      http://www.stanford.edu/~boyd/cvx/
+

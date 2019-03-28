@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Linear Models Based on Noisy Data and the Frisch Scheme</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Linear Models Based on Noisy Data and the Frisch Scheme</h1>
+<div id="subtitle">L. Ning, T. Georgiou, A. Tannenbaum, and S. Boyd</div>
+</div>
+<p><i>SIAM Review</i>, 57(2):167-197, June 2015.</p>
+<ul>
+<li><p><a href="pdf/lin_mod_frisch.pdf">lin_mod_frisch.pdf</a></p>
+</li>
+</ul>
+<p>We address the problem of identifying linear relations among variables based
+on noisy measurements. This is a central question in the search for
+structure in large data sets.  Often a key assumption is that measurement
+errors in each variable are independent.  This basic formulation has its
+roots in the work of Charles Spearman in 1904 and of Ragnar Frisch in the
+1930s. Various topics such as errors-in-variables, factor analysis, and
+instrumental variables all refer to alternative viewpoints on this problem
+and on ways to account for the anticipated way that noise enters the data.
+In the present paper we begin by describing certain fundamental
+contributions by the founders of the field and provide alternative modern
+proofs to certain key results. We then go on to consider a modern viewpoint
+and novel numerical techniques to the problem. The central theme is
+expressed by the Frisch–Kalman dictum, which calls for identifying a noise
+contribution that allows a maximal number of simultaneous linear relations
+among the noise-free variables &ndash; a rank minimization problem. In the years
+since Frisch’s original formulation, there have been several insights,
+including trace minimization as a convenient heuristic to replace rank
+minimization. We discuss convex relaxations and theoretical bounds on the
+rank that, when met, provide guarantees for global optimality. A
+complementary point of view to this minimum-rank dictum is presented in
+which models are sought leading to a uniformly optimal quadratic estimation
+error for the error-free variables. Points of contact between these
+formalisms are discussed, and alternative regularization schemes are
+presented.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:28 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

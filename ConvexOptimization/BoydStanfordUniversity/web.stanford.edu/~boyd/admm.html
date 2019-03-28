@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<title>ADMM</title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="index.html">Home</a></div>
+<div class="menu-item"><a href="teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="books.html">Books</a></div>
+<div class="menu-item"><a href="papers.html">Papers</a></div>
+<div class="menu-item"><a href="software.html">Software</a></div>
+<div class="menu-item"><a href="people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>ADMM</h1>
+</div>
+<p>The <i>alternating direction method of multipliers</i> (ADMM) is an algorithm that
+solves convex optimization problems by breaking them into smaller pieces, each
+of which are then easier to handle. It has recently found wide application in a
+number of areas. On this page, we provide a few links to to interesting
+applications and implementations of the method, along with a few primary
+references.</p>
+<p>ADMM is used in a large number of papers at this point, so
+it is impossible to be comprehensive here. We only intend to highlight a few
+representative examples in different areas. To keep the listing light, we have
+only listed more detailed bibliographic information for papers that are not
+easy to find online; in any case, the information given should be more than
+enough to track down the papers.</p>
+<h2>Main references</h2>
+<dl>
+<dt><a href="papers/admm_distr_stats.html">Distributed optimization and 
+statistical learning via the alternating direction method of multipliers</a></dt>
+<dd><p>
+S. Boyd, N. Parikh, E. Chu, B. Peleato, and J. Eckstein, 2011</p></dd>
+<dt><a href="papers/prox_algs.html">Proximal algorithms</a></dt>
+<dd><p>
+N. Parikh and S. Boyd, 2014</p></dd>
+</dl>
+<h2>Software</h2>
+<ul>
+<li><p><a href="http://www.stanford.edu/~boyd/papers/admm">Assorted Matlab examples</a></p>
+</li>
+<li><p><a href="http://www.stanford.edu/~boyd/papers/prox_algs/index.html">Additional Matlab examples</a></p>
+</li>
+<li><p><a href="http://www.stanford.edu/~boyd/papers/admm/mpi">MPI implementation in C (lasso)</a></p>
+</li>
+<li><p><a href="https://github.com/intentmedia/admm">Hadoop MapReduce implementation</a></p>
+</li>
+<li><p><a href="https://github.com/cvxgrp/proximal">Proximal operators in C and Matlab</a></p>
+</li>
+<li><p><a href="https://github.com/cvxgrp/scs">SCS: Primal-dual cone solver in C</a></p>
+</li>
+<li><p><a href="https://github.com/cvxgrp/osc">Operator splitting for control in C</a></p>
+</li>
+</ul>
+<h2>Classic papers</h2>
+<dl>
+<dt><a href="http://www.ams.org/journals/tran/1956-082-02/S0002-9947-1956-0084194-4/S0002-9947-1956-0084194-4.pdf">On the numerical solution of heat conduction problems
+in two and three space variables</a></dt>
+<dd><p>
+J. Douglas and H. H. Rachford, <i>Transactions of the American Mathematical Society</i>,
+1956</p></dd>
+</dl>
+<dl>
+<dt><a href="http://archive.numdam.org/ARCHIVE/M2AN/M2AN_1975__9_2/M2AN_1975__9_2_41_0/M2AN_1975__9_2_41_0.pdf">Sur l'approximation, par éléments finis d'ordre un, et la résolution, par
+pénalisation-dualité d'une classe de problèmes de Dirichlet non linéares</a></dt>
+<dd><p>
+R. Glowinski and A. Marrocco, <i>Revue Française d'Automatique, Informatique, et Recherche Opérationelle</i>, 1975</p></dd>
+</dl>
+<dl>
+<dt><a href="http://www.sciencedirect.com/science/article/pii/0898122176900031">A dual algorithm for the solution of nonlinear
+variational problems via finite element approximations</a></dt>
+<dd><p>
+D. Gabay and B. Mercier, <i>Computers and
+Mathematics with Applications</i>, 1976</p></dd>
+</dl>
+<dl>
+<dt><a href="http://epubs.siam.org/doi/abs/10.1137/0716071">Splitting algorithms for the sum of two nonlinear operators</a></dt>
+<dd><p>
+P. L. Lions and B. Mercier, 1979</p></dd>
+</dl>
+<dl>
+<dt><a href="http://link.springer.com/article/10.1007%2FBF01581204">On the Douglas-Rachford splitting method and the
+proximal point algorithm for maximal monotone operators</a></dt>
+<dd><p>
+J. Eckstein and D. Bertsekas, <i>Mathematical Programming</i>, 1992</p></dd>
+</dl>
+<h2>Generic problems</h2>
+<dl>
+<dt><a href="http://mpc.zib.de/index.php/MPC/article/viewFile/40/20">Alternating direction augmented Lagrangian methods for semidefinite programming</a></dt>
+<dd><p>
+Z. Wen, D. Goldfarb, and W. Yin, 2010</p></dd>
+<dt><a href="papers/block_splitting.html">Block splitting for distributed optimization</a></dt>
+<dd><p>
+N. Parikh and S. Boyd, 2014</p></dd>
+<dt><a href="papers/scs.html">Operator splitting for conic optimization via homogeneous 
+self-dual embedding</a></dt>
+<dd><p>B. O'Donoghue, E. Chu, N. Parikh, and S. Boyd, 2014</p></dd>
+</dl>
+<h2>Applications</h2>
+<dl>
+<dt><a href="http://statweb.stanford.edu/~candes/papers/RobustPCA.pdf">Robust Principal Component Analysis?</a></dt>
+<dd><p>
+E. J. Candès, X. Li, Y. Ma, and J. Wright, 2009</p></dd>
+<dt><a href="http://www.cs.huji.ac.il/~meshi/papers/ADLP.pdf">An alternating direction method for dual MAP LP relaxation</a></dt>
+<dd><p>
+O. Meshi and A. Globerson, 2011</p></dd>
+<dt><a href="http://www.cs.cmu.edu/~afm/Home_files/icml2011_main.pdf">An augmented Lagrangian approach to constrained MAP inference</a></dt>
+<dd><p>
+A. Martins, M. Figueiredo, P. Aguiar, N. Smith, and E. Xing, 2011</p></dd>
+<dt><a href="http://dl.acm.org/citation.cfm?id=2145460">Dual decomposition with many overlapping components</a></dt>
+<dd><p>
+A. F. T. Martins, N. A. Smith, P. M. Q. Aguiar, and M. A. T. Figueiredo, 2011</p></dd>
+<dt><a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=6120176">Decomposition methods for large scale LP decoding</a></dt>
+<dd><p>
+S. Barman, X. Liu, S. Draper, and B. Recht, 2011</p></dd>
+<dt><a href="https://papers.nips.cc/paper/4772-scaling-mpe-inference-for-constrained-continuous-markov-random-fields-with-consensus-optimization.pdf">Scaling MPE inference for constrained continuous Markov random fields with consensus optimization</a></dt>
+<dd><p>
+S. Bach, M. Broecheler, L. Getoor, and D. O'Leary, 2012</p></dd>
+<dt><a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=6156468">Distributed robust multicell coordinated beamforming with imperfect CSI: an ADMM approach</a></dt>
+<dd><p>
+C. Shen, T.-H. Chang, K.-Y. Wang, Z. Qiu, and C.-Y. Chi, 2012</p></dd>
+<dt><a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=6497509">Design of optimal sparse feedback gains via the alternating direction method of multipliers</a></dt>
+<dd><p>
+F. Lin, M. Fardad, M. R. Jovanovic, 2013</p></dd>
+<dt><a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=6138863">Tensor completion for estimating missing values in visual data</a></dt>
+<dd><p>
+J. Liu, P. Musialski, P. Wonka, J. Ye, 2013</p></dd>
+<dt><a href="http://arxiv.org/abs/1205.5050">A lasso for hierarchical interactions</a></dt>
+<dd><p>
+J. Bien, J. Taylor, and R. Tibshirani, 2013</p></dd>
+<dt><a href="http://statweb.stanford.edu/~candes/papers/SortedL1.pdf">Statistical estimation and testing via the sorted <img class="eq" src="eqs/2349274112114421517-130.png" alt="ell_1" style="vertical-align: -3px" /> norm</a></dt>
+<dd><p>
+M. Bogdan, E. van den Berg, W. Su and E. J. Candès, 2013</p></dd>
+<dt><a href="http://arxiv.org/abs/1111.0324">The joint graphical lasso for inverse covariance estimation across multiple classes</a></dt>
+<dd><p>
+P. Danaher, P. Wang, and D. Witten, 2013</p></dd>
+<dt><a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=6340375">Distributed robust power system state estimation</a></dt>
+<dd><p>
+V. Kekatos and G. B. Giannakis, 2013</p></dd>
+<dt><a href="papers/oper_splt_ctrl.html">A splitting method for optimal control</a></dt>
+<dd><p>
+B. O'Donoghue, G. Stathopoulos, and S. Boyd, 2013</p></dd>
+<dt><a href="papers/msg_pass_dyn.html">Dynamic network energy management via
+proximal message passing</a></dt>
+<dd><p>M. Kraning, E. Chu, J. Lavaei, and S. Boyd, 2014</p></dd>
+</dl>
+<h2>Theory and variations</h2>
+<dl>
+<dt><a href="http://www.optimization-online.org/DB_FILE/2011/09/3157.pdf">On the <img class="eq" src="eqs/940375977421228302-130.png" alt="O(1/t)" style="vertical-align: -5px" /> convergence rate of the Douglas-Rachford alternating direction method</a></dt>
+<dd><p>
+B. He and X. Yuan, 2012</p></dd>
+<dt><a href="http://www.mia.uni-saarland.de/Publications/goldstein-cam12-35.pdf">Fast alternating direction optimization methods</a></dt>
+<dd><p>
+T. Goldstein, B. O'Donoghue, S. Setzer, and R. Baraniuk, 2012</p></dd>
+<dt><a href="http://rutcor.rutgers.edu/pub/rrr/reports2012/32_2012.pdf">Augmented Lagrangian and alternating direction methods for convex optimization: a tutorial and some illustrative computational results</a></dt>
+<dd><p>
+J. Eckstein, 2012</p></dd>
+</dl>
+<div id="footer">
+<div id="footer-text">
+Page generated 2018-07-09 09:45:01 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

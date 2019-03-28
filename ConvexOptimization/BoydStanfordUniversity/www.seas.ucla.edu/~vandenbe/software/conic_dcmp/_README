@@ -1,0 +1,74 @@
+
+The code in this directory was used for the experiments in the paper
+''Decomposition in conic optimization with partially separable structure,''
+by Y. Sun, M. S. Andersen, and L. Vandenberghe 
+(available at www.seas.ucla.edu/~vandenbe/publications).
+
+The following software packages are required.
+
+ - CVXOPT (http://cvxopt.org/download/index.html)
+ 
+ - matplotlib (http://matplotlib.org/downloads.html)
+ 
+ - psutils (http://code.google.com/p/psutil/)
+ 
+ - CVX (http://cvxr.com/cvx/download/)
+ 
+The Python code has been tested for Python 2.6 and 2.7.
+
+===========================================================================
+LIST OF CODE 
+
+1) PAPER EXAMPLES
+
+ - example_blockarrow.py : primary script for running a small block-arrow 
+   example
+
+ - blockarrow_problem.py : auxillary functions for constructing a 
+   block-arrow example
+
+ - example_snl.py : primary script for running a sensor network 
+   localization problem
+
+ - snl_problem.py : auxillary function for constructing a sensor network 
+   localization problem
+
+
+
+2) FAST PROX TIMING EXPERIMENT
+
+In order to assure that the runtime comparisons between the interior-point 
+methods and the fast prox methods, it is necessary to first generate the 
+problems (via running generate_single_prox.py) before running the timing 
+comparison scripts (prox_speed.m and prox_speed.py)
+
+ - prox_speed.m : runs timing experiments for CVX and SDPT3 formulations 
+   in MATLAB
+
+ - prox_speed.py : runs fast prox timing experiments in Python
+
+ - solve_single_prox_via_cvx.m : auxillary function for formulating 
+   proximal operator in CVX
+
+ - solve_single_prox_via_ipm.m : auxillary function for formulations of 
+   proximal operators via SDPT3
+
+ - generate_single_prox.py : generating random problems (run first)
+
+
+3) AUXILLARY FUNCTIONS
+
+ - spingarn.py : implementation of Spingarn's method
+
+ - proxlib.py : implementation of fast proximal operators
+
+ - convert.py : routines for constructing a converted problem given an 
+   unconverted problem and a sparsity pattern
+
+ - symbolic.py : routines for constructing a clique tree from a sparsity 
+   pattern
+
+ - misc.py : miscellaneous linear algebra routines
+
+ - matfile.py : utility for reading/writing MATLAB files in Python
+

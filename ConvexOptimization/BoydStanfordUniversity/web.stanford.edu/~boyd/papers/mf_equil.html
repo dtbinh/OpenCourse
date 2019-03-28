@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="boyd.css" type="text/css" />
+<link rel="stylesheet" href="papers.css" type="text/css" />
+<title>Stochastic Matrix-Free Equilibration </title>
+</head>
+<body>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2779251-1";
+urchinTracker();
+</script>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-category">Stephen P. Boyd</div>
+<div class="menu-item"><a href="../index.html">Home</a></div>
+<div class="menu-item"><a href="../teaching.html">Teaching</a></div>
+<div class="menu-item"><a href="../bio.html">Biography</a></div>
+<div class="menu-category">Research</div>
+<div class="menu-item"><a href="../books.html">Books</a></div>
+<div class="menu-item"><a href="../papers.html">Papers</a></div>
+<div class="menu-item"><a href="../software.html">Software</a></div>
+<div class="menu-item"><a href="../people.html">People</a></div>
+<div class="menu-category">Classes</div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee103/">EE103</a></div>
+<div class="menu-item"><a href="http://ee104.stanford.edu/">EE104</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee263/">EE263</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee363/">EE363</a></div>
+<div class="menu-item"><a href="http://ee364a.stanford.edu/">EE364a</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee364b/">EE364b</a></div>
+<div class="menu-item"><a href="http://stanford.edu/class/ee365/">EE365</a></div>
+<div class="menu-category">MOOC</div>
+<div class="menu-item"><a href="https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about">CVX101</a></div>
+</td>
+<td id="layout-content">
+<div id="toptitle">
+<h1>Stochastic Matrix-Free Equilibration </h1>
+<div id="subtitle">S. Diamond and S. Boyd</div>
+</div>
+<p><i>Journal of Optimization Theory and Applications</i>, 172(2), 436-454, 2017.</p>
+<ul>
+<li><p><a href="pdf/mf_equil.pdf">mf_equil.pdf</a></p>
+</li>
+</ul>
+<p>We present a novel method for approximately equilibrating
+a matrix <img class="eq" src="eqs/5228652151752365977-130.png" alt="A in {bf R}^{m times n}" style="vertical-align: -1px" />
+using only multiplication by <img class="eq" src="eqs/8320025024-130.png" alt="A" style="vertical-align: -0px" /> and <img class="eq" src="eqs/593367982112446592-130.png" alt="A^T" style="vertical-align: -0px" />.
+Our method is based on convex optimization and projected stochastic
+gradient descent, using an unbiased estimate of a gradient
+obtained by a randomized method.
+Our method provably converges in expectation with an <img class="eq" src="eqs/940375977421228302-130.png" alt="O(1/t)" style="vertical-align: -5px" />
+convergence rate and empirically gets good results with a small
+number of iterations.
+We show how the method can be applied as a preconditioner for
+matrix-free iterative algorithms such as LSQR and Chambolle-Cremers-Pock,
+substantially reducing the iterations required to reach a given level
+of precision.
+We also derive a novel connection between equilibration and
+condition number, showing that equilibration minimizes an upper bound
+on the condition number over all choices of row and column
+scalings.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2019-03-20 15:48:28 PDT, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3473674-8");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

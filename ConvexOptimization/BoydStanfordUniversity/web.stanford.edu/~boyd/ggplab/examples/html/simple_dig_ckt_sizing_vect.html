@@ -1,0 +1,471 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>simple_dig_ckt_sizing_vect</title>
+      <meta name="generator" content="MATLAB 7.0.4">
+      <meta name="date" content="2006-03-28">
+      <meta name="m-file" content="simple_dig_ckt_sizing_vect"><style>
+body {
+  background-color: white;
+  margin:10px;
+}
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+pre.codeinput {
+  margin-left: 30px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.showbuttons {
+  margin-left: 30px;
+  border: solid black 2px;
+  padding: 4px;
+  background: #EBEFF3;
+}
+
+pre.codeoutput {
+  color: gray;
+  font-style: italic;
+}
+pre.error {
+  color: red;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+    </style></head>
+   <body><pre class="codeinput"><span class="comment">% Digital circuit sizing using vectorize features</span>
+<span class="comment">% (a figure is generated if the tradeoff flag is turned on)</span>
+<span class="comment">%</span>
+<span class="comment">% This is an simple, ahard-coded example taken directly from:</span>
+<span class="comment">%</span>
+<span class="comment">%   A Tutorial on Geometric Programming (see pages 25-29)</span>
+<span class="comment">%   by Boyd, Kim, Vandenberghe, and Hassibi.</span>
+<span class="comment">%</span>
+<span class="comment">% Solves the problem of choosing gate scale factors x_i to give</span>
+<span class="comment">% minimum ckt delay, subject to limits on the total area and power.</span>
+<span class="comment">%</span>
+<span class="comment">%   minimize   D</span>
+<span class="comment">%       s.t.   P &lt;= Pmax, A &lt;= Amax</span>
+<span class="comment">%              x &gt;= 1</span>
+<span class="comment">%</span>
+<span class="comment">% where variables are scale factors x.</span>
+<span class="comment">%</span>
+<span class="comment">% This code uses matrices in order to evaluate signal paths</span>
+<span class="comment">% through the circuit (thus, it uses vectorize Matlab features).</span>
+<span class="comment">% It is specific to the digital circuit shown in figure 4 (page 28)</span>
+<span class="comment">% of GP tutorial paper.</span>
+<span class="comment">%</span>
+<span class="comment">% Almir Mutapcic 02/01/2006</span>
+clear <span class="string">all</span>; close <span class="string">all</span>;
+PLOT_TRADEOFF = 1; <span class="comment">% to disable set PLOT_TRADEOFF = 0;</span>
+
+<span class="comment">% digital circuit shown in figure 4 (page 28) of GP tutorial paper</span>
+m = 7;  <span class="comment">% number of cells</span>
+n = 8;  <span class="comment">% number of edges</span>
+A = sparse(m,n);
+
+<span class="comment">% A is standard cell-edge incidence matrix of the circuit</span>
+<span class="comment">% A_ij = 1 if edge j comes out of cell i, -1 if it comes in, 0 otherwise</span>
+  A(1,1) =     1;
+  A(2,2) =     1;
+  A(2,3) =     1;
+  A(3,4) =     1;
+  A(3,8) =     1;
+  A(4,1) =    -1;
+  A(4,2) =    -1;
+  A(4,5) =     1;
+  A(4,6) =     1;
+  A(5,3) =    -1;
+  A(5,4) =    -1;
+  A(5,7) =     1;
+  A(6,5) =    -1;
+  A(7,6) =    -1;
+  A(7,7) =    -1;
+  A(7,8) =    -1;
+
+<span class="comment">% decompose A into edge outgoing and edge-incoming part</span>
+Aout = double(A &gt; 0);
+Ain = double(A &lt; 0);
+
+<span class="comment">% problem constants</span>
+f = [1 0.8 1 0.7 0.7 0.5 0.5]';
+e = [1 2 1 1.5 1.5 1 2]';
+Cout6 = 10;
+Cout7 = 10;
+
+a     = ones(m,1);
+alpha = ones(m,1);
+beta  = ones(m,1);
+gamma = ones(m,1);
+
+<span class="comment">% maximum area and power specification</span>
+Amax = 25; Pmax = 50;
+
+<span class="comment">% optimization variables</span>
+gpvar <span class="string">x(m)</span>                 <span class="comment">% sizes</span>
+gpvar <span class="string">t(m)</span>                 <span class="comment">% arrival times</span>
+
+<span class="comment">% input capacitance is an affine function of sizes</span>
+cin = alpha + beta.*x;
+
+<span class="comment">% load capacitance is the input capacitance times the fan-out matrix</span>
+<span class="comment">% given by Fout = Aout*Ain'</span>
+cload = (Aout*Ain')*cin;
+cload(6) = Cout6;          <span class="comment">% load capacitance of the output gate 6</span>
+cload(7) = Cout7;          <span class="comment">% load capacitance of othe utput gate 7</span>
+
+<span class="comment">% delay is the product of its driving resistance R = gamma./x and cload</span>
+d = cload.*gamma./x;
+
+power = (f.*e)'*x;         <span class="comment">% total power</span>
+area = a'*x;               <span class="comment">% total area</span>
+
+<span class="comment">% constraints</span>
+constr_x = ones(m,1) &lt;= x; <span class="comment">% all sizes greater than 1 (normalized)</span>
+
+<span class="comment">% create timing constraints</span>
+<span class="comment">% these constraints enforce t_j + d_j &lt;= t_i over all gates j that drive gate i</span>
+constr_timing = Aout'*t + Ain'*d &lt;= Ain'*t;
+<span class="comment">% for gates with inputs not connected to other gates we enforce d_i &lt;= t_i</span>
+input_timing  = d(1:3) &lt;= t(1:3);
+
+<span class="comment">% objective is the upper bound on the overall delay</span>
+<span class="comment">% and that is the max of arrival times for output gates 6 and 7</span>
+D = max(t(6),t(7));
+
+<span class="comment">% collect all the constraints</span>
+constr = [power &lt;= Pmax; area &lt;= Amax; constr_timing; input_timing; constr_x];
+
+<span class="comment">% formulate the GP problem and solve it</span>
+[obj_value, solution, status] = gpsolve(D, constr);
+assign(solution);
+
+fprintf(1,<span class="string">'\nOptimal circuit delay for Pmax = %d and Amax = %d is %3.4f.\n'</span>, <span class="keyword">...</span>
+        Pmax, Amax, obj_value)
+disp(<span class="string">'Optimal scale factors are: '</span>)
+x
+
+<span class="comment">%********************************************************************</span>
+<span class="comment">% tradeoff curve code</span>
+<span class="comment">%********************************************************************</span>
+<span class="keyword">if</span>( PLOT_TRADEOFF )
+
+<span class="comment">% varying parameters for an optimal trade-off curve</span>
+N = 10;
+Pmax = linspace(10,100,N);
+Amax = [25 50 100];
+min_delay = zeros(length(Amax),N);
+
+<span class="comment">% set the quiet flag (no solver reporting)</span>
+<span class="keyword">global</span> QUIET; QUIET = 1;
+
+<span class="keyword">for</span> k = 1:length(Amax)
+  <span class="keyword">for</span> n = 1:N
+    <span class="comment">% add constraints that have varying parameters</span>
+    constr(1) = power &lt;= Pmax(n);
+    constr(2) = area  &lt;= Amax(k);
+
+    <span class="comment">% solve the GP problem and compute the optimal volume</span>
+    [obj_value, solution, status] = gpsolve(D, constr);
+    min_delay(k,n) = obj_value;
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% enable solver reporting again</span>
+<span class="keyword">global</span> QUIET; QUIET = 0;
+
+plot(Pmax,min_delay(1,:), Pmax,min_delay(2,:), Pmax,min_delay(3,:));
+xlabel(<span class="string">'Pmax'</span>); ylabel(<span class="string">'Dmin'</span>);
+
+<span class="keyword">end</span>
+<span class="comment">% end tradeoff curve code</span>
+</pre><pre class="codeoutput"> 
+Iteration     primal obj.         gap        dual residual     previous step.
+ 
+   1         3.39790e+00       5.20000e+01       1.09e+02               Inf
+   2         3.63445e+00       2.02895e+01       2.35e-01       9.60037e-01
+   3         2.63385e+00       1.53901e+01       7.96e-02       4.48101e-01
+   4         2.24903e+00       1.32584e+01       3.41e-02       3.61253e-01
+   5         1.44461e+00       1.06596e+01       8.05e-03       6.04595e-01
+   6         6.87063e-01       7.40176e+00       2.03e-03       5.46362e-01
+   7         4.57581e-03       3.81477e+00       9.20e-05       8.28732e-01
+   8        -2.43728e-01       2.33724e+00       7.67e-06       7.14077e-01
+ 
+Iteration     primal obj.         gap        dual residual     previous step.
+ 
+   1         1.77659e+02       5.20000e+01       2.85e+00               Inf
+   2         1.26393e+02       4.96522e+01       2.68e+00       3.07427e-02
+   3         8.85848e+01       4.84104e+01       2.57e+00       2.09904e-02
+   4         6.48846e+01       4.70571e+01       2.41e+00       3.09250e-02
+   5         4.51103e+01       4.51176e+01       2.17e+00       5.10085e-02
+   6         2.83850e+01       4.21718e+01       1.80e+00       9.06128e-02
+   7         1.01548e+01       3.48507e+01       1.01e+00       2.50000e-01
+   8         7.64553e+00       2.97578e+01       2.68e-01       5.00000e-01
+   9         7.68072e+00       2.59574e+01       4.98e-05       1.00000e+00
+  10         4.69025e+00       1.30270e+01       2.63e-03       1.00000e+00
+  11         3.44476e+00       6.59426e+00       6.50e-04       1.00000e+00
+  12         2.73436e+00       3.32999e+00       2.16e-04       1.00000e+00
+  13         2.33509e+00       1.67571e+00       4.40e-05       1.00000e+00
+  14         2.12266e+00       8.40660e-01       6.01e-06       1.00000e+00
+  15         2.01844e+00       4.21059e-01       5.38e-07       1.00000e+00
+  16         1.96745e+00       2.10812e-01       9.61e-08       1.00000e+00
+  17         1.94206e+00       1.05550e-01       2.49e-08       1.00000e+00
+  18         1.92941e+00       5.28538e-02       7.11e-09       1.00000e+00
+  19         1.92311e+00       2.64687e-02       1.98e-09       1.00000e+00
+  20         1.91997e+00       1.32556e-02       5.10e-10       1.00000e+00
+  21         1.91841e+00       6.63804e-03       1.17e-10       1.00000e+00
+  22         1.91764e+00       3.32353e-03       2.28e-11       1.00000e+00
+  23         1.91725e+00       1.66352e-03       3.47e-12       1.00000e+00
+  24         1.91706e+00       8.32347e-04       3.86e-13       1.00000e+00
+  25         1.91696e+00       4.16341e-04       3.18e-14       1.00000e+00
+  26         1.91692e+00       2.08215e-04       2.17e-15       1.00000e+00
+  27         1.91689e+00       1.04118e-04       1.38e-16       1.00000e+00
+  28         1.91688e+00       5.20619e-05       8.63e-18       1.00000e+00
+  29         1.91687e+00       2.60317e-05       5.40e-19       1.00000e+00
+  30         1.91687e+00       1.30160e-05       3.37e-20       1.00000e+00
+  31         1.91687e+00       6.50804e-06       2.11e-21       1.00000e+00
+  32         1.91687e+00       3.25403e-06       1.32e-22       1.00000e+00
+  33         1.91687e+00       1.62702e-06       8.24e-24       1.00000e+00
+  34         1.91687e+00       8.13510e-07       5.16e-25       1.00000e+00
+  35         1.91687e+00       4.06755e-07       3.21e-26       1.00000e+00
+  36         1.91687e+00       2.03378e-07       1.98e-27       1.00000e+00
+  37         1.91687e+00       1.01689e-07       1.25e-28       1.00000e+00
+  38         1.91687e+00       5.08444e-08       1.15e-29       1.00000e+00
+  39         1.91687e+00       2.54222e-08       1.98e-30       1.00000e+00
+  40         1.91687e+00       1.27111e-08       1.12e-30       1.00000e+00
+  41         1.91687e+00       6.35555e-09       1.73e-30       1.00000e+00
+Solved
+Problem succesfully solved.
+
+Optimal circuit delay for Pmax = 50 and Amax = 25 is 6.7996.
+Optimal scale factors are: 
+
+x =
+
+    2.9336
+    4.7136
+    4.1289
+    4.2254
+    2.1706
+    3.4140
+    3.4140
+
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+Problem succesfully solved.
+</pre><img vspace="5" hspace="5" src="simple_dig_ckt_sizing_vect_01.png"> <p class="footer"><br>
+         Published with MATLAB&reg; 7.0.4<br></p>
+      <!--
+##### SOURCE BEGIN #####
+% Digital circuit sizing using vectorize features
+% (a figure is generated if the tradeoff flag is turned on)
+%
+% This is an simple, ahard-coded example taken directly from:
+%
+%   A Tutorial on Geometric Programming (see pages 25-29)
+%   by Boyd, Kim, Vandenberghe, and Hassibi.
+%
+% Solves the problem of choosing gate scale factors x_i to give
+% minimum ckt delay, subject to limits on the total area and power.
+%
+%   minimize   D
+%       s.t.   P <= Pmax, A <= Amax
+%              x >= 1
+%
+% where variables are scale factors x.
+%
+% This code uses matrices in order to evaluate signal paths
+% through the circuit (thus, it uses vectorize Matlab features).
+% It is specific to the digital circuit shown in figure 4 (page 28)
+% of GP tutorial paper.
+%
+% Almir Mutapcic 02/01/2006
+clear all; close all;
+PLOT_TRADEOFF = 1; % to disable set PLOT_TRADEOFF = 0;
+
+% digital circuit shown in figure 4 (page 28) of GP tutorial paper
+m = 7;  % number of cells
+n = 8;  % number of edges
+A = sparse(m,n);
+
+% A is standard cell-edge incidence matrix of the circuit
+% A_ij = 1 if edge j comes out of cell i, -1 if it comes in, 0 otherwise
+  A(1,1) =     1;
+  A(2,2) =     1;
+  A(2,3) =     1;
+  A(3,4) =     1;
+  A(3,8) =     1;
+  A(4,1) =    -1;
+  A(4,2) =    -1;
+  A(4,5) =     1;
+  A(4,6) =     1;
+  A(5,3) =    -1;
+  A(5,4) =    -1;
+  A(5,7) =     1;
+  A(6,5) =    -1;
+  A(7,6) =    -1;
+  A(7,7) =    -1;
+  A(7,8) =    -1;
+
+% decompose A into edge outgoing and edge-incoming part 
+Aout = double(A > 0);
+Ain = double(A < 0);
+
+% problem constants
+f = [1 0.8 1 0.7 0.7 0.5 0.5]';
+e = [1 2 1 1.5 1.5 1 2]';
+Cout6 = 10;
+Cout7 = 10;
+
+a     = ones(m,1);
+alpha = ones(m,1);
+beta  = ones(m,1);
+gamma = ones(m,1);
+
+% maximum area and power specification 
+Amax = 25; Pmax = 50;
+
+% optimization variables
+gpvar x(m)                 % sizes
+gpvar t(m)                 % arrival times
+
+% input capacitance is an affine function of sizes
+cin = alpha + beta.*x;
+
+% load capacitance is the input capacitance times the fan-out matrix
+% given by Fout = Aout*Ain' 
+cload = (Aout*Ain')*cin;
+cload(6) = Cout6;          % load capacitance of the output gate 6
+cload(7) = Cout7;          % load capacitance of othe utput gate 7
+
+% delay is the product of its driving resistance R = gamma./x and cload
+d = cload.*gamma./x;              
+
+power = (f.*e)'*x;         % total power
+area = a'*x;               % total area
+
+% constraints
+constr_x = ones(m,1) <= x; % all sizes greater than 1 (normalized)
+
+% create timing constraints
+% these constraints enforce t_j + d_j <= t_i over all gates j that drive gate i
+constr_timing = Aout'*t + Ain'*d <= Ain'*t;
+% for gates with inputs not connected to other gates we enforce d_i <= t_i
+input_timing  = d(1:3) <= t(1:3);
+
+% objective is the upper bound on the overall delay 
+% and that is the max of arrival times for output gates 6 and 7
+D = max(t(6),t(7));
+
+% collect all the constraints
+constr = [power <= Pmax; area <= Amax; constr_timing; input_timing; constr_x];
+
+% formulate the GP problem and solve it
+[obj_value, solution, status] = gpsolve(D, constr);
+assign(solution);
+
+fprintf(1,'\nOptimal circuit delay for Pmax = %d and Amax = %d is %3.4f.\n', ...
+        Pmax, Amax, obj_value)
+disp('Optimal scale factors are: ')
+x
+
+%********************************************************************
+% tradeoff curve code
+%********************************************************************
+if( PLOT_TRADEOFF )
+
+% varying parameters for an optimal trade-off curve
+N = 10;
+Pmax = linspace(10,100,N);
+Amax = [25 50 100];
+min_delay = zeros(length(Amax),N);
+
+% set the quiet flag (no solver reporting)
+global QUIET; QUIET = 1;
+
+for k = 1:length(Amax)
+  for n = 1:N
+    % add constraints that have varying parameters
+    constr(1) = power <= Pmax(n);
+    constr(2) = area  <= Amax(k);
+
+    % solve the GP problem and compute the optimal volume
+    [obj_value, solution, status] = gpsolve(D, constr);
+    min_delay(k,n) = obj_value;
+  end
+end
+
+% enable solver reporting again
+global QUIET; QUIET = 0;
+
+plot(Pmax,min_delay(1,:), Pmax,min_delay(2,:), Pmax,min_delay(3,:));
+xlabel('Pmax'); ylabel('Dmin');
+
+end
+% end tradeoff curve code
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

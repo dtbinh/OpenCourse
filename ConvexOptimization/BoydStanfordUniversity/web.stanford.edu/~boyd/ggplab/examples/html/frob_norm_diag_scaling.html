@@ -1,0 +1,191 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>frob_norm_diag_scaling</title>
+      <meta name="generator" content="MATLAB 7.0.4">
+      <meta name="date" content="2006-03-28">
+      <meta name="m-file" content="frob_norm_diag_scaling"><style>
+body {
+  background-color: white;
+  margin:10px;
+}
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+pre.codeinput {
+  margin-left: 30px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.showbuttons {
+  margin-left: 30px;
+  border: solid black 2px;
+  padding: 4px;
+  background: #EBEFF3;
+}
+
+pre.codeoutput {
+  color: gray;
+  font-style: italic;
+}
+pre.error {
+  color: red;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+    </style></head>
+   <body><pre class="codeinput"><span class="comment">% Frobenious norm diagonal scaling example</span>
+<span class="comment">% Section 4.5.4 example in Boyd &amp; Vandenberghe "Convex Optimization"</span>
+<span class="comment">% (see page 163 for more details)</span>
+<span class="comment">%</span>
+<span class="comment">% Given a square matrix M, the goal is to find a positive vector d</span>
+<span class="comment">% such that ||DMD^{-1}||_F is minimized, where D = diag(d).</span>
+<span class="comment">% The problem can be cast into an unconstrained GP:</span>
+<span class="comment">%</span>
+<span class="comment">%   minimize   sum_{i,j=1}^{n} M_ij^2*d_i^2/d_j^2</span>
+<span class="comment">%</span>
+<span class="comment">% with variable d (vector in R^n) and data matrix M in R^{n-by-n}.</span>
+<span class="comment">%</span>
+<span class="comment">% Almir Mutapcic 10/15/05</span>
+randn(<span class="string">'state'</span>,0);
+
+<span class="comment">% matrix size (M is an n-by-n matrix)</span>
+n = 4;
+M = randn(n,n);
+
+<span class="comment">% GP variables</span>
+gpvar <span class="string">d(n)</span>;
+
+<span class="comment">% objective expressed using a for loop</span>
+obj = posynomial; <span class="comment">% initialize an empty posynomial</span>
+<span class="keyword">for</span> i = 1:n
+  <span class="keyword">for</span> j = 1:n
+    obj = obj + M(i,j)^2*d(i)^2*d(j)^-2;
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% objective can also be expressed using matrices</span>
+<span class="comment">% (can also use it below in the problem solving routine)</span>
+<span class="comment">% obj_vect = sum( sum( diag(d.^2)*(M.^2)*diag(d.^-2) ) );</span>
+
+<span class="comment">% solve the unconstrained GP problem</span>
+[opt_frob_norm, solution, status] = gpsolve(obj,[]);
+
+<span class="comment">% assign GP variables to their values (d now becomes an array of doubles)</span>
+assign(solution);
+
+<span class="comment">% construct matrix D and display results</span>
+disp(<span class="string">' '</span>)
+disp(<span class="string">'Optimal diagonal scaling d is: '</span>), d
+D = diag(d);
+
+frob_norm_M = norm(M,<span class="string">'fro'</span>);
+frob_norm_A = norm(D*M*inv(D),<span class="string">'fro'</span>);
+fprintf(1,[<span class="string">'The Frobenius norm for M before the scaling is %3.4f\n'</span><span class="keyword">...</span>
+          <span class="string">'and after the optimal scaling (DMD^{-1}) it is %3.4f.\n'</span>],<span class="keyword">...</span>
+          frob_norm_M,frob_norm_A);
+</pre><pre class="codeoutput">Problem succesfully solved.
+ 
+Optimal diagonal scaling d is: 
+
+d =
+
+    0.9706
+    0.8148
+    0.8697
+    1.4529
+
+The Frobenius norm for M before the scaling is 3.6126
+and after the optimal scaling (DMD^{-1}) it is 3.2523.
+</pre><p class="footer"><br>
+         Published with MATLAB&reg; 7.0.4<br></p>
+      <!--
+##### SOURCE BEGIN #####
+% Frobenious norm diagonal scaling example
+% Section 4.5.4 example in Boyd & Vandenberghe "Convex Optimization"
+% (see page 163 for more details)
+%
+% Given a square matrix M, the goal is to find a positive vector d
+% such that ||DMD^{-1}||_F is minimized, where D = diag(d).
+% The problem can be cast into an unconstrained GP:
+%
+%   minimize   sum_{i,j=1}^{n} M_ij^2*d_i^2/d_j^2
+%
+% with variable d (vector in R^n) and data matrix M in R^{n-by-n}.
+%
+% Almir Mutapcic 10/15/05
+randn('state',0);
+
+% matrix size (M is an n-by-n matrix)
+n = 4;
+M = randn(n,n);
+
+% GP variables
+gpvar d(n);
+
+% objective expressed using a for loop
+obj = posynomial; % initialize an empty posynomial
+for i = 1:n
+  for j = 1:n
+    obj = obj + M(i,j)^2*d(i)^2*d(j)^-2;
+  end
+end
+
+% objective can also be expressed using matrices
+% (can also use it below in the problem solving routine)
+% obj_vect = sum( sum( diag(d.^2)*(M.^2)*diag(d.^-2) ) );
+
+% solve the unconstrained GP problem
+[opt_frob_norm, solution, status] = gpsolve(obj,[]);
+
+% assign GP variables to their values (d now becomes an array of doubles)
+assign(solution);
+
+% construct matrix D and display results
+disp(' ')
+disp('Optimal diagonal scaling d is: '), d
+D = diag(d);
+
+frob_norm_M = norm(M,'fro');
+frob_norm_A = norm(D*M*inv(D),'fro');
+fprintf(1,['The Frobenius norm for M before the scaling is %3.4f\n'...
+          'and after the optimal scaling (DMD^{-1}) it is %3.4f.\n'],...
+          frob_norm_M,frob_norm_A);
+
+##### SOURCE END #####
+-->
+   </body>
+</html>
